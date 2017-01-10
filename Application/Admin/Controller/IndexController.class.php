@@ -6,10 +6,20 @@
  * Time: 15:45
  */
 namespace  Admin\Controller;
+use Common\Model\NavModel;
 use Think\Controller;
 
 class IndexController extends  Controller {
+      //显示页面
       public  function index () {
-             echo '显示后台系统';
+               $this->display();
+      }
+      //获取分类
+      public  function   getNav  () {
+         if(IS_AJAX){
+               $navData=(new NavModel())->getNav();
+               $this->ajaxReturn($navData);
+           }
+
       }
 }
