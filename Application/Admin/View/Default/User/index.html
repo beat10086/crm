@@ -1,0 +1,27 @@
+<!--Firefox火狐浏览器渲染遮罩专用-->
+<!--<div class="tabs-loading">Loading...</div>-->
+
+<table id="user"></table>
+
+
+<form id="user-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="user_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="user_tool.edit();">修改</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-delete-new" onclick="user_tool.remove();">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="user_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="user_tool.redo();">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="user_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="user-search-keywords">关键字：</label>
+        <input type="text" id="user-search-keywords" class="easyui-textbox" name="user_search_keywords" prompt="帐号|档案|邮件" style="width:143px;padding: 0 5px;">
+        <input type="text" id="user-search-state" prompt="状态" name="user_search_state">
+        <input type="text" id="user-search-date" prompt="查询时间" name="user_search_date">
+        <input type="text" id="user-search-date-from" prompt="起始时间" name="user_search_date_from" editable="false"  style="width:110px;">
+        <label for="user-search-date-to">-</label>
+        <input type="text" id="user-search-date-to" prompt="结束时间" name="user_search_date_to" editable="false" style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="user_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+<script type="text/javascript" src="__JS__/user.js"></script>

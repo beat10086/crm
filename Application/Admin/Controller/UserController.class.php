@@ -9,11 +9,19 @@
 namespace Admin\Controller;
 
 
+use Common\Model\UserModel;
 use Think\Controller;
 
 class UserController  extends  Controller
 {
     public  function index () {
-           echo  111;
+          $this->display();
+    }
+    //获取所有的用户信息
+    public  function  getList () {
+        if(IS_AJAX) {
+            $userData = (new UserModel())->getList();
+            $this->ajaxReturn($userData);
+        }
     }
 }
