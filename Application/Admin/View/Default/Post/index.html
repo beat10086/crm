@@ -1,0 +1,40 @@
+<table id="post"></table>
+
+
+<form id="post-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="post_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="post_tool.edit();">修改</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-delete-new" onclick="post_tool.remove();">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="post_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="post_tool.redo();">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="post_tool.reset();">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="post-search-name">关键字：</label>
+        <input type="text" id="post-search-name" class="easyui-textbox" name="post_search_name" prompt="职位" style="width:143px;">
+        <input type="text" id="post-search-date" prompt="查询时间" name="post_search_date">
+        <input type="text" id="post-search-date-from" prompt="起始时间" name="post_search_date_from" editable="false"  style="width:110px;">
+        <label for="post-search-date-to">-</label>
+        <input type="text" id="post-search-date-to" prompt="结束时间" name="post_search_date_to" editable="false"  style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="post_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+
+<!--添加职位-->
+<form id="post-add" class="easyui-dialog">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="post-name-add" class="form-label">职位名称：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="post-name-add" name="post_name_add" class="easyui-textbox">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<script type="text/javascript" src="__JS__/post.js"></script>
+
