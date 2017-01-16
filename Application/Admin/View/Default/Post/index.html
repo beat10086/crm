@@ -1,6 +1,5 @@
 <table id="post"></table>
 
-
 <form id="post-tool" style="padding:5px;">
     <div style="margin-bottom:5px;">
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="post_tool.add();">新增</a>
@@ -31,6 +30,22 @@
             </td>
             <td class="input">
                 <input type="text" id="post-name-add" name="post_name_add" class="easyui-textbox">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<!--编辑职位-->
+<form id="post-edit" class="easyui-dialog">
+    <input type="hidden" id="post-id-edit" name="post_id_edit">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="post-name-edit" class="form-label">职位名称：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="post-name-edit" name="post_name_edit" class="easyui-textbox">
             </td>
         </tr>
         </tbody>
