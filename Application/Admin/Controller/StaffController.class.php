@@ -55,4 +55,39 @@ class StaffController extends  BaseController {
                $this->error('非法操作');
          }
     }
+    //获取一条档案数据
+    public function getStaff () {
+         if(IS_AJAX){
+             $data=(new StaffModel())->getStaff(I('post.id'));
+             $this->ajaxReturn($data);
+           }else{
+             $this->error('非法操作');
+         }
+    }
+    //更新档案
+    public  function update  () {
+           if(is_ajax){
+            $code=(new StaffModel())->update(I('post.id'), I('post.gender'), I('post.number'), I('post.pid'), I('post.type'),
+                   I('post.tel'), I('post.id_card'), I('post.nation'), I('post.marital_status'),
+                   I('post.entry_status'), I('post.entry_date'), I('post.dimission_date'), I('post.politics_status'),
+                   I('post.specialty'), I('post.education'), I('post.health'), I('post.registered'),
+                   I('post.registered_address'), I('post.graduate_date'), I('post.graduate_colleges'),
+                   I('post.intro'), I('post.details'));
+               if($code>0){
+                     $this->responseSuccess();
+               }else{
+                     $this->responseError($code);
+               }
+             }else{
+               $this->error('非法操作!');
+           }
+    }
+    //删除档案
+    public  function remove () {
+           if(IS_AJAX){
+               $code=(new StaffModel())->remove(I('post.ids'));
+             }else{
+               $this->error('非法操作');
+           }
+    }
 }

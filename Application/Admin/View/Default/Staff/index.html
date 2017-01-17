@@ -200,6 +200,170 @@
         </tbody>
     </table>
 </form>
+<!--编辑档案-->
+<form id="staff-edit">
+    <input type="hidden" id="staff-id-edit" name="staff_id_edit">
+    <table class="form-table" style="max-width: 780px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="staff-name-edit">姓名：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-name-edit" name="staff_name_edit" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-gender-edit">性别：</label>
+            </td>
+            <td class="input">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="staff-gender-edit-1">男</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="staff-gender-edit-2">女</a>
+                <input type="hidden" id="staff-gender-edit" name="staff_gender_edit">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-number-edit">工号：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-number-edit" name="staff_number_edit" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-post-edit">职位：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-post-edit" name="staff_post_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-tel-edit">移动电话：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-tel-edit" name="staff_tel_edit" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-type-edit">员工类型：</label>
+            </td>
+            <td class="input">
+                <input id="staff-type-edit" class="easyui-combobox" name="staff_type_edit">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-id-card-edit">身份证：</label>
+            </td>
+            <td class="input">
+                <input id="staff-id-card-edit" class="easyui-textbox" name="staff_id_card_edit">
+            </td>
+            <td class="label">
+                <label for="staff-marital-status-edit">婚姻状况：</label>
+            </td>
+            <td class="input">
+                <input id="staff-marital-status-edit" class="easyui-combobox" name="staff_marital_status_edit">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-nation-edit">民族：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-nation-edit" name="staff_nation_edit" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-entry-date-edit">入职日期：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-entry-date-edit" name="staff_entry_date_edit" class="easyui-datebox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-education-edit">学历：</label>
+            </td>
+            <td class="input">
+                <input id="staff-education-edit" class="easyui-combobox" name="staff_education_edit">
+            </td>
+            <td class="label">
+                <label for="staff-dimission-date-edit">离职时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-dimission-date-edit" name="staff_dimission_date_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-entry-status-edit">入职状态：</label>
+            </td>
+            <td class="input">
+                <input id="staff-entry-status-edit" class="easyui-combobox" name="staff_entry_status_edit">
+            </td>
+            <td class="label">
+                <label for="staff-specialty-edit">专业：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-specialty-edit" name="staff_specialty_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-politics-status-edit">政治面貌：</label>
+            </td>
+            <td class="input">
+                <input id="staff-politics-status-edit" class="easyui-combobox" name="staff_politics_status_edit">
+            </td>
+            <td class="label">
+                <label for="staff-health-edit">健康状况：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-health-edit" name="staff_health_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-registered-edit">户口：</label>
+            </td>
+            <td class="input">
+                <input id="staff-registered-edit" class="easyui-combobox" name="staff_registered_edit">
+            </td>
+            <td class="label">
+                <label for="staff-graduate-date-edit">毕业时间：</label>
+            </td>
+            <td class="input">
+                <input id="staff-graduate-date-edit" class="easyui-datebox" name="staff_graduate_date_edit">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-registered-address-edit">户口所在地：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-registered-address-edit" name="staff_registered_address_edit" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-graduate-colleges-edit">毕业院校：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-graduate-colleges-edit" name="staff_graduate_colleges_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-intro-edit">个人简介：</label>
+            </td>
+            <td class="input" colspan="3">
+                <textarea id="staff-intro-edit" class="textarea" name="staff_intro_edit" placeholder="255字内简单介绍下自己！"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">详情备注：</td>
+            <td class="input" colspan="3">
+                <textarea name="staff_details_edit" id="staff-details-edit" class="textarea"></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
 <script type="text/javascript" src="__EDITOR__/kindeditor.js"></script>
 <script type="text/javascript" src="__EDITOR__/lang/zh_CN.js"></script>
 <script type="text/javascript" src="__JS__/staff.js"></script>

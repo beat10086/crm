@@ -11,6 +11,8 @@ namespace Common\Model;
 use Think\Model\RelationModel;
 
 class StaffModel extends  RelationModel {
+      //保存表关联从表更新返回值
+      protected $eid = 0;
       //档案基本验证
       protected $_validate = array(
             //帐号长度不合法
@@ -123,13 +125,14 @@ class StaffModel extends  RelationModel {
                'rows'=>$object ? $object : '',
            );
     }
-    //添加档案
+    //添加档案(关联数据是,添加是会出现错误)
     public  function register ($name, $gender, $number, $pid,
                                $type, $tel, $id_card, $nation,
                                $marital_status, $entry_status, $entry_date,
                                $dimission_date, $politics_status, $specialty,
                                $education, $health, $registered, $registered_address,
                                $graduate_date, $graduate_colleges, $intro, $details) {
+          $data = array();
           $data = array(
               'name'=>$name,
               'gender'=>$gender,
@@ -144,27 +147,93 @@ class StaffModel extends  RelationModel {
               'entry_date'=>$entry_date,
               'dimission_date'=>$dimission_date,
               'politics_status'=>$politics_status,
-              'education'=>$education,
-              'Extend'=>array(
-                  'health'=>$health,
-                  'specialty'=>$specialty,
-                  'registered'=>$registered,
-                  'registered_address'=>$registered_address,
-                  'graduate_date'=>$graduate_date,
-                  'graduate_colleges'=>$graduate_colleges,
-                  'intro'=>$intro,
-                  'details'=>$details
-              )
+              'education'=>$education
           );
           if ($this->create($data)) {
                 $data['create_time'] = get_time();
-                $sid = $this->relation('Extend')->add($data);
-                echo $this->getLastSql();
-                echo '1111';
-                return $sid ? $sid : 0;
+                //$sid = $this->relation('Extend')->add($data);
+                $sid=$this->add($data);
+                if($sid>0){
+                      $extendData=array(
+                              'sid'=>$sid,
+                              'health'=>$health,
+                              'specialty'=>$specialty,
+                              'registered'=>$registered,
+                              'registered_address'=>$registered_address,
+                              'graduate_date'=>$graduate_date,
+                              'graduate_colleges'=>$graduate_colleges,
+                              'intro'=>$intro,
+                              'details'=>$details
+                      );
+                      M('staffExtend')->add($extendData);
+                      return $sid;
+                }else{
+                      return 0;
+                }
           } else {
                 echo '2222';
                 return $this->getError();
           }
+    }
+
+    //获取1条档案
+    public function  getStaff  ($id) {
+          $map['id'] = $id;
+          $object = $this->relation('Extend')->field('id,name,pid,
+                                                    number,type,tel,id_card,gender,
+                                                    nation,marital_status,entry_status,
+                                                    entry_date,dimission_date,politics_status,
+                                                    education,create_time')->where($map)->find();
+          $object['Extend']['details'] = htmlspecialchars_decode($object['Extend']['details']);
+          return $object;
+    }
+    //更新档案
+    public  function update  ($id, $gender, $number, $pid,
+                              $type, $tel, $id_card, $nation,
+                              $marital_status, $entry_status, $entry_date,
+                              $dimission_date, $politics_status, $specialty,
+                              $education, $health, $registered, $registered_address,
+                              $graduate_date, $graduate_colleges, $intro, $details){
+           $data = array(
+                          'id'=>$id,
+                          'gender'=>$gender,
+                          'number'=>$number,
+                          'pid'=>$pid,
+                          'type'=>$type,
+                          'tel'=>$tel,
+                          'id_card'=>$id_card,
+                          'nation'=>$nation,
+                          'marital_status'=>$marital_status,
+                          'entry_status'=>$entry_status,
+                          'entry_date'=>$entry_date,
+                          'dimission_date'=>$dimission_date,
+                          'politics_status'=>$politics_status,
+                          'education'=>$education,
+                          'Extend'=>array(
+                              'health'=>$health,
+                              'specialty'=>$specialty,
+                              'registered'=>$registered,
+                              'registered_address'=>$registered_address,
+                              'graduate_date'=>$graduate_date,
+                              'graduate_colleges'=>$graduate_colleges,
+                              'intro'=>$intro,
+                              'details'=>$details
+                          )
+           );
+          if ($this->create($data)) {
+                $uid = $this->relation('Extend')->save($data) + $this->eid;
+                return $uid ? $uid : 0;
+          } else {
+                $error_code = 0;
+                switch ($this->getError()) {
+                      //...
+                }
+                return $error_code;
+          }
+    }
+
+    //删除档案
+    public function remove ($ids) {
+          return $this->relation('Extend')->delete($ids);
     }
 }
