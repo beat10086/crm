@@ -1,8 +1,6 @@
 <!--Firefox火狐浏览器渲染遮罩专用-->
 <!--<div class="tabs-loading">Loading...</div>-->
-
 <table id="user"></table>
-
 
 <form id="user-tool" style="padding:5px;">
     <div style="margin-bottom:5px;">
@@ -23,5 +21,45 @@
         <input type="text" id="user-search-date-to" prompt="结束时间" name="user_search_date_to" editable="false" style="width:110px;">
         <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="user_tool.search();" style="margin-top:-1px;">查询</a>
     </div>
+</form>
+
+<!--添加用户-->
+<form id="user-add">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="user-accounts-add">帐号：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-accounts-add" name="user_accounts_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-password-add">密码：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-password-add" name="user_password_add" class="easyui-textbox"> <span class="link rand-add">生成</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-email-add">电子邮件：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-email-add" name="user_email_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-staff-add">关联档案：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-staff-add" name="user_staff_add" class="easyui-textbox">
+            </td>
+        </tr>
+        </tbody>
+    </table>
 </form>
 <script type="text/javascript" src="__JS__/user.js"></script>

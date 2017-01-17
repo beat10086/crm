@@ -79,4 +79,10 @@ class  PostController extends  BaseController {
               $this->error('非法操作!');
           }
     }
+    //获取所有的职位
+    public  function getListAll () {
+        $PostAll=(new PostModel())->getListAll();
+
+        $this->ajaxReturn($PostAll);
+    }
 }

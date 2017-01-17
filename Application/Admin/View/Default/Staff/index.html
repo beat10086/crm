@@ -1,0 +1,205 @@
+<!--Firefox火狐浏览器渲染遮罩专用-->
+<!--<div class="tabs-loading">Loading...</div>-->
+<table id="staff"></table>
+<div id="staff-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="staff_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="staff_tool.edit();">修改</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-delete-new" onclick="staff_tool.remove();">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="staff_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="staff_tool.redo();">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-search" onclick="staff_tool.field();" id="field">展开查询字段</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="staff_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="staff-search-keywords" title="This is the tooltip message.">关键字：</label>
+        <input type="text" id="staff-search-keywords" class="easyui-textbox" prompt="姓名|工号|电话" name="staff_search_keywords" style="width:143px;">
+        <input type="text" id="staff-search-post" prompt="职位" name="staff_search_post">
+        <input type="text" id="staff-search-entry-status" prompt="入职状态" name="staff_search_entry_status">
+        <input type="text" id="staff-search-date" prompt="查询时间" name="staff_search_date">
+        <input type="text" id="staff-search-date-from" prompt="起始时间" name="staff_search_date_from" editable="false"  style="width:110px;">
+        <label for="staff-search-date-to">-</label>
+        <input type="text" id="staff-search-date-to" prompt="结束时间" name="staff_search_date_to" editable="false" style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="staff_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+    <div class="more">
+        <input type="text" id="staff-search-gender" prompt="性别" name="staff_search_gender">
+        <input type="text" id="staff-search-marital-status" prompt="婚姻" name="staff_search_marital_status">
+        <input type="text" id="staff-search-education" prompt="学历" name="staff_search_education">
+        <input type="text" id="staff-search-type" prompt="员工类型" name="staff_search_type">
+
+    </div>
+    <div class="more">
+        <input type="text" id="staff-search-id-card" prompt="身份证(请输入精准18位身份证号码)" name="staff_search_id_card">
+        <input type="text" id="staff-search-nation" prompt="民族(请输入精准关键字，如：汉族)" name="staff_search_nation">
+    </div>
+</div>
+<!--添加档案-->
+<form id="staff-add">
+    <table class="form-table" style="max-width: 780px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="staff-name-add">姓名：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-name-add" name="staff_name_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-gender-add">性别：</label>
+            </td>
+            <td class="input">
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="staff-gender-add-1">男</a>
+                <a href="javascript:void(0)" class="easyui-linkbutton" id="staff-gender-add-2">女</a>
+                <input type="hidden" id="staff-gender-add" name="staff_gender_add" value="男">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-number-add">工号：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-number-add" name="staff_number_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-post-add">职位：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-post-add" name="staff_post_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-tel-add">移动电话：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-tel-add" name="staff_tel_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-type-add">员工类型：</label>
+            </td>
+            <td class="input">
+                <input id="staff-type-add" class="easyui-combobox" name="staff_type_add">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-id-card-add">身份证：</label>
+            </td>
+            <td class="input">
+                <input id="staff-id-card-add" class="easyui-textbox" name="staff_id_card_add">
+            </td>
+            <td class="label">
+                <label for="staff-marital-status-add">婚姻状况：</label>
+            </td>
+            <td class="input">
+                <input id="staff-marital-status-add" class="easyui-combobox" name="staff_marital_status_add">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-nation-add">民族：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-nation-add" name="staff_nation_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-entry-date-add">入职日期：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-entry-date-add" name="staff_entry_date_add" class="easyui-datebox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-education-add">学历：</label>
+            </td>
+            <td class="input">
+                <input id="staff-education-add" class="easyui-combobox" name="staff_education_add">
+            </td>
+            <td class="label">
+                <label for="staff-dimission-date-add">离职时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-dimission-date-add" name="staff_dimission_date_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-entry-status-add">入职状态：</label>
+            </td>
+            <td class="input">
+                <input id="staff-entry-status-add" class="easyui-combobox" name="staff_entry_status_add">
+            </td>
+            <td class="label">
+                <label for="staff-specialty-add">专业：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-specialty-add" name="staff_specialty_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-politics-status-add">政治面貌：</label>
+            </td>
+            <td class="input">
+                <input id="staff-politics-status-add" class="easyui-combobox" name="staff_politics_status_add">
+            </td>
+            <td class="label">
+                <label for="staff-health-add">健康状况：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-health-add" name="staff_health_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-registered-add">户口：</label>
+            </td>
+            <td class="input">
+                <input id="staff-registered-add" class="easyui-combobox" name="staff_registered_add">
+                </input>
+            </td>
+            <td class="label">
+                <label for="staff-graduate-date-add">毕业时间：</label>
+            </td>
+            <td class="input">
+                <input id="staff-graduate-date-add" class="easyui-datebox" name="staff_graduate_date_add">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-registered-address-add">户口所在地：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-registered-address-add" name="staff_registered_address_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="staff-graduate-colleges-add">毕业院校：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="staff-graduate-colleges-add" name="staff_graduate_colleges_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-intro-add">个人简介：</label>
+            </td>
+            <td class="input" colspan="3">
+                <textarea id="staff-intro-add" class="textarea" name="staff_intro_add" placeholder="255字内简单介绍下自己！"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="staff-details-add">详情备注：</label>
+            </td>
+            <td class="input" colspan="3">
+                <textarea name="staff_details_add" id="staff-details-add" class="textarea"></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<script type="text/javascript" src="__EDITOR__/kindeditor.js"></script>
+<script type="text/javascript" src="__EDITOR__/lang/zh_CN.js"></script>
+<script type="text/javascript" src="__JS__/staff.js"></script>

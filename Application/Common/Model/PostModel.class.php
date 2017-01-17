@@ -84,4 +84,8 @@ class PostModel extends  Model {
     public function remove ($ids) {
         return $this->delete($ids);
     }
+    //获取所有的职位
+    public function getListAll () {
+          return $this->field('id,name')->select();
+    }
 }

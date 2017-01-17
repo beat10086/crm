@@ -1,10 +1,11 @@
 $(function(){
-    $("#user").datagrid({
+    //帐号列表
+    $('#user').datagrid({
         url : ThinkPHP['MODULE'] + '/User/getList',
-        fit:true,
-        fitColumns:true, //真正的自动展开/收缩列的大小，以适应网格的宽度，防止水平滚动
-        striped : true,  //是否显示斑马线效果
-        rownumbers : true,  //则显示一个行号列
+        fit : true,
+        fitColumns : true,
+        striped : true,
+        rownumbers : true,
         border : false,
         pagination : true,
         pageSize : 20,
@@ -13,7 +14,7 @@ $(function(){
         sortName : 'create_time',
         sortOrder : 'DESC',
         toolbar : '#user-tool',
-        columns:[[
+        columns : [[
             {
                 field : 'id',
                 title : '自动编号',
@@ -24,6 +25,16 @@ $(function(){
                 field : 'accounts',
                 title : '帐号名称',
                 width : 80
+            },
+            {
+                field : 'name',
+                title : '关联档案',
+                width : 80
+            },
+            {
+                field : 'email',
+                title : '电子邮件',
+                width : 120
             },
             {
                 field : 'last_login_time',
@@ -41,7 +52,8 @@ $(function(){
                 title : '登录次数',
                 width : 60,
                 sortable : true
-            },{
+            },
+            {
                 field : 'create_time',
                 title : '创建时间',
                 width : 100,
@@ -53,7 +65,7 @@ $(function(){
                 width : 43,
                 fixed : true,
                 sortable : true,
-                formatter:function(value,row){
+                formatter : function (value, row) {
                     var state = '';
                     switch (value) {
                         case '冻结' :
@@ -76,7 +88,7 @@ $(function(){
                 }
             }
         ]],
-        onLoadSuccess:function(){
+        onLoadSuccess : function(){
             $('.user-state-1').linkbutton({
                 iconCls : 'icon-login',
                 plain : true
@@ -89,7 +101,120 @@ $(function(){
                 iconCls : 'icon-text',
                 plain : true
             });
+        },
+        onClickCell : function (index, field) {
         }
+    });
+    //新增面板
+    $('#user-add').dialog({
+        width : 420,
+        height : 300,
+        title : '新增帐号',
+        iconCls : 'icon-add-new',
+        modal : true,
+        closed : true,
+        maximizable : true,
+        buttons : [{
+            text : '保存',
+            iconCls : 'icon-accept',
+            handler : function () {
+
+            }
+        },{
+            text : '取消',
+            iconCls : 'icon-cross',
+            handler : function () {
+                $('#user-add').dialog('close');
+            }
+        }],
+        onClose : function () {
+            $('#user-add').form('reset');
+        }
+    });
+    //新增和修改帐号
+    $('#user-accounts-add').textbox({
+        width : 240,
+        height : 32,
+        required : true,
+        validType : 'length[2,20]',
+        missingMessage : '请输入帐号名称',
+        invalidMessage : '帐号名称2-20位'
+    });
+    //新增密码
+    $("#user-password-add").textbox({
+            width : 240,
+            height : 32,
+            required : true,
+            validType : 'length[6,30]',
+            missingMessage : '请输入帐号密码',
+            invalidMessage : '帐号密码6-30位'
+    })
+    //邮件
+    $("#user-email-add").textbox({
+        width : 240,
+        height : 32,
+        validType : 'email',
+        missingMessage : '请输入电子邮件',
+        invalidMessage : '电子邮件格式不合法'
+    })
+    //关联档案
+    $('#user-staff-add').combogrid({
+            width : 120,
+            height : 32,
+            url : ThinkPHP['MODULE'] + '/Staff/getNotRelationList',
+            panelWidth: 450,
+            panelHeight: 'auto',
+            panelMaxHeight : 227,
+            fitColumns : true,
+            striped : true,
+            rownumbers : true,
+            border : false,
+            idField:'id',
+            textField:'name',
+            editable : false,
+            remoteSort : false,
+            columns : [[
+                {
+                    field : 'id',
+                    title : '编号',
+                    width : 50,
+                    hidden : true
+                },
+                {
+                    field : 'name',
+                    title : '姓名',
+                    width : 80
+                },
+                {
+                    field : 'number',
+                    title : '工号',
+                    width : 50,
+                    sortable : true
+                },
+                {
+                    field : 'gender',
+                    title : '性别',
+                    width : 50,
+                    sortable : true
+                },
+                {
+                    field : 'id_card',
+                    title : '身份证',
+                    width : 150
+                },
+                {
+                    field : 'post',
+                    title : '职位',
+                    width : 50
+                }
+            ]]
     })
 })
+//工具栏操作模块
+var user_tool = {
+    add : function () {
+        $('#user-add').dialog('open');
+        $('#user-staff-add').combogrid('grid').datagrid('reload');
+    }
+}
 
