@@ -118,7 +118,48 @@ $(function(){
             text : '保存',
             iconCls : 'icon-accept',
             handler : function () {
-
+                if($('#user-add').form('validate')){
+                    if ($('#user-add').form('validate')) {
+                        $.ajax({
+                            url : ThinkPHP['MODULE'] + '/User/register',
+                            type : 'POST',
+                            data : {
+                                accounts : $.trim($('input[name="user_accounts_add"]').val()),
+                                password : $('input[name="user_password_add"]').val(),
+                                email :    $.trim($('input[name="user_email_add"]').val()),
+                                state :    $('input[name="user_state_add"]').val(),
+                                uid :      $('input[name="user_staff_add"]').val(),
+                                name :     $('#user-staff-add').combogrid('getText')
+                            },
+                            beforeSend : function () {
+                                $.messager.progress({
+                                    text : '正在尝试保存...'
+                                });
+                            },
+                            success : function(data) {
+                                $.messager.progress('close');
+                                if (data > 0) {
+                                    $.messager.show({
+                                        title : '操作提醒',
+                                        msg : '添加帐号成功！'
+                                    });
+                                    $('#user-add').dialog('close');
+                                    $('#user').datagrid('load');
+                                } else if (data == -1) {
+                                    $.messager.alert('添加失败！', '帐号名称已存在！', 'warning', function () {
+                                        $('#user-accounts-add').textbox('textbox').select();
+                                    });
+                                } else if (data == -2) {
+                                    $.messager.alert('添加失败！', '邮箱已存在！', 'warning', function () {
+                                        $('#user-email-add').textbox('textbox').select();
+                                    });
+                                } else {
+                                    $.messager.alert('添加失败！', '未知错误！', 'warning');
+                                }
+                            }
+                        });
+                    }
+                }
             }
         },{
             text : '取消',

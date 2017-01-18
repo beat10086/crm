@@ -28,4 +28,18 @@ class UserController  extends  Controller
             $this->ajaxReturn($userData);
         }
     }
+    //添加用户
+    public  function register () {
+      if(IS_AJAX){
+          $code=(new UserModel())->register(I('post.accounts'), I('post.password'), I('post.email'), I('post.uid'), I('post.name'));
+          if($code>0){
+
+            }else{
+
+          }
+        }else{
+          $this->error('非法操作!');
+      }
+    }
+
 }

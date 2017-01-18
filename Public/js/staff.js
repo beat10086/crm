@@ -649,6 +649,11 @@ var staff_tool = {
             nation: $('input[name="staff_search_nation"]').val()
         });
     },
+    details:function(id){
+        $('#details-dialog').dialog('open')
+                            .dialog('setTitle', '员工档案详情')
+                            .dialog('refresh', ThinkPHP['MODULE'] + '/Staff/getDetails/?id=' + id);
+    },
     add : function () {
         $('#staff-add').dialog('open');
         $('#name-add').siblings('span').find('input').select();

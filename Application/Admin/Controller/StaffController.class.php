@@ -50,7 +50,8 @@ class StaffController extends  BaseController {
    //获取未关联档案列表
     public function  getNotRelationList () {
          if(IS_AJAX){
-             (new StaffModel())->getNotRelationList();
+             $data=(new StaffModel())->getNotRelationList();
+             $this->ajaxReturn($data);
            }else{
                $this->error('非法操作');
          }
@@ -89,5 +90,11 @@ class StaffController extends  BaseController {
              }else{
                $this->error('非法操作');
            }
+    }
+    //获取员工档案详情
+    public  function getDetails (){
+        $object=(new StaffModel())->getDetails(I('GET.id'));
+        $this->assign('object',$object);
+        $this->display('details');
     }
 }

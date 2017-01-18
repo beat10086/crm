@@ -53,4 +53,8 @@ class UserModel extends  Model  {
             'rows' =>$object?$object:''
       ];
   }
+   //添加会员
+    public  function  register ($accounts, $password, $email, $uid, $name){
+
+    }
 }
