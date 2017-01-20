@@ -63,4 +63,54 @@
         </tbody>
     </table>
 </form>
+<!--编辑用户-->
+<form id="user-edit">
+    <input type="hidden" name="user_id_edit">
+    <input type="hidden" name="user_name_edit">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="user-accounts-edit">帐号：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-accounts-edit" name="user_accounts_edit" disabled class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-password-edit">密码：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-password-edit" name="user_password_edit" class="easyui-textbox"> <span class="link rand-edit">生成</span>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-email-edit">电子邮件：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-email-edit" name="user_email_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-staff-edit">关联档案：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-staff-edit" name="user_staff_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-state-edit">状态：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-state-edit">
+                <input type="hidden" name="user_state_edit">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
 <script type="text/javascript" src="__JS__/user.js"></script>

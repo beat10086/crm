@@ -1,0 +1,91 @@
+<table id="product"></table>
+
+<form id="product-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="product_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="product_tool.edit();">修改</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-delete-new" onclick="product_tool.remove();">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="product_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="product_tool.redo();">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="product_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="product-search-keywords">关键字：</label>
+        <input type="text" id="product-search-keywords" class="easyui-textbox" name="product_search_keywords" prompt="产品名称或编号" style="width:143px;padding: 0 5px;">
+        <input type="text" id="product-search-type" prompt="产品类型" name="product_search_type">
+        <input type="text" id="product-search-date" prompt="查询时间" name="product_search_date">
+        <input type="text" id="product-search-date-from" prompt="起始时间" name="product_search_date_from" editable="false"  style="width:110px;">
+        <label for="product-search-date-to">-</label>
+        <input type="text" id="product-search-date-to" prompt="结束时间" name="product_search_date_to" editable="false" style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="product_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+
+<form id="product-add">
+    <table class="form-table" style="max-width: 780px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="product-name-add">产品名称：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="product-name-add" name="product_name_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="product-sn-add">产品编号：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="product-sn-add" name="product_sn_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="product-type-add">产品类型：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="product-type-add" name="product_type_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="product-pro-price-add">采购价格：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="product-pro-price-add" name="product_pro_price_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="product-sell-price-add">销售价格：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="product-sell-price-add" name="product_sell_price_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="product-unit-add">计量单位：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="product-unit-add" name="product_unit_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="product-inventory-alarm-add">库存警报：</label>
+            </td>
+            <td class="input" colspan="3">
+                <input type="text" id="product-inventory-alarm-add" name="product_inventory_alarm_add" value="10" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="product-details-add">详情备注：</label>
+            </td>
+            <td class="input" colspan="3">
+                <textarea name="product_details_add" id="product-details-add" class="textarea">&nbsp;</textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<script type="text/javascript" src="__EDITOR__/kindeditor.js"></script>
+<script type="text/javascript" src="__EDITOR__/lang/zh_CN.js"></script>
+<script type="text/javascript" src="__JS__/product.js"></script>
