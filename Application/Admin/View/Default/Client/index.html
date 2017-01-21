@@ -1,0 +1,103 @@
+<table id="client"></table>
+<!--客户工具栏-->
+<form id="client-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="client_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="client_tool.edit();">修改</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-delete-new" onclick="client_tool.remove();">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="client_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="client_tool.redo();">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="client_tool.reset();">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="client-search-keywords">关键字：</label>
+        <input type="text" id="client-search-keywords" class="easyui-textbox" name="client_search_keywords" prompt="公司名|联系人|电话" style="width:143px;">
+        <input type="text" id="client-search-date" prompt="查询时间" name="client_search_date">
+        <input type="text" id="client-search-date-from" prompt="起始时间" name="client_search_date_from" editable="false"  style="width:110px;">
+        <label for="client-search-date-to">-</label>
+        <input type="text" id="client-search-date-to" prompt="结束时间" name="client_search_date_to" editable="false"  style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="client_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+
+<!--添加客户信息-->
+<form id="client-add">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="client-company-add">公司名称：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="client-company-add" name="client_company_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="client-name-add">联系人：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="client-name-add" name="client_name_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="client-tel-add">移动电话：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="client-tel-add" name="client_tel_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="client-source-add">客户来源：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="client-source-add" name="client_source_add" class="easyui-textbox">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<!--编辑客服信息-->
+<form id="client-edit">
+    <input type="hidden" id="client-id-edit" name="client_id_edit">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="client-company-edit">公司名称：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="client-company-edit" name="client_company_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="client-name-edit">联系人：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="client-name-edit" name="client_name_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="client-tel-edit">移动电话：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="client-tel-edit" name="client_tel_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="client-source-edit">客户来源：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="client-source-edit" name="client_source_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<script type="text/javascript" src="__JS__/client.js"></script>

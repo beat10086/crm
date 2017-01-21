@@ -8,7 +8,7 @@
 namespace Admin\Controller;
 
 use Common\Controller\BaseController;
-use Common\Model\PostModel;
+use Common\Model\ProductModel;
 
 
 class ProductController extends  BaseController {

@@ -1,0 +1,182 @@
+
+<!--跟单列表-->
+<table id="documentary"></table>
+
+<form id="documentary-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="documentary_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="documentary_tool.edit();">修改</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-delete-new" onclick="documentary_tool.remove();">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="documentary_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="documentary_tool.redo();">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="documentary_tool.reset();">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="documentary-search-keywords">关键字：</label>
+        <input type="text" id="documentary-search-keywords" class="easyui-textbox" name="documentary_search_keywords" prompt="公司名|跟单员" style="width:143px;">
+        <input type="text" id="documentary-search-date" prompt="查询时间" name="documentary_search_date">
+        <input type="text" id="documentary-search-date-from" prompt="起始时间" name="documentary_search_date_from" editable="false"  style="width:110px;">
+        <label for="documentary-search-date-to">-</label>
+        <input type="text" id="documentary-search-date-to" prompt="结束时间" name="documentary_search_date_to" editable="false"  style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="documentary_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+
+<!--添加更改单信息-->
+<form id="documentary-add">
+    <input type="hidden" id="documentary-cid-add" name="documentary_cid_add">
+    <input type="hidden" id="documentary-sid-add" name="documentary_sid_add">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="documentary-title-add">跟单标题：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-title-add" name="documentary_title_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-company-add">关联公司：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-company-add" name="documentary_company_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-name-add">跟单员：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-name-add" name="documentary_name_add" editable="false">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-way-add">跟单方式：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-way-add" name="documentary_way_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-evolve-add">进展状况：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-evolve-add" name="documentary_evolve_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-next-contact-add">下次联系：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-next-contact-add" name="documentary_next_contact_add" editable="false">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-remark-add">详情备注：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-remark-add" name="documentary_remark_add" prompt="20字以内备注说明">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<!--编辑跟单-->
+<form id="documentary-edit">
+    <input type="hidden" id="documentary-id-edit" name="documentary_id_edit">
+    <input type="hidden" id="documentary-cid-edit" name="documentary_cid_edit">
+    <input type="hidden" id="documentary-sid-edit" name="documentary_sid_edit">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="documentary-title-edit">跟单标题：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-title-edit" name="documentary_title_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-company-edit">关联公司：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-company-edit" name="documentary_company_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-name-edit">跟单员：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-name-edit" name="documentary_name_edit" editable="false">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-way-edit">跟单方式：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-way-edit" name="documentary_way_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-evolve-edit">进展状况：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-evolve-edit" name="documentary_evolve_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-next-contact-edit">下次联系：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-next-contact-edit" name="documentary_next_contact_edit" editable="false">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="documentary-remark-edit">详情备注：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="documentary-remark-edit" name="documentary_remark_edit" prompt="20字以内备注说明">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<!--添加客户信息-->
+<div id="documentary-client">
+    <table id="documentary-search-client"></table>
+</div>
+<!--客户信息工具栏-->
+<form id="documentary-client-tool" style="padding:5px;">
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="documentary-client-search-keywords">关键字：</label>
+        <input type="text" id="documentary-client-search-keywords" class="easyui-textbox" name="documentary_client_search_keywords" prompt="标题|公司名称|联系人|电话" style="width:150px;padding: 0 5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="documentary-client-search-button" iconCls="icon-search" onclick="documentary_client_tool.search();" style="margin-top:-1px;">查询</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="documentary-client-search-reset" plain="true" style="float:right;" iconCls="icon-undo" onclick="documentary_client_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+</form>
+<!--添加员工 信息-->
+<div id="documentary-staff">
+    <table id="documentary-search-staff"></table>
+</div>
+<!--添加员工 工具栏-->
+<form id="documentary-staff-tool" style="padding:5px;">
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="documentary-staff-search-keywords">关键字：</label>
+        <input type="text" id="documentary-staff-search-keywords" class="easyui-textbox" name="documentary_staff_search_keywords" prompt="员工姓名或编号" style="width:120px;padding: 0 5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="documentary-staff-search-button" iconCls="icon-search" onclick="documentary_staff_tool.search();" style="margin-top:-1px;">查询</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="documentary-staff-search-reset" plain="true" style="float:right;" iconCls="icon-undo" onclick="documentary_staff_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+</form>
+<script type="text/javascript" src="__JS__/documentary.js"></script>

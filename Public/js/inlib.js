@@ -413,6 +413,20 @@ $(function(){
 var inlib_tool = {
     add : function () {
         $('#inlib-add').dialog('open');
+    },
+    reload:function() {
+          $("#inlib").datagrid('reload');
+    },
+    reset:function() {
+        $('#inlib-search-keywords').textbox('clear');
+        $('#inlib-search-date').combobox('clear').combobox('disableValidation');
+        $('#inlib-search-date-from').datebox('clear');
+        $('#inlib-search-date-to').datebox('clear');
+        $('#inlib').datagrid('resetSort', {
+            sortName : 'create_time',
+            sortOrder : 'desc'
+        });
+        this.search();
     }
 }
 

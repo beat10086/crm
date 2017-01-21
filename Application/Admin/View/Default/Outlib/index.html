@@ -1,0 +1,23 @@
+<table id="outlib"></table>
+
+<!--出货工具栏-->
+<form id="outlib-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="outlib_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="outlib_tool.deliver();">出库</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="outlib_tool.repeal();">撤销</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="outlib_tool.reset();">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="outlib-search-keywords">关键字：</label>
+        <input type="text" id="outlib-search-keywords" class="easyui-textbox" name="outlib_search_keywords" prompt="订单编号(精确14位)" style="width:143px;">
+        <input type="text" id="outlib-search-date" prompt="查询时间" name="outlib_search_date">
+        <input type="text" id="outlib-search-date-from" prompt="起始时间" name="outlib_search_date_from" editable="false"  style="width:110px;">
+        <label for="outlib-search-date-to">-</label>
+        <input type="text" id="outlib-search-date-to" prompt="结束时间" name="outlib_search_date_to" editable="false"  style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="outlib_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+
+
+<script type="text/javascript" src="__JS__/outlib.js"></script>
