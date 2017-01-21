@@ -1,0 +1,107 @@
+<table id="inlib"></table>
+<form id="inlib-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="inlib_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="inlib_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="inlib_tool.reset();">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="inlib-search-keywords">关键字：</label>
+        <input type="text" id="inlib-search-keywords" class="easyui-textbox" name="inlib_search_keywords" prompt="入库产品|编号|经办人" style="width:143px;">
+        <input type="text" id="inlib-search-date" prompt="查询时间" name="inlib_search_date">
+        <input type="text" id="inlib-search-date-from" prompt="起始时间" name="inlib_search_date_from" editable="false"  style="width:110px;">
+        <label for="inlib-search-date-to">-</label>
+        <input type="text" id="inlib-search-date-to" prompt="结束时间" name="inlib_search_date_to" editable="false"  style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="inlib_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+
+
+<!--添加入库-->
+<form id="inlib-add">
+    <input type="hidden" id="inlib-pid-add" name="inlib_pid_add">
+    <input type="hidden" id="inlib-psn-add" name="inlib_psn_add">
+    <input type="hidden" id="inlib-pprice-add" name="inlib_pprice_add">
+    <input type="hidden" id="inlib-punit-add" name="inlib_punit_add">
+    <input type="hidden" id="inlib-sid-add" name="inlib_sid_add">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="inlib-product-add">入库产品：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="inlib-product-add" name="inlib_product_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="inlib-number-add">入库数量：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="inlib-number-add" name="inlib_number_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="inlib-staff-add">经办人：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="inlib-staff-add" name="inlib_staff_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="inlib-mode-add">入库方式：</label>
+            </td>
+            <td class="input">
+                <input id="inlib-mode-add" class="easyui-combobox" name="inlib_mode_add">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="inlib-discount-add">折扣率：</label>
+            </td>
+            <td class="input">
+                <input id="inlib-discount-add" class="easyui-combobox" prompt="10.0" name="inlib_discount_add">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="inlib-mode-explain-add">方式说明：</label>
+            </td>
+            <td class="input">
+                <input id="inlib-mode-explain-add" class="easyui-textbox" prompt="如：从哪里采购或退货(20字内)" name="inlib_mode_explain_add">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<!--产品工具栏-->
+<form id="inlib-product-tool" style="padding:5px;">
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="inlib-product-search-keywords">关键字：</label>
+        <input type="text" id="inlib-product-search-keywords" class="easyui-textbox" name="inlib_product_search_keywords" prompt="产品名称或编号" style="width:120px;padding: 0 5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="inlib-product-search-button" iconCls="icon-search" onclick="inlib_product_tool.search();" style="margin-top:-1px;">查询</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="inlib-product-search-reset" plain="true" style="float:right;" iconCls="icon-undo" onclick="inlib_product_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+</form>
+
+<!--经办人工具栏-->
+<form id="inlib-staff-tool" style="padding:5px;">
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="inlib-staff-search-keywords">关键字：</label>
+        <input type="text" id="inlib-staff-search-keywords" class="easyui-textbox" name="inlib_staff_search_keywords" prompt="员工姓名或编号" style="width:120px;padding: 0 5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="inlib-staff-search-button" iconCls="icon-search" onclick="inlib_staff_tool.search();" style="margin-top:-1px;">查询</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="inlib-staff-search-reset" plain="true" style="float:right;" iconCls="icon-undo" onclick="inlib_staff_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+</form>
+<!--入库产品-->
+<div id="inlib-product">
+    <table id="inlib-search-product"></table>
+</div>
+<!--经办人列表-->
+<div id="inlib-staff">
+    <table id="inlib-search-staff"></table>
+</div>
+<script type="text/javascript" src="__JS__/inlib.js"></script>
