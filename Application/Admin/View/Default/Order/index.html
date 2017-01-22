@@ -1,0 +1,188 @@
+<table id="order"></table>
+<!--订单工具栏-->
+<form id="order-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="order_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="order_tool.edit();">修改</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-delete-new" onclick="order_tool.remove();">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="order_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="order_tool.redo();">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="order_tool.reset();">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="order-search-keywords">关键字：</label>
+        <input type="text" id="order-search-keywords" class="easyui-textbox" name="order_search_keywords" prompt="订单编号|订单标题" style="width:143px;">
+        <input type="text" id="order-search-date" prompt="查询时间" name="order_search_date">
+        <input type="text" id="order-search-date-from" prompt="起始时间" name="order_search_date_from" editable="false"  style="width:110px;">
+        <label for="order-search-date-to">-</label>
+        <input type="text" id="order-search-date-to" prompt="结束时间" name="order_search_date_to" editable="false"  style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="order_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+
+<!--添加订单-->
+<form id="order-add">
+    <input type="hidden" id="order-documentary-id-add" name="order_documentary_id_add">
+    <input type="hidden" id="order-original-price-add" name="order_original_price_add">
+    <table class="form-table" style="max-width: 780px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="order-title-add">订单标题：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="order-title-add" name="order_title_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="order-documentary-add">关联跟单：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="order-documentary-add" name="order_documentary_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label" valign="top">
+                <label for="order-product-button-add">订单产品：</label>
+            </td>
+            <td class="input" colspan="3">
+                <a id="order-product-button-add" style="width: 70px;height: 26px;">添加</a>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+
+            </td>
+            <td class="input" colspan="3">
+                <table id="order-product-list"></table>
+            </td>
+        </tr>
+        <tr>
+            <td class="label" style="height: 30px;">
+                <label for="order-amount-add">订单原价：</label>
+            </td>
+            <td class="input original_price">
+                ￥0.00
+            </td>
+            <td class="label">
+
+            </td>
+            <td class="input">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="order-amount-add">订单金额：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="order-amount-add" name="order_amount_add" class="easyui-textbox">
+            </td>
+            <td class="label">
+
+            </td>
+            <td class="input">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="order-details-add">订单备注：</label>
+            </td>
+            <td class="input" colspan="3">
+                <textarea id="order-details-add" class="textarea" name="order_details_add" placeholder="限定在255字内！"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">订单合同：</td>
+            <td class="input" colspan="3">
+                <textarea name="order_contract_add" id="order-contract-add" class="textarea">&nbsp;</textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<!--编辑订单-->
+<form id="order-edit">
+    <input type="hidden" id="order-id-edit" name="order_id_edit">
+    <input type="hidden" id="order-documentary-id-edit" name="order_documentary_id_edit">
+    <table class="form-table" style="max-width: 780px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="order-title-edit">订单标题：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="order-title-edit" name="order_title_edit" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="order-documentary-edit">关联跟单：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="order-documentary-edit" name="order_documentary_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="order-amount-edit">订单金额：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="order-amount-edit" name="order_amount_edit" class="easyui-textbox">
+            </td>
+            <td class="label">
+
+            </td>
+            <td class="input">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="order-details-edit">订单备注：</label>
+            </td>
+            <td class="input" colspan="3">
+                <textarea id="order-details-edit" class="textarea" name="order_details_edit" placeholder="限定在255字内！"></textarea>
+            </td>
+        </tr>
+        <tr>
+            <td class="label">订单合同：</td>
+            <td class="input" colspan="3">
+                <textarea name="order_contract_edit" id="order-contract-edit" class="textarea"></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<!--订单产品-->
+<div id="order-product">
+    <table id="order-product-table"></table>
+</div>
+<!--订单产品工具栏-->
+<form id="order-product-tool" style="padding:5px;">
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="order-product-search-keywords">关键字：</label>
+        <input type="text" id="order-product-search-keywords" class="easyui-textbox" name="order_product_search_keywords" prompt="产品名称或编号" style="width:120px;padding: 0 5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="order-product-search-button" iconCls="icon-search" onclick="order_product_tool.search();" style="margin-top:-1px;">
+            查询
+        </a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="order-product-search-reset" plain="true" style="float:right;" iconCls="icon-undo" onclick="order_product_tool.reset();" style="margin-top:-1px;">
+            重置查询
+        </a>
+    </div>
+</form>
+<!--关联跟单-->
+<div id="order-documentary">
+    <table id="order-documentary-table"></table>
+</div>
+<!--关联跟单工具栏-->
+<form id="order-documentary-tool" style="padding:5px;">
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="order-documentary-search-keywords">关键字：</label>
+        <input type="text" id="order-documentary-search-keywords" class="easyui-textbox" name="order_documentary_search_keywords" prompt="标题|公司名称|跟单员" style="width:150px;padding: 0 5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="order-documentary-search-button" iconCls="icon-search" onclick="order_documentary_tool.search();" style="margin-top:-1px;">查询</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="order-documentary-search-reset" plain="true" style="float:right;" iconCls="icon-undo" onclick="order_documentary_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+</form>
+<script type="text/javascript" src="__EDITOR__/kindeditor.js"></script>
+<script type="text/javascript" src="__EDITOR__/lang/zh_CN.js"></script>
+<script type="text/javascript" src="__JS__/order.js"></script>

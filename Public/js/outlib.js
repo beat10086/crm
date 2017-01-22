@@ -1,5 +1,4 @@
 $(function(){
-
     //出货列表
     $('#outlib').datagrid({
         url : ThinkPHP['MODULE'] + '/Outlib/getList',
@@ -82,3 +81,89 @@ $(function(){
         }
     });
 })
+var  outlib_tool={
+       reload:function(){
+           $('#outlib').datagrid('reload');
+       },
+       deliver:function(){
+           var rows = $('#outlib').datagrid('getSelections');
+           if (rows.length > 0) {
+               $.messager.confirm('确认操作', '您要批量发货 <strong>' + rows.length + '</strong> 件产品吗？', function (flag) {
+                   if (flag) {
+                       var ids = [];
+                       for (var i = 0; i < rows.length; i ++) {
+                           ids.push(rows[i].id);
+                       }
+                       $.ajax({
+                           url : ThinkPHP['MODULE'] + '/Outlib/deliver',
+                           type : 'POST',
+                           data : {
+                               ids : ids.join(',')
+                           },
+                           beforeSend : function () {
+                               $('#outlib').datagrid('loading');
+                           },
+                           success : function(data, response, status) {
+                               if (data) {
+                                   $('#outlib').datagrid('loaded');
+                                   $('#outlib').datagrid('reload');
+                                   $.messager.show({
+                                       title : '操作提醒',
+                                       msg : data + '件产品成功出库！'
+                                   });
+                               }
+                           }
+                       });
+                   }
+               });
+              }else{
+                 $.messager.alert('警告操作', '批量发货最少需要指定一件！', 'warning');
+           }
+       },
+      repeal:function(){
+          var rows = $('#outlib').datagrid('getSelections');
+          if (rows.length > 0) {
+              $.messager.confirm('确认操作', '您要批量撤销发货 <strong>' + rows.length + '</strong> 件产品吗？', function (flag) {
+                  if (flag) {
+                      var ids = [];
+                      for (var i = 0; i < rows.length; i ++) {
+                          ids.push(rows[i].id);
+                      }
+                      $.ajax({
+                          url : ThinkPHP['MODULE'] + '/Outlib/repeal',
+                          type : 'POST',
+                          data : {
+                              ids : ids.join(',')
+                          },
+                          beforeSend : function () {
+                              $('#outlib').datagrid('loading');
+                          },
+                          success : function(data, response, status) {
+                              if (data) {
+                                  $('#outlib').datagrid('loaded');
+                                  $('#outlib').datagrid('reload');
+                                  $.messager.show({
+                                      title : '操作提醒',
+                                      msg : data + '件产品成功撤销出库！'
+                                  });
+                              }
+                          }
+                      });
+                  }
+               });
+              }else{
+              $.messager.alert('警告操作', '批量撤销发货最少需要指定一件！', 'warning');
+          }
+      },
+      reset : function () {
+            $('#outlib-search-keywords').textbox('clear');
+            $('#outlib-search-date').combobox('clear').combobox('disableValidation');
+            $('#outlib-search-date-from').datebox('clear');
+            $('#outlib-search-date-to').datebox('clear');
+            $('#outlib').datagrid('resetSort', {
+                sortName : 'create_time',
+                sortOrder : 'desc'
+            });
+            this.search();
+        }
+}
