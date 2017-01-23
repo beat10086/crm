@@ -1,0 +1,80 @@
+<table id="receipt"></table>
+<!--收款工具栏-->
+<form id="receipt-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="receipt_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="receipt_tool.edit();">修改</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-delete-new" onclick="receipt_tool.remove();">删除</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="receipt_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="receipt_tool.redo();">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="receipt_tool.reset();">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="receipt-search-keywords">关键字：</label>
+        <input type="text" id="receipt-search-keywords" class="easyui-textbox" name="receipt_search_keywords" prompt="付款编号|订单标题" style="width:143px;">
+        <input type="text" id="receipt-search-date" prompt="查询时间" name="receipt_search_date">
+        <input type="text" id="receipt-search-date-from" prompt="起始时间" name="receipt_search_date_from" editable="false"  style="width:110px;">
+        <label for="receipt-search-date-to">-</label>
+        <input type="text" id="receipt-search-date-to" prompt="结束时间" name="receipt_search_date_to" editable="false"  style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="receipt_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+
+<!--添加收款的订单-->
+<form id="receipt-add">
+    <input type="hidden" id="receipt-order-id-add" name="receipt_order_id_add">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="receipt-order-title-add">关联订单：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="receipt-order-title-add" name="receipt_order_title_add" class="easyui-textbox">
+            </td>
+
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="receipt-order-amount-add">付款金额：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="receipt-order-amount-add" name="receipt_order_amount_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+        <tr>
+            <td class="label">
+                <label for="receipt-way-add">付款方式：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="receipt-way-add" name="receipt_way_add" class="easyui-textbox">
+            </td>
+        </tr>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="receipt-remark-add">详情备注：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="receipt-remark-add" name="receipt_remark_add" prompt="20字以内备注说明">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<!--关联订单列表-->
+<div id="receipt-order">
+    <table id="receipt-order-table"></table>
+</div>
+<!--关联订单列表工具栏-->
+<form id="receipt-order-tool" style="padding:5px;">
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="receipt-order-search-keywords">关键字：</label>
+        <input type="text" id="receipt-order-search-keywords" class="easyui-textbox" name="receipt_order_search_keywords" prompt="订单编号|订单标题" style="width:150px;padding: 0 5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="receipt-order-search-button" iconCls="icon-search" onclick="receipt_order_tool.search();" style="margin-top:-1px;">查询</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="receipt-order-search-reset" plain="true" style="float:right;" iconCls="icon-undo" onclick="receipt_order_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+</form>
+<script type="text/javascript" src="__JS__/receipt.js"></script>
