@@ -1,0 +1,122 @@
+<!--工作列表-->
+<table id="work"></table>
+
+<!--工作工具栏-->
+<form id="work-tool" style="padding:5px;">
+    <div style="margin-bottom:5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="work_tool.add();">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="work_tool.edit();">更新阶段</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-exclamation" onclick="work_tool.cancel();">作废</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="work_tool.reload();">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="work_tool.redo();">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="work_tool.reset();">重置查询</a>
+    </div>
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="work-search-keywords">关键字：</label>
+        <input type="text" id="work-search-keywords" class="easyui-textbox" name="work_search_keywords" prompt="工作名称" style="width:143px;">
+        <input type="text" id="work-search-state" prompt="状态" name="work_search_state">
+        <input type="text" id="work-search-type" prompt="类型" name="work_search_type">
+        <input type="text" id="work-search-date" prompt="查询时间" name="work_search_date">
+        <input type="text" id="work-search-date-from" prompt="起始时间" name="work_search_date_from" editable="false"  style="width:110px;">
+        <label for="work-search-date-to">-</label>
+        <input type="text" id="work-search-date-to" prompt="结束时间" name="work_search_date_to" editable="false"  style="width:110px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="work_tool.search();" style="margin-top:-1px;">查询</a>
+    </div>
+</form>
+
+<!--添加工作-->
+<form id="work-add">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="work-title-add">工作名称：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="work-title-add" name="work_title_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="work-type-add">工作类型：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="work-type-add" name="work_type_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="work-start-date-add">开始时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="work-start-date-add" name="work_start_date_add" class="easyui-datebox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="work-end-date-add">结束时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="work-end-date-add" name="work_end_date_add" class="easyui-datebox">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<!--编辑工作-->
+<form id="work-edit">
+    <input type="hidden" id="work-id-edit" name="work_id_edit">
+    <table class="form-table" style="max-width: 780px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="work-title-edit">工作名称：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="work-title-edit" name="work_title_edit" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="work-type-edit">工作类型：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="work-type-edit" name="work_type_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="work-start-date-edit">开始时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="work-start-date-edit" name="work_start_date_edit" class="easyui-textbox">
+            </td>
+            <td class="label">
+                <label for="work-end-date-edit">结束时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="work-end-date-edit" name="work_end_date_edit" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label" valign="top" style="padding-top:8px;">
+                <label for="work-stage-button-add">完成阶段：</label>
+            </td>
+            <td colspan="3">
+                <table id="work-stage-list" style="width: 620px;"></table>
+            </td>
+        </tr>
+        <tr id="work-button">
+            <td>
+                &nbsp;
+            </td>
+            <td class="input" colspan="3">
+                <a id="work-stage-finish-add" style="width: 90px;height: 26px;float:left;">设置完成</a>
+                <a id="work-stage-button-add" style="width: 70px;height: 26px;float:right;margin-right:50px;">添加</a>
+                <a id="work-stage-cancel-add" style="display: none;width: 70px;height: 26px;float:right;margin-right:50px;">取消</a>
+                <a id="work-stage-save-add" style="display: none;width: 70px;height: 26px;float:right;margin-right:10px;">保存</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<script type="text/javascript" src="__JS__/work.js"></script>

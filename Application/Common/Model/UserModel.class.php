@@ -34,6 +34,16 @@ class UserModel extends  RelationModel   {
         array('create_time', 'get_time', self::MODEL_INSERT, 'function'),
         array('password', 'sha1', self::MODEL_INSERT, 'function'),
     );
+    //关联模型
+    protected $_link = array(
+        //关联档案表(对方表包含我的id，用HAS_ONE)
+        'Staff'=>array(
+            'mapping_type'=>self::HAS_ONE,
+            'class_name'=>'Staff',
+            'foreign_key'=>'uid',
+            'mapping_fields'=>'pid'
+        ),
+    );
     public  function  getList ($page, $rows, $order, $sort, $keywords, $date, $date_from, $date_to, $state) {
        $map = array();
        $keywords_map = array();
@@ -91,7 +101,7 @@ class UserModel extends  RelationModel   {
                        'id'=>$uid,
                        'uid'=>$id
                    );
-                  (new StaffModel())->save();
+                   (new StaffModel())->save($update);
                    return $id?$id:0;
               }else{
                $error_code = 0;
@@ -175,5 +185,51 @@ class UserModel extends  RelationModel   {
          );
         (new StaffModel())->where($map)->save($update);
         return $this->delete($ids);
+    }
+    //登录用户
+    public function  login ($accounts, $password){
+        $data = array(
+            'accounts'=>$accounts,
+            'password'=>$password
+        );
+        if($this->create($data,4)){
+            $map['accounts'] = $accounts;
+            $map['password'] = sha1($password);
+            $object = $this->relation('Staff')
+                           ->field('id,accounts,name,state,login_count')
+                           ->where($map)
+                           ->find();
+             if($object){
+                  if($object['state']=='冻结') return -1;
+                  if (!$object['name']) return -2;
+                  $post['id'] = $object['Staff']['pid'];
+                  session('admin', array(
+                     'id'=>$object['id'],
+                     'accounts'=>$object['accounts'],
+                     'name'=>$object['name'],
+                     'post'=>M('Post')->where($post)->find()['name']
+                  ));
+                  $update = array(
+                     'id'=>$object['id'],
+                     'last_login_time'=>get_time(),
+                     'last_login_ip'=>get_client_ip(),
+                     'login_count'=>$object['login_count'] + 1
+                  );
+                  $this->save($update);
+                  //写入日志
+                  $param = array(
+                     'user'=>$object['accounts'].'('.$object['name'].')',
+                     'type'=>'登录系统',
+                     'module'=>'人事管理 >> 登录帐号',
+                     'ip'=>get_client_ip()
+                 );
+                 tag('log', $param);
+                 return $object['id'];
+                 }else{
+                   return 0;
+             }
+            }else{
+             return  $this->getError();
+        }
     }
 }

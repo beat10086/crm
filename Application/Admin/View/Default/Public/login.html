@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" type="text/css" href="__EASYUI__/themes/bootstrap/easyui.css">
+    <link rel="stylesheet" type="text/css" href="__EASYUI__/themes/icon.css">
+    <link rel="stylesheet" type="text/css" href="__CSS__/login.css">
+    <script type="text/javascript">
+        var ThinkPHP = {
+            'ROOT' : '__ROOT__',
+            'MODULE' : '__MODULE__',
+            'IMG' : '__PUBLIC__/img',
+            'INDEX' : '{:U("Index/index")}'
+        };
+    </script>
+</head>
+<body>
+
+<form id="login" class="easyui-dialog">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label" style="width: 83px;">
+                <label for="login-accounts">帐号：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="login-accounts" name="login_accounts" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label" style="width: 83px;">
+                <label for="login-password">密码：</label>
+            </td>
+            <td class="input">
+                <input type="password" id="login-password" name="login_password" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="register">
+                没有业务帐号？<a href="javascript:void(0)" class="btn-register">「快速申请」</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<form id="register">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="user-accounts-add">帐号：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-accounts-add" name="user_accounts_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-password-add">密码：</label>
+            </td>
+            <td class="input">
+                <input type="password" id="user-password-add" name="user_password_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-notpassword-add">确认密码：</label>
+            </td>
+            <td class="input">
+                <input type="password" id="user-notpassword-add" name="user_notpassword_add" class="easyui-textbox">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="user-email-add">电子邮件：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="user-email-add" name="user_email_add" class="easyui-textbox">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+
+<script type="text/javascript" src="__EASYUI__/jquery.min.js"></script>
+<script type="text/javascript" src="__EASYUI__/jquery.easyui.min.js"></script>
+<script type="text/javascript" src="__EASYUI__/locale/easyui-lang-zh_CN.js" ></script>
+<script type="text/javascript" src="__JS__/login.js"></script>
+</body>
+</html>
