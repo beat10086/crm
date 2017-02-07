@@ -1,0 +1,150 @@
+<!--数据列表-->
+<table id="allo"></table>
+
+<!--工具条-->
+<form id="allo-tool" style="padding: 5px;">
+    <div class="tool-opt">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="alloOpt.add()">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="alloOpt.edit()">更新阶段</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-exclamation" onclick="alloOpt.cancel()">作废</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="alloOpt.reload()">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="alloOpt.redo()">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="alloOpt.reset()">重置查询</a>
+    </div>
+    <div class="tool-search">
+        <label for="allo-search-keywords">关键字：</label>
+        <input type="text" id="allo-search-keywords">
+        <input type="text" id="allo-search-state">
+        <input type="text" id="allo-search-type">
+        <input type="text" id="allo-search-date-type">
+        <input type="text" id="allo-search-date-from">
+        <label for="allo-search-date-to">-</label>
+        <input type="text" id="allo-search-date-to">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="alloOpt.search()">查询</a>
+    </div>
+</form>
+<!--修改-->
+<form id="allo-edit">
+    <input type="hidden" id="allo-edit-id" name="allo_edit_id">
+    <table class="form-table" style="max-width: 780px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="allo-edit-title">工作名称：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="allo-edit-title" name="allo_edit_title">
+            </td>
+            <td class="label">
+                <label for="allo-edit-type">工作类型：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="allo-edit-type" name="allo_edit_type">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="allo-edit-start-date">开始时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="allo-edit-start-date" name="allo_edit_start_date">
+            </td>
+            <td class="label">
+                <label for="allo-edit-end-date">结束时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="allo-edit-end-date" name="allo_edit_end_date">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="allo-edit-state">工作状态：</label>
+            </td>
+            <td class="input" colspan="3">
+                <input type="text" id="allo-edit-state" name="allo_edit_state">
+            </td>
+        </tr>
+        <tr>
+            <td class="label" valign="top" style="padding-top:8px;">
+                <label>完成阶段：</label>
+            </td>
+            <td colspan="3">
+                <table id="allo-stage-list" style="width: 620px;"></table>
+            </td>
+        </tr>
+        <tr id="allo-button">
+            <td>
+                &nbsp;
+            </td>
+            <td class="input" colspan="3">
+                <a id="allo-add-stage-finish" style="width: 90px;height: 26px;float:left;">设置完成</a>
+                <a id="allo-add-stage-button" style="width: 70px;height: 26px;float:right;margin-right:50px;">添加</a>
+                <a id="allo-add-stage-cancel" style="display: none;width: 70px;height: 26px;float:right;margin-right:50px;">取消</a>
+                <a id="allo-add-stage-save" style="display: none;width: 70px;height: 26px;float:right;margin-right:10px;">保存</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<!--新增-->
+<form id="allo-add">
+    <input type="hidden" id="allo-add-staff-id">
+    <table class="form-table" style="max-width: 420px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="allo-add-title">工作名称：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="allo-add-title">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="allo-add-type">工作类型：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="allo-add-type">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="allo-add-staff">分配给：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="allo-add-staff">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="allo-add-start-date">开始时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="allo-add-start-date">
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="allo-add-end-date">结束时间：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="allo-add-end-date">
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+<!--弹出员工档案-->
+<div id="allo-staff">
+    <table id="allo-search-staff"></table>
+</div>
+
+<form id="allo-staff-tool" style="padding:5px;">
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="allo-staff-search-keywords">关键字：</label>
+        <input type="text" id="allo-staff-search-keywords" class="easyui-textbox" name="allo_staff_search_keywords" prompt="员工姓名或编号" style="width:120px;padding: 0 5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="allo-staff-search-button" iconCls="icon-search" onclick="allo_staff_tool.search();" style="margin-top:-1px;">查询</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="allo-staff-search-reset" plain="true" style="float:right;" iconCls="icon-undo" onclick="allo_staff_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+</form>
+<script type="text/javascript" src="__JS__/allo.js"></script>

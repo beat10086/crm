@@ -5,14 +5,15 @@
  * Date: 2017/2/4
  * Time: 10:27
  */
+//工作计划是根据，员工的id的筛选数据
 namespace  Common\Model;
-
 use Think\Model;
 
 class WorkModel extends  Model {
 
     //获取工作列表
-    public function getList($page, $rows, $order, $sort, $keywords, $date, $date_from, $date_to, $state, $type) {
+    public function getList($page, $rows, $order, $sort, $keywords, $date, $date_from, $date_to, $state,
+                            $type,$state,$allo = false) {
         $map = array();
         $keywords_map = array();
         $date_map = array();
@@ -41,8 +42,11 @@ class WorkModel extends  Model {
         if (!empty($date_map)) {
             $map["$date"] = $date_map["$date"];
         }
-
-
+        if($allo){
+            $map['allo_id'] = 1;
+           }else{
+            $map['staff_id'] = 1;
+        }
         //状态
         switch ($state) {
             case '进行中' :
@@ -65,8 +69,7 @@ class WorkModel extends  Model {
         }
 
 
-        $object = $this->field('id,title,type,stage,state,user,
-                                start_date,end_date,create_time')
+        $object = $this->field('id,title,type,stage,state,staff_name,allo_name,start_date,end_date,create_time')
             ->where($map)
             ->order(array($sort=>$order))
             ->limit(($rows * ($page - 1)), $rows)
@@ -78,18 +81,26 @@ class WorkModel extends  Model {
         );
     }
     //添加工作单
-    public function register ($title, $type, $start_date, $end_date) {
-        $data = array(
+    public function register ($title, $type, $start_date, $end_date,$staff_id = 0, $staff_name = '') {
+        $addData = array(
             'title'=>$title,
             'type'=>$type,
             'start_date'=>$start_date,
             'end_date'=>$end_date,
             'stage'=>'创建工作任务',
             'state'=>'进行中',
-            'user'=>session('admin')['name'],
+            'staff_id'          =>  session('admin')['id'],
+            'staff_name'        =>  session('admin')['staff_name'],
+            'allo_id'           =>  session('admin')['id'],
+            'allo_name'         =>  session('admin')['staff_name'],
             'create_time'=>get_time()
         );
-        if($this->create($data)){
+        //如果是分配者，那就写入分配这的ID和名称
+        if($staff_id != 0){
+            $addData['staff_id']   =$staff_id;
+            $addData['staff_name'] =$staff_name;
+        }
+        if($this->create($addData)){
               $id = $this->add();
               if ($id) {
                     //同时写入到附表中的完成进度

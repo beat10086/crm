@@ -41,9 +41,14 @@ $(function(){
                 width : 80
             },
             {
-                field : 'user',
+                field : 'staff_name',
                 title : '实行人',
                 width : 80
+            },
+            {
+                 field:'allo_name',
+                 title:'发起人',
+                 width:80
             },
             {
                 field : 'start_date',
