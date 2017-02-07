@@ -1,4 +1,15 @@
 $(function(){
+    details             =$('#details-dialog'),
+    editor_tool         =[
+        'source', '|',
+        'formatblock', 'fontname', 'fontsize','|',
+        'forecolor', 'hilitecolor', 'bold','italic', 'underline', 'link',
+        'removeformat', '|',
+        'justifyleft', 'justifycenter', 'justifyright', '|',
+        'insertorderedlist', 'insertunorderedlist','|',
+        'emoticons', 'image','baidumap','|',
+        'fullscreen'
+    ];
     //初始化tab
     $("#tabs").tabs({
           fit:true,
@@ -64,6 +75,24 @@ $(function(){
                      }
                }
          }
-
+    });
+    //详情窗口
+    details.dialog({
+        width: 780,
+        height: 500,
+        iconCls : 'icon-tip',
+        closed: true,
+        modal : true,
+        maximizable : true,
+        buttons:[
+            {
+                text : '关闭',
+                size : 'large',
+                iconCls : 'icon-cross',
+                handler : function ()
+                {
+                    details.dialog('close');
+                }
+            }]
     });
 })

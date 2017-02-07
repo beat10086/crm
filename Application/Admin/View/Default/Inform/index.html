@@ -1,0 +1,57 @@
+<!--数据列表-->
+<table id="inform"></table>
+
+<!--工具条-->
+<form id="inform-tool" style="padding: 5px;">
+    <div class="tool-opt">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="informOpt.add()">新增</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="informOpt.reload()">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="informOpt.redo()">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="informOpt.reset()">重置查询</a>
+    </div>
+    <div class="tool-search">
+        <label for="inform-search-keywords">关键字：</label>
+        <input type="text" id="inform-search-keywords">
+        <input type="text" id="inform-search-date-type">
+        <input type="text" id="inform-search-date-from">
+        <label for="inform-search-date-to">-</label>
+        <input type="text" id="inform-search-date-to">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="informOpt.search()">查询</a>
+    </div>
+</form>
+
+<!--新增通知-->
+<form id="inform-add">
+    <table class="form-table" style="max-width: 780px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="inform-add-title">通知标题：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="inform-add-title">
+            </td>
+            <td class="label">
+
+            </td>
+            <td class="input">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="inform-add-details">通知详情：</label>
+            </td>
+            <td class="input" colspan="3">
+                <textarea id="inform-add-details" class="textarea"></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+
+<!--JS-->
+<script type="text/javascript" src="__EDITOR__/kindeditor-min.js"></script>
+<script type="text/javascript" src="__EDITOR__/lang/zh_CN.js"></script>
+<script type="text/javascript" src="__JS__/inform.js"></script>
