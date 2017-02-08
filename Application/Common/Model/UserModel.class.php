@@ -195,19 +195,29 @@ class UserModel extends  RelationModel   {
         if($this->create($data,4)){
             $map['accounts'] = $accounts;
             $map['password'] = sha1($password);
-            $object = $this->relation('Staff')
-                           ->field('id,accounts,name,state,login_count')
-                           ->where($map)
-                           ->find();
+            //这个左链接比较好
+            $object = $this ->field('crm_user.id,
+                                        crm_user.accounts,
+                                        crm_user.state,
+                                        crm_staff.id AS staff_id,
+                                        crm_staff.name AS staff_name,
+                                        crm_staff.post')
+                ->join('crm_staff ON crm_staff.id=crm_user.staff_id', 'LEFT')
+                ->where($map)
+                ->find();
              if($object){
+                  //冻结帐号返回-1
                   if($object['state']=='冻结') return -1;
-                  if (!$object['name']) return -2;
-                  $post['id'] = $object['Staff']['pid'];
+                  //是否关联档案
+                  if (!$object['staff_id']) return -2;
+
+                  //把数据放入session
                   session('admin', array(
-                     'id'=>$object['id'],
-                     'accounts'=>$object['accounts'],
-                     'name'=>$object['name'],
-                     'post'=>M('Post')->where($post)->find()['name']
+                      'id'=>$object['id'],
+                      'accounts'=>$object['accounts'],
+                      'staff_id'=>$object['staff_id'],
+                      'staff_name'=>$object['staff_name'],
+                      'post'=>$object['post']
                   ));
                   $update = array(
                      'id'=>$object['id'],
@@ -218,7 +228,7 @@ class UserModel extends  RelationModel   {
                   $this->save($update);
                   //写入日志
                   $param = array(
-                     'user'=>$object['accounts'].'('.$object['name'].')',
+                     'user'=>$object['accounts'].'('.$object['staff_name'].')',
                      'type'=>'登录系统',
                      'module'=>'人事管理 >> 登录帐号',
                      'ip'=>get_client_ip()

@@ -7,12 +7,12 @@
  */
 namespace Common\Behavior;
 
-
+use Common\Model\LogModel;
 use Think\Behavior;
 
 class LogBehavior extends  Behavior {
      public  function  run (&$param) {
-         $Log = D('Log');
+         $Log = new  LogModel();
          $Log->register($param['user'], $param['type'], $param['module'], $param['ip']);
      }
 }
