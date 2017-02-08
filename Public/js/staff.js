@@ -1,4 +1,9 @@
 $(function(){
+    //浏览器改变大小时触发
+    $(window).resize(function () {
+        $("#staff-add").dialog('center');
+        $("#staff-edit").dialog('center');
+    });
     $('#staff').datagrid({
         url : ThinkPHP['MODULE'] + '/Staff/getList',
         fit : true,
@@ -127,7 +132,7 @@ $(function(){
                             name : $.trim($('input[name="staff_name_add"]').val()),
                             gender : $('input[name="staff_gender_add"]').val(),
                             number : $.trim($('input[name="staff_number_add"]').val()),
-                            pid : $.trim($('input[name="staff_post_add"]').val()),
+                            post : $.trim($("#staff-post-add").combobox('getText')),
                             type : $.trim($('input[name="staff_type_add"]').val()),
                             tel : $.trim($('input[name="staff_tel_add"]').val()),
                             id_card : $.trim($('input[name="staff_id_card_add"]').val()),
@@ -476,7 +481,9 @@ $(function(){
         editable : false,
         valueField : 'id',
         textField : 'name',
-        hasDownArrow :true
+        hasDownArrow :true,
+        required : true,
+        missingMessage : '请输入员工职位',
     })
     //移动电话
     $("#staff-tel-add,#staff-tel-edit").textbox({
@@ -631,6 +638,19 @@ $(function(){
             'fullscreen'
         ]
     });
+    STAFF_EDIT = KindEditor.create('#staff-details-edit', {
+        width : '94%',
+        height : '200px',
+        resizeType : 0,
+        items : [
+            'source', '|',
+            'formatblock', 'fontname', 'fontsize','|',
+            'forecolor', 'hilitecolor', 'bold','italic', 'underline', 'link', 'removeformat', '|',
+            'justifyleft', 'justifycenter', 'justifyright', '|', 'insertorderedlist', 'insertunorderedlist','|',
+            'emoticons', 'image','baidumap','|',
+            'fullscreen'
+        ]
+    });
 })
 var staff_tool = {
     search:function(){
@@ -661,7 +681,7 @@ var staff_tool = {
     edit:function () {
        var rows=$("#staff").datagrid('getSelections');
         if(rows.length>1){
-                 $.messager.alert('警告提示','辑记录只能选定一条数据！','warning');
+                 $.messager.alert('警告提示','编辑档案记录只能选定一条数据！','warning');
             }else if(rows.length==1){
                  $('#staff-edit').dialog('open');
                  $.ajax({
@@ -683,7 +703,7 @@ var staff_tool = {
                                  staff_name_edit:data.name,
                                  staff_gender_edit:data.gender,
                                  staff_number_edit:data.number,
-                                 staff_post_edit:data.pid,
+                                 staff_post_edit:data.post,
                                  staff_tel_edit:data.tel,
                                  staff_type_edit:data.type,
                                  staff_id_card_edit:data.id_card,
@@ -702,12 +722,12 @@ var staff_tool = {
                                  staff_graduate_colleges_edit : data.Extend.graduate_colleges,
                                  staff_intro_edit : data.Extend.intro
                              })
-                             window.editor.html(data.Extend.details)
+                              STAFF_EDIT.html(data.Extend.details)
                         }
                     }
                 });
-           }else if(rows.length=0){
-               $.messager.alert('警告提示','辑记录必须选定一条数据！','warning');
+           }else{
+               $.messager.alert('警告提示','编辑档案记录必须选定一条数据！','warning');
         }
     },
     remove:function(){
@@ -729,12 +749,12 @@ var staff_tool = {
                                $('#user').datagrid('loading');
                            },
                            success : function(data, response, status) {
-                               if (data) {
+                               if (data.code==200) {
                                    $('#staff').datagrid('loaded');
                                    $('#staff').datagrid('reload');
                                    $.messager.show({
                                        title : '操作提醒',
-                                       msg : data + '个档案被成功删除！'
+                                       msg : rows.length + '个档案被成功删除！'
                                    });
                                }
                            }

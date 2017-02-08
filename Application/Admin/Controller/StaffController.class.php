@@ -27,8 +27,8 @@ class StaffController extends  BaseController {
     //添加档案
    public function register () {
        if(IS_AJAX){
-            $code=(new StaffModel())->register(I('post.name'), I('post.gender'), I('post.number'), I('post.pid'), I('post.type'),
-                I('post.tel'), I('post.id_card'), I('post.nation'), I('post.marital_status'),
+            $code=(new StaffModel())->register(I('post.name'), I('post.gender'), I('post.number'), I('post.post'),
+                I('post.type'), I('post.tel'), I('post.id_card'), I('post.nation'), I('post.marital_status'),
                 I('post.entry_status'), I('post.entry_date'), I('post.dimission_date'), I('post.politics_status'),
                 I('post.specialty'), I('post.education'), I('post.health'), I('post.registered'),
                 I('post.registered_address'), I('post.graduate_date'), I('post.graduate_colleges'),
@@ -82,6 +82,11 @@ class StaffController extends  BaseController {
     public  function remove () {
            if(IS_AJAX){
                $code=(new StaffModel())->remove(I('post.ids'));
+               if($code>0){
+                     $this->responseSuccess();
+               }else{
+                     $this->responseError($code);
+               }
              }else{
                $this->error('非法操作');
            }

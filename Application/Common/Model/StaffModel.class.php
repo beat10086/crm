@@ -122,7 +122,7 @@ class StaffModel extends  RelationModel {
            );
     }
     //添加档案(关联数据是,添加是会出现错误)
-    public  function register ($name, $gender, $number, $pid,
+    public  function register ($name, $gender, $number, $post,
                                $type, $tel, $id_card, $nation,
                                $marital_status, $entry_status, $entry_date,
                                $dimission_date, $politics_status, $specialty,
@@ -133,7 +133,7 @@ class StaffModel extends  RelationModel {
               'name'=>$name,
               'gender'=>$gender,
               'number'=>$number,
-              'pid'=>$pid,
+              'post'=>$post,
               'type'=>$type,
               'tel'=>$tel,
               'id_card'=>$id_card,
@@ -147,11 +147,10 @@ class StaffModel extends  RelationModel {
           );
           if ($this->create($data)) {
                 $data['create_time'] = get_time();
-                //$sid = $this->relation('Extend')->add($data);
                 $sid=$this->add($data);
                 if($sid>0){
                       $extendData=array(
-                              'sid'=>$sid,
+                              'staff_id'=>$sid,
                               'health'=>$health,
                               'specialty'=>$specialty,
                               'registered'=>$registered,
@@ -167,7 +166,6 @@ class StaffModel extends  RelationModel {
                       return 0;
                 }
           } else {
-                echo '2222';
                 return $this->getError();
           }
     }
@@ -175,12 +173,21 @@ class StaffModel extends  RelationModel {
     //获取1条档案
     public function  getStaff  ($id) {
           $map['id'] = $id;
-          $object = $this->relation('Extend')->field('id,name,pid,
-                                                    number,type,tel,id_card,gender,
-                                                    nation,marital_status,entry_status,
-                                                    entry_date,dimission_date,politics_status,
-                                                    education,create_time')->where($map)->find();
-          $object['Extend']['details'] = htmlspecialchars_decode($object['Extend']['details']);
+          //获取档案的数据
+          $object=$this->field('id,name,post,
+                                number,type,tel,id_card,gender,
+                                nation,marital_status,entry_status,
+                                entry_date,dimission_date,politics_status,
+                                education,create_time')->where($map)->find();
+          if($object){
+                $object['Extend']=D('staffExtend')->field('health,specialty,registered,
+                                                           graduate_date,graduate_colleges,
+                                                           intro,details')
+                                                  ->where(array('staff_id'=>$id))
+                                                  ->find();
+                $object['Extend']['details'] = htmlspecialchars_decode($object['Extend']['details']);
+          }
+
           return $object;
     }
     //更新档案
@@ -230,7 +237,13 @@ class StaffModel extends  RelationModel {
 
     //删除档案
     public function remove ($ids) {
-          return $this->relation('Extend')->delete($ids);
+          $map['id']=$ids;
+          $count=$this->where($map)->delete();
+          if($count){
+                $map['staff_id']=$ids;
+                $countExtend=M('staffExtend')->where($map)->delete();
+          }
+          return $count>0?$count:0;
     }
       //获取单个档案详情(这里需要管理，两张表)
       public function getDetails($id) {
