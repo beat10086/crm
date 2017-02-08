@@ -80,8 +80,22 @@ class PostModel extends  Model {
             return $this->getError();
         }
     }
-    //删除职位
+    //删除职位(这里不能直接删除,因为档案里面关联的职位)
     public function remove ($ids) {
+        //判断档案是否关联职位
+        $arr=explode(',',$ids);
+        foreach($arr as   $key=>$value){
+             $map['id']=$value;
+             $postData=$this->where($map)->find();
+             if($postData){
+                    $staff=D('staff');
+                    $staffData=$staff->where(array('post'=>$postData['name']))->find();
+                    if($staffData){
+                          return -2;
+                          break;
+                    }
+             }
+        }
         return $this->delete($ids);
     }
     //获取所有的职位

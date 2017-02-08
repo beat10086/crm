@@ -259,6 +259,13 @@ var post_tool={
                                           title : '操作提醒',
                                           msg : rows.length + '个职位被成功删除！'
                                       });
+                                  }else if(data.code==-2){
+                                      $('#post').datagrid('loaded');
+                                      $('#post').datagrid('reload');
+                                      $.messager.show({
+                                          title : '操作失败',
+                                          msg   : '职位关联绑定档案信息,请先删除档案，才能删除职位！'
+                                      });
                                   }
                               }
                           });

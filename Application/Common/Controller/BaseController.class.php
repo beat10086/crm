@@ -25,4 +25,16 @@ class  BaseController extends  Controller  {
         $res['data']=$data;
         $this->ajaxReturn($res);
     }
+    //显示模板
+    public function index () {
+         if($_SESSION['admin']){
+               $this->display();
+            }else{
+             $this->redirect('/Admin/Public/login');
+         }
+    }
+    //空方法
+    public function _empty () {
+             $this->redirect('/Admin/Public/login');
+    }
 }

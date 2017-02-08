@@ -11,10 +11,6 @@ use Common\Controller\BaseController;
 use Common\Model\PostModel;
 //职位控制器
 class  PostController extends  BaseController {
-   //初始化页面
-   public  function  Index () {
-         $this->display();
-   }
    //获取职位的数据
    public  function  getList (){
             if(IS_AJAX){

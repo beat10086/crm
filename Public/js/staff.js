@@ -259,14 +259,14 @@ $(function(){
         }
     });
     //职位搜索
-    $('#staff-search-post').combobox({
-        width : 70,
-        url : ThinkPHP['MODULE'] + '/Post/getListAll',
-        editable : false,
-        valueField : 'id',
-        textField : 'name',
-        panelHeight : 'auto'
-    });
+    //$('#staff-search-post').combobox({
+    //    width : 70,
+    //    url : ThinkPHP['MODULE'] + '/Post/getListAll',
+    //    editable : false,
+    //    valueField : 'id',
+    //    textField : 'name',
+    //    panelHeight : 'auto'
+    //});
     //姓名
     $("#staff-name-add,#staff-name-edit").textbox({
         width : 240,

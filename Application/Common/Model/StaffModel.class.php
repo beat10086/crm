@@ -38,7 +38,7 @@ class StaffModel extends  RelationModel {
       );
       //获取档案列表
      public function  getList ($page, $rows, $order, $sort,$keywords, $date,
-                               $date_from, $date_to, $gender, $pid,$entry_status,
+                               $date_from, $date_to, $gender, $post,$entry_status,
                                $marital_status, $education, $type,$id_card, $nation, $uid) {
            $map = array();
            $keywords_map = array();
@@ -77,8 +77,8 @@ class StaffModel extends  RelationModel {
                  $map['gender'] = $gender;
            }
            //把状态SQL组入$map
-           if ($pid) {
-                 $map['pid'] = $pid;
+           if ($post) {
+                 $map['post'] =$post;
            }
            //把入职状态SQL组入$map
            if ($entry_status) {
@@ -111,15 +111,11 @@ class StaffModel extends  RelationModel {
                  $map['uid'] = array('neq', 0);
            }
            $object = $this->relation('Post')
-               ->field('id,name,number,pid,nation,tel,marital_status,gender,id_card,type,entry_status,entry_date,education')
+               ->field('id,name,number,post,nation,tel,marital_status,gender,id_card,type,entry_status,entry_date,education')
                ->where($map)
                ->order(array($sort=>$order))
                ->limit(($rows * ($page - 1)), $rows)
                ->select();
-           //处理一下post
-           foreach ($object as $key=>$value) {
-                 $object[$key]['post'] = $object[$key]['Post']['name'];
-           }
            return array(
                'total'=>$this->count(),
                'rows'=>$object ? $object : '',
