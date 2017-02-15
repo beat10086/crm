@@ -75,12 +75,21 @@ class UserModel extends  RelationModel   {
        if ($state) {
            $map['state'] = $state;
        }
-       $object=$this->field('id,accounts,name,email,last_login_time,last_login_ip,login_count,state,create_time')
+       $object=$this->field('crm_user.id,
+                             crm_user.accounts,
+                             crm_user.email,
+                             crm_user.last_login_time,
+                             crm_user.last_login_ip,
+                             crm_user.login_count,
+                             crm_user.state,
+                             crm_user.create_time,
+                             crm_staff.name,
+                             crm_staff.post')
+                    ->join('crm_staff on crm_user.staff_id =crm_staff.id','LEFT')
                     ->where($map)
                     ->order(array($sort=>$order))
                     ->limit(($rows * ($page - 1)), $rows)
                     ->select();
-       //$this->getLastSql(); 打印运行的数据库
        return [
             'total'=>$this->count(),
             'rows' =>$object?$object:''
@@ -89,17 +98,18 @@ class UserModel extends  RelationModel   {
    //添加会员
     public  function  register ($accounts, $password, $email, $uid, $name){
            $data=[
-               'accounts'=>$accounts,
-               'password'=>$password,
-               'email'   =>$email,
-               'name'    =>$name
+               'accounts'   =>$accounts,
+               'password'   =>$password,
+               'email'      =>$email,
+               'staff_id'   =>$uid,
+               'staff_name' =>$name
            ];
            if($this->create($data)){
                    $id=$this->add();
                    //登录用户和档案关联
                    $update = array(
                        'id'=>$uid,
-                       'uid'=>$id
+                       'user_id'=>$id
                    );
                    (new StaffModel())->save($update);
                    return $id?$id:0;
@@ -119,7 +129,12 @@ class UserModel extends  RelationModel   {
     //获取一条账号
     public  function  getUser ($id) {
         $map['id'] = $id;
-        $object=$this->field('id,name,accounts,email,state')
+        $object=$this->field('crm_user.id,
+                              crm_user.accounts,
+                              crm_user.email,
+                              crm_user.state,
+                              crm_user.staff_id,
+                              crm_user.staff_name')
                      ->where($map)
                      ->find();
         return $object;

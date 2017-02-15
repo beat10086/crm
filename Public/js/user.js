@@ -124,12 +124,12 @@ $(function(){
                         url : ThinkPHP['MODULE'] + '/User/update',
                         type : 'POST',
                         data : {
-                            id : $('input[name="user_id_edit"]').val(),
-                            password : $('input[name="user_password_edit"]').val(),
-                            email : $.trim($('input[name="user_email_edit"]').val()),
-                            state : $('input[name="user_state_edit"]').val(),
-                            name : $('input[name="user_name_edit"]').val(),
-                            uid : $('input[name="user_staff_edit"]').val(),
+                            id : $('input[name="user_id_edit"]').val(),   //编辑ID
+                            password : $('input[name="user_password_edit"]').val(),  //编辑密码
+                            email : $.trim($('input[name="user_email_edit"]').val()), //编辑邮箱
+                            state : $('input[name="user_state_edit"]').val(),         //编辑状态
+                            name : $('input[name="user_staff_edit"]').val(),
+                            uid : $('input[name="user_name_edit"]').val(),
                             user_name : $('#user-staff-edit').combogrid('getText')
                         },
                         beforeSend : function () {
@@ -206,18 +206,18 @@ $(function(){
                             },
                             success : function(data) {
                                 $.messager.progress('close');
-                                if (data > 0) {
+                                if (data.code == 200) {
                                     $.messager.show({
                                         title : '操作提醒',
                                         msg : '添加帐号成功！'
                                     });
                                     $('#user-add').dialog('close');
                                     $('#user').datagrid('load');
-                                } else if (data == -1) {
+                                } else if (data.code == -1) {
                                     $.messager.alert('添加失败！', '帐号名称已存在！', 'warning', function () {
                                         $('#user-accounts-add').textbox('textbox').select();
                                     });
-                                } else if (data == -2) {
+                                } else if (data.code == -2) {
                                     $.messager.alert('添加失败！', '邮箱已存在！', 'warning', function () {
                                         $('#user-email-add').textbox('textbox').select();
                                     });
@@ -434,8 +434,8 @@ var user_tool = {
                             user_accounts_edit : data.accounts,
                             user_email_edit : data.email,
                             user_state_edit : data.state,
-                            user_staff_edit : data.name,
-                            user_name_edit : data.name
+                            user_staff_edit : data.staff_name,
+                            user_name_edit : data.staff_id
                         });
                         if (data.state == '正常') {
                             $('#user-state-edit').switchbutton('check');

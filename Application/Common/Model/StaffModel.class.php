@@ -258,15 +258,8 @@ class StaffModel extends  RelationModel {
     }
       //获取未关联档案列表
     public  function  getNotRelationList () {
-          $map['uid'] = 0;
-          $object = $this->relation('Post')
-                          ->field('id,name,number,gender,pid,id_card')
-                          ->where($map)
-                          ->select();
-          //处理一下post
-          foreach ($object as $key=>$value) {
-                $object[$key]['post'] = $object[$key]['Post']['name'];
-          }
+          $map['user_id'] = 0;
+          $object=$this->where($map)->field('id,name,number,gender,id_card,post')->select();
           return $object;
     }
 }

@@ -30,7 +30,8 @@ class  BaseController extends  Controller  {
          if($_SESSION['admin']){
                $this->display();
             }else{
-             $this->redirect('/Admin/Public/login');
+              $this->redirect('/Admin/Public/login');
+             exit();
          }
     }
     //空方法
