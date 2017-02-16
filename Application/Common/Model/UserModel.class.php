@@ -140,45 +140,28 @@ class UserModel extends  RelationModel   {
         return $object;
     }
     //修改用户
-    public function update($id, $password, $email, $state, $name, $uid, $user_name) {
-
+    public function update($id, $password, $email, $state, $staff_id,$staff_name) {
         $data = array(
             'id'=>$id,
             'email'=>$email,
             'state'=>$state,
-            'name'=>$user_name,
-            'Staff'=>array(
-                'uid'=>$uid,
-                'name'=>$name
-            )
+            'staff_id'=> $staff_id,
+            'staff_name'=>$staff_name
         );
 
         if ($this->create($data)) {
             if ($password) {
-                $data['password'] = sha1($password);
+                $data['password'] = $password;
             }
-
-            $update_rows = 0;
-
-            //判断关联被修改后需要处理的内容
-            if (!empty($data['Staff']['uid']) && $data['Staff']['name'] != $data['Staff']['uid']) {
-                //本身有关联，需要释放
-                if ($data['Staff']['name']) {
-                    $map['name'] = $name;
-                    $update = array(
-                        'uid'=>0
-                    );
-                    M('Staff')->where($map)->save($update);
-                }
-                $update = array(
-                    'id'=>$uid,
-                    'uid'=>$id
-                );
-                $update_rows = M('Staff')->save($update);
+            //判断是否修改了关联档案，可以判断$staff_id 是否是数值
+            if(is_numeric($staff_id)){
+                //原来的值清零
+                M('Staff')->where('user_id='.$id)->setField('user_id', 0);
+                //现在的值赋值
+                M('Staff')->where('id='.$staff_id)->setField('user_id', $id);
             }
-
-            $rows = $this->save($data) + $update_rows;
-            return $rows ? $rows : 0;
+            $id = $this->save($data);
+            return $id ? $id : 0;
         } else {
             $error_code = 0;
             switch ($this->getError()) {
@@ -192,11 +175,12 @@ class UserModel extends  RelationModel   {
             return $error_code;
         }
     }
-    //删除用户
+    //删除用户(根据ID集合删除记录)
     public function remove ($ids){
-         $map['uid']=$ids;
+        //删除前解除绑定
+         $map['user_id']=$ids;
          $update=array(
-               'uid'=>0
+               'user_id'=>0
          );
         (new StaffModel())->where($map)->save($update);
         return $this->delete($ids);
@@ -256,5 +240,13 @@ class UserModel extends  RelationModel   {
             }else{
              return  $this->getError();
         }
+    }
+    //设置状态
+    public function state ($id,$state){
+         $data=array(
+              'id'   =>$id,
+              'state'=>$state
+         );
+        return $this->save($data);
     }
 }

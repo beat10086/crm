@@ -50,7 +50,7 @@ class UserController  extends  BaseController
     public function  update () {
            if(IS_AJAX){
                 $code=(new UserModel())->update(I('post.id'), I('post.password'), I('post.email'),
-                    I('post.state'), I('post.name'), I('post.uid'), I('post.user_name'));
+                                                I('post.state'),I('post.staff_id'),I('post.staff_name'));
                 if($code>0){
                       $this->responseSuccess();
                   }else{
@@ -68,5 +68,14 @@ class UserController  extends  BaseController
            }else{
                  $this->responseError($code);
            }
+    }
+    //设置用户状态
+    public function state (){
+        $code=(new UserModel())->state(I('post.id'),I('post.state'));
+        if($code>0){
+            $this->responseSuccess();
+        }else{
+            $this->responseError($code);
+        }
     }
 }

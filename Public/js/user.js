@@ -101,6 +101,85 @@ $(function(){
                 iconCls : 'icon-text',
                 plain : true
             });
+            //设置用户的状态
+            $(".user-state").on('click',function(){
+                var id    = $(this).attr('user-id'),
+                    state = $(this).attr('user-state');
+                    switch(state){
+                        case  '正常':
+                            $.messager.confirm('确认', '冻结帐号？', function (flag) {
+                                  if(flag){
+                                      $.ajax({
+                                          url : ThinkPHP['MODULE'] + '/User/state',
+                                          type : 'POST',
+                                          data : {
+                                              id : id,
+                                              state : '冻结'
+                                          },
+                                          beforeSend : function ()
+                                          {
+                                              $.messager.progress({
+                                                  text : '正在处理中...'
+                                              })
+                                              //user.datagrid('loading');
+                                          },
+                                          success : function (data)
+                                          {
+                                              $.messager.progress('close');
+                                              //user.datagrid('loaded');
+                                              if (data.code==200)
+                                              {
+                                                  $('#user').datagrid('reload');
+                                                  $.messager.show({
+                                                      title : '操作提醒',
+                                                      msg : '帐号冻结成功！'
+                                                  })
+                                              } else {
+                                                  $.messager.alert('冻结失败', '未知原因导致冻结失败！', 'warning');
+                                              }
+                                          }
+                                      });
+                                  }
+                            })
+                            break;
+                        case  '冻结':
+                            $.messager.confirm('确认', '通过帐号？', function (flag) {
+                                 if(flag){
+                                     $.ajax({
+                                         url : ThinkPHP['MODULE'] + '/User/state',
+                                         type : 'POST',
+                                         data : {
+                                             id : id,
+                                             state : '正常'
+                                         },
+                                         beforeSend : function ()
+                                         {
+                                             $.messager.progress({
+                                                 text : '正在处理中...'
+                                             });
+                                             //user.datagrid('loading');
+                                         },
+                                         success : function (data)
+                                         {
+                                             $.messager.progress('close');
+                                             //user.datagrid('loaded');
+                                             if (data.code==200)
+                                             {
+                                                 $('#user').datagrid('reload');
+                                                 $.messager.show({
+                                                     title : '操作提醒',
+                                                     msg : '帐号审核通过成功！'
+                                                 })
+                                             } else {
+                                                 $.messager.alert('审核通过失败', '未知原因导致审核通过失败！', 'warning');
+                                             }
+                                         }
+                                     });
+                                 }
+                            })
+                            break;
+                    }
+            })
         },
         onClickCell : function (index, field) {
         }
@@ -124,13 +203,12 @@ $(function(){
                         url : ThinkPHP['MODULE'] + '/User/update',
                         type : 'POST',
                         data : {
-                            id : $('input[name="user_id_edit"]').val(),   //编辑ID
-                            password : $('input[name="user_password_edit"]').val(),  //编辑密码
-                            email : $.trim($('input[name="user_email_edit"]').val()), //编辑邮箱
-                            state : $('input[name="user_state_edit"]').val(),         //编辑状态
-                            name : $('input[name="user_staff_edit"]').val(),
-                            uid : $('input[name="user_name_edit"]').val(),
-                            user_name : $('#user-staff-edit').combogrid('getText')
+                            id :         $('input[name="user_id_edit"]').val(),   //编辑ID
+                            password   : $('input[name="user_password_edit"]').val(),  //编辑密码
+                            email      : $.trim($('input[name="user_email_edit"]').val()), //编辑邮箱
+                            state      : $('input[name="user_state_edit"]').val(),         //编辑状态
+                            staff_id   : $('#user-staff-edit').combogrid('getValue'),
+                            staff_name : $('#user-staff-edit').combogrid('getText')
                         },
                         beforeSend : function () {
                             $.messager.progress({
@@ -139,18 +217,18 @@ $(function(){
                         },
                         success : function(data) {
                             $.messager.progress('close');
-                            if (data > 0) {
+                            if (data.code == 200) {
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : '修改帐号成功！'
                                 });
                                 $('#user-edit').dialog('close');
                                 $('#user').datagrid('reload');
-                            } else if (data == -1) {
+                            } else if (data.code == -1) {
                                 $.messager.alert('修改失败！', '密码长度不合法！', 'warning', function () {
                                     $('#user-password-edit').textbox('textbox').select();
                                 });
-                            } else if (data == -2) {
+                            } else if (data.code == -2) {
                                 $.messager.alert('修改失败！', '邮箱已存在！', 'warning', function () {
                                     $('#user-email-edit').textbox('textbox').select();
                                 });
@@ -323,7 +401,10 @@ $(function(){
                     title : '职位',
                     width : 50
                 }
-            ]]
+            ]],
+            onOpen : function () {
+                 $('#user-staff-add,#user-staff-edit').combogrid('grid').datagrid('reload');
+           }
     })
     //修改状态
     $('#user-state-edit').switchbutton({
@@ -409,7 +490,6 @@ var user_tool = {
         $('#user-staff-add').combogrid('grid').datagrid('reload');
     },
     edit:function(){
-        $('#user-staff-edit').combogrid('grid').datagrid('reload');
         var rows = $('#user').datagrid('getSelections');
         if (rows.length > 1) {
             $.messager.alert('警告操作', '编辑记录只能选定一条数据！', 'warning');
@@ -433,15 +513,15 @@ var user_tool = {
                             user_id_edit : data.id,
                             user_accounts_edit : data.accounts,
                             user_email_edit : data.email,
-                            user_state_edit : data.state,
-                            user_staff_edit : data.staff_name,
-                            user_name_edit : data.staff_id
+                            user_state_edit : data.state
                         });
                         if (data.state == '正常') {
                             $('#user-state-edit').switchbutton('check');
                         } else {
                             $('#user-state-edit').switchbutton('uncheck');
                         }
+                        $('#user-staff-edit').combogrid('setValue',data.staff_id);
+                        $('#user-staff-edit').combogrid('setText' ,data.staff_name);
                     }
                 }
             });
@@ -468,12 +548,12 @@ var user_tool = {
                             $('#user').datagrid('loading');
                         },
                         success : function(data, response, status) {
-                            if (data) {
+                            if (data.code==200) {
                                 $('#user').datagrid('loaded');
                                 $('#user').datagrid('reload');
                                 $.messager.show({
                                     title : '操作提醒',
-                                    msg : data + '个帐号被成功删除！'
+                                    msg : rows.length + '个帐号被成功删除！'
                                 });
                             }
                         }
@@ -502,6 +582,9 @@ var user_tool = {
             sortOrder : 'desc'
         });
         this.search();
+    },
+    details:function(){
+
     }
 }
 //扩展获取随机密码
