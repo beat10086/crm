@@ -12,11 +12,6 @@ use Common\Model\ProductModel;
 
 
 class ProductController extends  BaseController {
-    //加载产品页
-    public function index () {
-          $this->display();
-    }
-
     //加载产品列表
     public  function getList () {
        if(IS_AJAX){
@@ -49,5 +44,15 @@ class ProductController extends  BaseController {
              }else{
               $this->error('非法操作!');
           }
+    }
+    //详情
+    public function getDetails () {
+           if(is_ajax){
+                $object=(new  ProductModel())->getDetails(I('get.id'));
+                $this->assign('object',$object);
+                $this->display('details');
+              }else{
+               $this->error('非法操作!');
+           }
     }
 }

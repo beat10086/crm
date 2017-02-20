@@ -248,12 +248,9 @@ class StaffModel extends  RelationModel {
       //获取单个档案详情(这里需要管理，两张表)
       public function getDetails($id) {
             $map['id'] = $id;
-            $object = $this->relation(array('Post', 'Extend'))->field('id,name,pid,
-                                                    number,type,tel,id_card,gender,
-                                                    nation,marital_status,entry_status,
-                                                    entry_date,dimission_date,politics_status,
-                                                    education,create_time')->where($map)->find();
-            $object['Extend']['details'] = htmlspecialchars_decode($object['Extend']['details']);
+            $object=$this->field('crm_user.')
+                         ->where($map)
+                         ->find();
             return $object;
     }
       //获取未关联档案列表

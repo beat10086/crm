@@ -1,0 +1,34 @@
+<table class="details-table" style="max-width: 780px;">
+    <tbody>
+    <tr>
+        <td class="label">帐号：</td>
+        <td class="content">{$object.accounts}</td>
+        <td class="label">关联档案：</td>
+        <td class="content">
+            <empty name="object.name">
+                无关联
+                <else/>
+                {$object.name}
+            </empty>
+        </td>
+    </tr>
+    <tr>
+        <td class="label">电子邮件：</td>
+        <td class="content">{$object.email}</td>
+        <td class="label">登陆时间：</td>
+        <td class="content">{$object.last_login_time}</td>
+    </tr>
+    <tr>
+        <td class="label">登录IP：</td>
+        <td class="content">{$object.last_login_ip}</td>
+        <td class="label">登陆次数：</td>
+        <td class="content">{$object.login_count}</td>
+    </tr>
+    <tr>
+        <td class="label">帐号状态：</td>
+        <td class="content">{$object.state}</td>
+        <td class="label">创建时间：</td>
+        <td class="content">{$object.create_time}</td>
+    </tr>
+    </tbody>
+</table>

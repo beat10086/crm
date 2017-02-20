@@ -90,6 +90,11 @@ class UserModel extends  RelationModel   {
                     ->order(array($sort=>$order))
                     ->limit(($rows * ($page - 1)), $rows)
                     ->select();
+        foreach($object as  $k =>$v){
+               if(empty($v['state'])){
+                   $object[$k]['state']='冻结';
+               }
+        }
        return [
             'total'=>$this->count(),
             'rows' =>$object?$object:''

@@ -114,21 +114,20 @@ $(function(){
             size : 'large',
             iconCls : 'icon-accept',
             handler : function () {
-
                 if ($('#product-add').form('validate')) {
                     window.editor.sync();
                     $.ajax({
                         url : ThinkPHP['MODULE'] + '/product/register',
                         type : 'POST',
                         data : {
-                            name : $.trim($('input[name="product_name_add"]').val()),
-                            sn : $.trim($('input[name="product_sn_add"]').val()),
-                            type : $('input[name="product_type_add"]').val(),
-                            pro_price : $.trim($('input[name="product_pro_price_add"]').val()),
-                            sell_price : $.trim($('input[name="product_sell_price_add"]').val()),
+                            name             :$.trim($('input[name="product_name_add"]').val()),
+                            sn              : $.trim($('input[name="product_sn_add"]').val()),
+                            type            : $('input[name="product_type_add"]').val(),
+                            pro_price       : $.trim($('input[name="product_pro_price_add"]').val()),
+                            sell_price      : $.trim($('input[name="product_sell_price_add"]').val()),
                             unit : $.trim($('input[name="product_unit_add"]').val()),
                             inventory_alarm : $.trim($('input[name="product_inventory_alarm_add"]').val()),
-                            details : $('textarea[name="product_details_add"]').val()
+                            details :$('textarea[name="product_details_add"]').val()
                         },
                         beforeSend : function () {
                             $.messager.progress({
@@ -137,7 +136,7 @@ $(function(){
                         },
                         success : function(data) {
                             $.messager.progress('close');
-                            if (data > 0) {
+                            if (data.code == 200) {
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : '添加产品成功！'
@@ -168,14 +167,52 @@ $(function(){
         width : 240,
         height : 32
     });
+    //状态搜索
+    $('#product-search-type').combobox({
+        width : 90,
+        data : [{
+            id : '办公耗材',
+            text : '办公耗材'
+        }, {
+            id : '数码用品',
+            text : '数码用品'
+        }],
+        editable : false,
+        valueField : 'id',
+        textField : 'text',
+        panelHeight : 'auto'
+    });
+    //时间搜索
+    $('#product-search-date').combobox({
+        width : 90,
+        data : [{
+            id : 'create_time',
+            text : '创建时间'
+        }],
+        editable : false,
+        valueField : 'id',
+        textField : 'text',
+        required : true,
+        missingMessage : '选择时间类型',
+        panelHeight : 'auto',
+        tipPosition : 'left',
+        novalidate : true
+    });
+    $('#product-search-date-from, #product-search-date-to').datebox({
+        onSelect : function () {
+            if ($('#product-search-date').combobox('enableValidation').combobox('isValid') == false) {
+                $('#product-search-date').combobox('showPanel');
+            }
+        }
+    });
     //产品名称
     $('#product-name-add').textbox({
         width : 240,
         height : 32,
         required : true,
-        validType : 'length[2,20]',
+        validType : 'length[10,20]',
         missingMessage : '请输入产品名称',
-        invalidMessage : '产品名称2-20位'
+        invalidMessage : '产品名称10-120位'
     });
     //产品编号
     $("#product-sn-add").textbox({
@@ -191,6 +228,7 @@ $(function(){
         width : 140,
         height : 32,
         panelHeight : 'auto',
+        required : true,
         data : [{
             id : '办公耗材',
             text : '办公耗材'
@@ -199,12 +237,40 @@ $(function(){
             text : '数码用品'
         }],
         editable : false,
+        missingMessage : '请输入选择产品类型',
         valueField : 'id',
         textField : 'text'
+    });
+    //加载新增编辑器
+    window.editor = KindEditor.create('#product-details-add', {
+        width : '94%',
+        height : '195px',
+        resizeType : 0,
+        items : [
+            'source', '|',
+            'formatblock', 'fontname', 'fontsize','|',
+            'forecolor', 'hilitecolor', 'bold','italic', 'underline', 'link', 'removeformat', '|',
+            'justifyleft', 'justifycenter', 'justifyright', '|', 'insertorderedlist', 'insertunorderedlist','|',
+            'emoticons', 'image','baidumap','|',
+            'fullscreen'
+        ]
     });
 })
 //工具栏操作模块
 var product_tool = {
+    search:function(){
+        if ($('#product-tool').form('validate')) {
+              $('#product').datagrid('load', {
+                keywords: $.trim($('input[name="product_search_keywords"]').val()),
+                date: $('input[name="product_search_date"]').val(),
+                date_from: $('input[name="product_search_date_from"]').val(),
+                date_to: $('input[name="product_search_date_to"]').val(),
+                type: $('input[name="product_search_type"]').val()
+            });
+           }else{
+             $('#product-search-date').combobox('showPanel');
+        }
+    },
     add:function(){
         $('#product-add').dialog('open');
     },
@@ -232,7 +298,7 @@ var product_tool = {
                                 $('#product').datagrid('reload');
                                 $.messager.show({
                                     title : '操作提醒',
-                                    msg : data + '个产品被成功删除！'
+                                    msg : rows.length + '个产品被成功删除！'
                                 });
                             }
                         }
@@ -248,6 +314,10 @@ var product_tool = {
     },
     redo:function(){
         $('#product').datagrid('unselectAll');
+    },
+    details:function(id){
+        $('#details-dialog').dialog('open').dialog('setTitle', '产品信息详情')
+                            .dialog('refresh', ThinkPHP['MODULE'] + '/Product/getDetails/?id=' + id);
     },
     reset:function(){
         $('#product-search-keywords').textbox('clear');

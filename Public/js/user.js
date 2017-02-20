@@ -583,8 +583,10 @@ var user_tool = {
         });
         this.search();
     },
-    details:function(){
-
+    details:function(id){
+           $('#user').datagrid('unselectAll');
+           $("#details-dialog").dialog('open').dialog('setTitle', '登录帐号详情')
+                               .dialog('refresh', ThinkPHP['MODULE'] + '/User/getDetails/?id=' + id);
     }
 }
 //扩展获取随机密码

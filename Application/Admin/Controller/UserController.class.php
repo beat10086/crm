@@ -78,4 +78,13 @@ class UserController  extends  BaseController
             $this->responseError($code);
         }
     }
+    //获取用户详情
+    public  function getDetails () {
+        if(IS_AJAX){
+            (new UserModel())->getDetails(I('get.id'));
+           }else{
+            $this->eror('非法操作!');
+        }
+
+    }
 }
