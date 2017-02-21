@@ -48,17 +48,20 @@ class InlibModel  extends  Model  {
             $map["$date"] = $date_map["$date"];
         }
 
-        $object = $this->field('id,sn,product,staff,
-                                number,pro_price,unit,
-                                mode,mode_explain,enter,
-                                discount,amount,create_time')
+        $object = $this->field('crm_inlib.id,crm_inlib.number,crm_inlib.staff_name,crm_inlib.mode,
+                                crm_inlib.mode_explain,crm_inlib.enter,crm_inlib.create_time,crm_product.sn,
+                                crm_product.name,crm_product.unit,crm_product.pro_price,crm_product.sell_price')
+            ->join('crm_product on crm_inlib.product_id=crm_product.id','LEFT')
             ->where($map)
             ->order(array($sort=>$order))
             ->limit(($rows * ($page - 1)), $rows)
             ->select();
-
+        //number_format 转化金币格式
+        foreach($object  as $k=>$v){
+            $object[$k]['amount']=number_format($v['pro_price']*$v['number'],'2');
+        }
         return array(
-            'total'=>$this->count(),
+            'total'=>$this->where($map)->count(),
             'rows'=>$object ? $object : '',
         );
     }

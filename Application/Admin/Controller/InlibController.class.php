@@ -13,16 +13,11 @@ use Common\Model\InlibModel;
 
 
 class InlibController extends  BaseController  {
-      //加载页面
-     public function Index ()
-     {
-              $this->display();
-     }
     //获取入库产品列表
     public  function  getList () {
         if (IS_AJAX) {
              $inlibData=(new InlibModel())->getList(I('post.page'), I('post.rows'), I('post.order'),
-                                                    I('post.sort'),I('post.keywords'), I('post.date'),
+                                                    I('post.sort'), I('post.keywords'), I('post.date'),
                                                     I('post.date_from'), I('post.date_to'));
              $this->ajaxReturn($inlibData);
         } else {

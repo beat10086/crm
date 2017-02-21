@@ -23,7 +23,7 @@ $(function(){
                 width : 60
             },
             {
-                field : 'product',
+                field : 'name',
                 title : '入库产品',
                 width : 100
             },
@@ -35,11 +35,6 @@ $(function(){
             {
                 field : 'pro_price',
                 title : '采购价格',
-                width : 60
-            },
-            {
-                field : 'discount',
-                title : '折扣率',
                 width : 60
             },
             {
@@ -69,7 +64,7 @@ $(function(){
                 }
             },
             {
-                field : 'staff',
+                field : 'staff_name',
                 title : '经办人',
                 width : 60
             },
@@ -432,8 +427,8 @@ var inlib_tool = {
 
 //产品工具栏操作模块
 var inlib_product_tool={
-        select:function(){
-            $('#inlib-product-add').textbox('setValue', name);
+        select:function(id,sn,pro_price,unit,name){
+            $('#inlib-product-add').textbox('setValue',name);
             $('#inlib-pid-add').val(id);
             $('#inlib-psn-add').val(sn);
             $('#inlib-pprice-add').val(pro_price);
@@ -442,16 +437,12 @@ var inlib_product_tool={
             this.reset();
         },
        search:function(){
-              $("#inlib-search-product").form('load',{
+              $("#inlib-search-product").datagrid('load',{
                   keywords: $.trim($('input[name="inlib_product_search_keywords"]').val())
               })
        },
       reset:function(){
           $('#inlib-product-search-keywords').textbox('clear');
-          $('#inlib-search-product').datagrid('resetSort', {
-              sortName : 'create_time',
-              sortOrder : 'desc'
-          });
           this.search();
       }
 }
@@ -471,10 +462,10 @@ var inlib_staff_tool = {
     },
     reset : function () {
         $('#inlib-staff-search-keywords').textbox('clear');
-        $('#inlib-search-staff').datagrid('resetSort', {
+        /*$('#inlib-search-staff').datagrid('resetSort', {
             sortName : 'create_time',
             sortOrder : 'desc'
-        });
+        });*/
         this.search();
     }
 };
