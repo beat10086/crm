@@ -273,15 +273,9 @@ $(function(){
                         url : ThinkPHP['MODULE'] + '/Inlib/register',
                         type : 'POST',
                         data : {
-                            pid : $('input[name="inlib_pid_add"]').val(),
-                            sid : $('input[name="inlib_sid_add"]').val(),
-                            sn : $('input[name="inlib_psn_add"]').val(),
-                            pro_price : $('input[name="inlib_pprice_add"]').val(),
-                            unit : $('input[name="inlib_punit_add"]').val(),
-                            product : $('input[name="inlib_product_add"]').val(),
-                            staff : $('input[name="inlib_staff_add"]').val(),
+                            product_id : $('input[name="inlib_pid_add"]').val(),
+                            staff_name : $('input[name="inlib_staff_add"]').val(),
                             number : $.trim($('input[name="inlib_number_add"]').val()),
-                            discount : $.trim($('input[name="inlib_discount_add"]').val()),
                             mode : $.trim($('input[name="inlib_mode_add"]').val()),
                             mode_explain : $.trim($('input[name="inlib_mode_explain_add"]').val())
                         },
@@ -292,7 +286,7 @@ $(function(){
                         },
                         success : function(data) {
                             $.messager.progress('close');
-                            if (data > 0) {
+                            if (data.code ==200) {
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : '添加入库成功！'
@@ -403,6 +397,43 @@ $(function(){
         validType : 'discount',
         invalidMessage : '折扣率必须小于10，小数点后最多两位'
     });
+    //时间类型旋转
+    $("#inlib-search-date").combobox({
+        width : 100,
+        editable : false,
+        prompt : '时间类型',
+        data : [{
+            id : 'create_time',
+            text : '创建时间'
+        }],
+        valueField : 'id',
+        textField : 'text',
+        required : true,
+        novalidate : true,
+        panelHeight : 'auto',
+        tipPosition : 'left',
+        missingMessage : '请选择时间类型'
+    });
+    //查询时间对象
+    inlibDate = {
+        width : 100,
+        editable : false,
+        onSelect : function ()
+        {
+            if (inlibSearchDateType.combobox('enableValidation').combobox('isValid') == false)
+            {
+                inlibSearchDateType.combobox('showPanel');
+            }
+        }
+    };
+
+//起始时间
+    inlibDate.prompt = '起始时间';
+    $("#inlib-search-date-from").datebox(inlibDate);
+
+//结束时间
+    inlibDate.prompt = '结束时间';
+    $("#inlib-search-date-to").datebox(inlibDate);
 })
 //入库工具栏操作模块
 var inlib_tool = {
@@ -417,11 +448,23 @@ var inlib_tool = {
         $('#inlib-search-date').combobox('clear').combobox('disableValidation');
         $('#inlib-search-date-from').datebox('clear');
         $('#inlib-search-date-to').datebox('clear');
-        $('#inlib').datagrid('resetSort', {
+        /*$('#inlib').datagrid('resetSort', {
             sortName : 'create_time',
             sortOrder : 'desc'
-        });
+        });*/
         this.search();
+    },
+    search:function(){
+        $("#inlib").datagrid('load', {
+            keywords : $("#inlib-search-keywords").textbox('getValue'),
+            dateType : $("#inlib-search-date").combobox('getValue'),
+            dateFrom : $("#inlib-search-date-from").datebox('getValue'),
+            dateTo :   $("#inlib-search-date-to").datebox('getValue')
+        });
+    },
+    details:function(id){
+        $('#details-dialog').dialog('open').dialog('setTitle', '产品入库信息详情')
+            .dialog('refresh', ThinkPHP['MODULE'] + '/Inlib/getDetails/?id=' + id);
     }
 }
 

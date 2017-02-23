@@ -23,8 +23,8 @@ class InlibModel  extends  Model  {
 
         //如果有关键字，进行组装
         if ($keywords) {
-            $keywords_map['product'] = array('like', '%'.$keywords.'%');
-            $keywords_map['staff'] = array('like', '%'.$keywords.'%');
+            $keywords_map['name'] = array('like', '%'.$keywords.'%');
+            $keywords_map['staff_name'] = array('like', '%'.$keywords.'%');
             $keywords_map['sn'] = array('like', '%'.$keywords.'%');
             $keywords_map['_logic'] = 'OR';
         }
@@ -66,28 +66,21 @@ class InlibModel  extends  Model  {
         );
     }
     //入库操作
-    public  function  register ($pid, $sid, $sn, $product, $staff, $pro_price, $unit, $number, $mode, $mode_explain, $discount) {
+    public  function  register ($product_id, $number, $staff_name, $mode, $mode_explain) {
         $data = array(
-            'pid'=>$pid,
-            'sid'=>$sid,
-            'sn'=>$sn,
-            'product'=>$product,
-            'pro_price'=>$pro_price,
-            'unit'=>$unit,
-            'staff'=>$staff,
+            'product_id'=>$product_id,
             'number'=>$number,
-            'discount'=>$discount,
-            'amount'=>round($discount * $number * $pro_price * 0.1, 2),
+            'staff_name' =>$staff_name,
             'mode'=>$mode,
             'mode_explain'=>$mode_explain,
-            'enter'=>session('admin')['name']
+            'enter'=>session('admin')['staff_name']
         );
 
         if ($this->create($data)) {
             $data['create_time'] = get_time();
             $iid = $this->add($data);
             if ($iid) {
-                $map['id'] = $pid;
+                $map['id'] = $product_id;
                 $update = array(
                     'inventory'=>array('exp','inventory+'.$number),
                     'inventory_in'=>array('exp','inventory_in+'.$number),
@@ -100,5 +93,23 @@ class InlibModel  extends  Model  {
         } else {
             return $this->getError();
         }
+    }
+    //入库详情
+    public function getDetails ($id) {
+            $map['crm_inlib.id']=$id; //当双表查询的时候，要指定那个表的id
+            $object=$this->field('crm_product.name,
+                                  crm_product.sn,
+                                  crm_product.type,
+                                  crm_product.pro_price,
+                                  crm_inlib.number,
+                                  crm_inlib.staff_name,
+                                  crm_inlib.mode,
+                                  crm_inlib.mode_explain,
+                                  crm_inlib.enter,
+                                  crm_inlib.create_time')
+                ->join('crm_product on crm_product.id=crm_inlib.product_id','LEFT')
+                ->where($map)
+                ->find();
+            return $object;
     }
 }
