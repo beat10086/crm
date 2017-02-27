@@ -168,9 +168,9 @@ $(function(){
                         type : 'POST',
                         data : {
                             company : $.trim($('input[name="client_company_add"]').val()),
-                            name : $('input[name="client_name_add"]').val(),
-                            tel : $.trim($('input[name="client_tel_add"]').val()),
-                            source : $('input[name="client_source_add"]').val()
+                            name    : $('input[name="client_name_add"]').val(),
+                            tel     : $.trim($('input[name="client_tel_add"]').val()),
+                            source  : $('input[name="client_source_add"]').val()
                         },
                         beforeSend : function () {
                             $.messager.progress({
@@ -179,10 +179,10 @@ $(function(){
                         },
                         success : function(data) {
                             $.messager.progress('close');
-                            if (data > 0) {
+                            if (data.code ==200) {
                                 $.messager.show({
                                     title : '操作提醒',
-                                    msg : '添加帐号成功！'
+                                    msg   : '添加客服成功！'
                                 });
                                 $('#client-add').dialog('close');
                                 $('#client').datagrid('load');
@@ -213,8 +213,76 @@ $(function(){
             $('#client-add').form('reset');
         }
     });
+    //修改面板
+    $('#client-edit').dialog({
+        width : 420,
+        height : 300,
+        title : '修改客户信息',
+        iconCls : 'icon-edit-new',
+        modal : true,
+        closed : true,
+        maximizable : true,
+        buttons : [{
+            text : '保存',
+            size : 'large',
+            iconCls : 'icon-accept',
+            handler : function () {
+                if ($('#client-edit').form('validate')) {
+                    $.ajax({
+                        url : ThinkPHP['MODULE'] + '/Client/update',
+                        type : 'POST',
+                        data : {
+                            id :      $('input[name="client_id_edit"]').val(),
+                            company : $('input[name="client_company_edit"]').val(),
+                            name :    $('input[name="client_name_edit"]').val(),
+                            tel :     $('input[name="client_tel_edit"]').val(),
+                            source :  $('input[name="client_source_edit"]').val()
+                        },
+                        beforeSend : function () {
+                            $.messager.progress({
+                                text : '正在尝试保存...',
+                            });
+                        },
+                        success : function(data) {
+                            $.messager.progress('close');
+                            if (data.code == 200) {
+                                $.messager.show({
+                                    title : '操作提醒',
+                                    msg : '修改客户成功！'
+                                });
+                                $('#client-edit').dialog('close');
+                                $('#client').datagrid('load');
+                            }
+                        }
+                    });
+                }
+            }
+        },{
+            text : '取消',
+            size : 'large',
+            iconCls : 'icon-cross',
+            handler : function () {
+                $('#client-edit').dialog('close');
+            }
+        }],
+        onClose : function () {
+            $('#client-edit').form('reset');
+        }
+    });
 })
 var  client_tool={
+         'search':function(){
+             if ($('#client-tool').form('validate')) {
+                 $('#client').datagrid('load', {
+                     keywords: $.trim($('input[name="client_search_keywords"]').val()),
+                     date: $('input[name="client_search_date"]').val(),
+                     date_from: $('input[name="client_search_date_from"]').val(),
+                     date_to: $('input[name="client_search_date_to"]').val()
+                 });
+             } else {
+                 $('#client-search-date').combobox('showPanel');
+             }
+         },
         'add':function(){
                $("#client-add").dialog('open');
         },
@@ -276,7 +344,7 @@ var  client_tool={
                                     $('#client').datagrid('reload');
                                     $.messager.show({
                                         title : '操作提醒',
-                                        msg : data + '个客户被成功删除！'
+                                        msg : rows.length + '个客户被成功删除！'
                                     });
                                 }
                             }
@@ -292,5 +360,21 @@ var  client_tool={
         },
        redo   :function(){
                $("#client").datagrid('unselectAll');
+       },
+        reset : function () {
+            $('#client-search-keywords').textbox('clear');
+            $('#client-search-date').combobox('clear').combobox('disableValidation');
+            $('#client-search-date-from').datebox('clear');
+            $('#client-search-date-to').datebox('clear');
+            $('#client-search-type').combobox('clear');
+            /*$('#client').datagrid('resetSort', {
+                sortName : 'create_time',
+                sortOrder : 'desc'
+            });*/
+            this.search();
+        },
+       details:function(id){
+           $('#details-dialog').dialog('open').dialog('setTitle', '客户信息详情')
+                               .dialog('refresh', ThinkPHP['MODULE'] + '/Client/getDetails/?id=' + id);
        }
 }

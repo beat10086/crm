@@ -33,7 +33,7 @@ $(function(){
             },
             {
 
-                field : 'company',
+                field : 'client_company',
                 title : '公司名称',
                 width : 100
             },
@@ -48,20 +48,9 @@ $(function(){
                 width : 100
             },
             {
-                field : 'next_contact',
-                title : '下次联系',
-                width : 100,
-                sortable : true
-            },
-            {
-                field : 'd_name',
+                field : 'staff_name',
                 title : '跟单员',
                 width : 80
-            },
-            {
-                field : 'd_date',
-                title : '跟单时间',
-                width : 100
             },
             {
                 field : 'enter',
@@ -575,18 +564,24 @@ var documentary_tool = {
 //客户工具栏
 var  documentary_client_tool={
         search:function(){
-              $("#documentary-search-client").datagrid('load',function(){
-                  keywords: $.trim($('input[name="documentary_client_search_keywords"]').val())
+              $("#documentary-search-client").datagrid('load',{
+                    keywords: $.trim($('input[name="documentary_client_search_keywords"]').val())
               });
        },
        reset : function () {
             $('#documentary-client-search-keywords').textbox('clear');
-            $('#documentary-search-client').datagrid('resetSort', {
+            /*$('#documentary-search-client').datagrid('resetSort', {
                 sortName : 'create_time',
                 sortOrder : 'desc'
-            });
+            });*/
             this.search();
-        }
+        },
+     select:function(id){
+         //当新增更单的时候
+         if($('#documentary-add').dialog('dialog').css('display')=='block'){
+
+         }
+    }
 }
 
 //员工工具栏操作模块

@@ -48,17 +48,16 @@ class OutlibModel extends  Model {
                 $map["$date"] = $date_map["$date"];
             }
 
-            $object = $this->field('id,sn,product,staff,
-                                    number,pro_price,unit,
-                                    mode,mode_explain,enter,
-                                    discount,amount,create_time')
-                ->where($map)
-                ->order(array($sort=>$order))
-                ->limit(($rows * ($page - 1)), $rows)
-                ->select();
-
+            $object = $this->field('crm_outlib.id,crm_outlib.order_sn,crm_outlib.number,crm_outlib.state,
+                                    crm_outlib.clerk,crm_outlib.enter,crm_outlib.dispose_time,
+                                    crm_outlib.create_time,crm_product.sn,crm_product.name,crm_product.sell_price')
+                            ->join('crm_product on crm_outlib.product_id = crm_product.id','left')
+                            ->where($map)
+                            ->order(array($sort=>$order))
+                            ->limit(($rows * ($page - 1)), $rows)
+                            ->select();
             return array(
-                'total'=>$this->count(),
+                'total'=>$this->where($map)->count(),
                 'rows'=>$object ? $object : '',
             );
     }

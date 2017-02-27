@@ -13,12 +13,6 @@ use Common\Controller\BaseController;
 use Common\Model\OutlibModel;
 
 class OutlibController extends  BaseController {
-
-    //出库页面
-    public function Index () {
-          $this->display();
-    }
-
     //出库列表
     public function  getList () {
        if(IS_AJAX){

@@ -11,10 +11,6 @@ use Common\Controller\BaseController;
 use Common\Model\DocumentaryModel;
 
 class DocumentaryController extends  BaseController  {
-   //加载跟单页
-   public  function Index (){
-         $this->display();
-   }
    //跟单列表
    public  function getList () {
         if(IS_AJAX){

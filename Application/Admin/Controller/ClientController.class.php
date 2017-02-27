@@ -12,15 +12,12 @@ use Common\Model\ClientModel;
 
 
 class ClientController extends  BaseController  {
-
-    //显示客服信息页面
-    public  function  Index (){
-          $this->display();
-    }
    //获取客服信息列表
    public function getList () {
         if(IS_AJAX){
-             $clientDate=(new ClientModel())->getList();
+             $clientDate=(new ClientModel())->getList(I('post.page'), I('post.rows'), I('post.order'),
+                                                      I('post.sort'), I('post.keywords'), I('post.date'),
+                                                      I('post.date_from'), I('post.date_to'));
              $this->ajaxReturn($clientDate);
            }else{
              $this->error('非法操作！');
@@ -31,6 +28,11 @@ class ClientController extends  BaseController  {
        if(IS_AJAX){
             $code=(new ClientModel())->register(I('post.company'), I('post.name'),
                                                 I('post.tel'), I('post.source'));
+            if($code>0){
+                $this->responseSuccess();
+              }else{
+                $this->responseError($code);
+            }
          }else{
             $this->error('非法操作!');
        }
@@ -55,6 +57,30 @@ class ClientController extends  BaseController  {
                   }
             }else{
                $this->eror('非法操作!');
+          }
+    }
+    //更新客服信息
+    public  function  update () {
+        if(IS_AJAX){
+            $code=(new ClientModel())->update(I('post.id'),I('post.company'),
+                                             I('post.name'),I('post.tel'),I('post.source'));
+            if($code>0){
+                $this->responseSuccess();
+            }else{
+                $this->responseError($code);
+            }
+           }else{
+             $this->error('非法操作!');
+        }
+    }
+    //获取客服详情
+    public  function getDetails (){
+          if(IS_AJAX){
+               $object=(new ClientModel())->getDetails(I('get.id'));
+               $this->assign('object',$object);
+               $this->display('details');
+              }else{
+               $this->error('非法操作!');
           }
     }
 }

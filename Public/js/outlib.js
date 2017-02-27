@@ -52,7 +52,7 @@ $(function(){
                 width : 60
             },
             {
-                field : 'keyboarder',
+                field : 'enter',
                 title : '录入员',
                 width : 60
             },

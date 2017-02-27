@@ -53,13 +53,11 @@ class DocumentaryModel extends  Model {
             $map['evolve'] = '谈判中';
         }
 
-        $object = $this->field('id,sn,title,company,way,evolve,next_contact,d_name,d_date,
-											remark,enter,create_time')
+        $object = $this->field('id,sn,title,way,evolve,client_company,staff_name,remark,enter,create_time')
             ->where($map)
             ->order(array($sort=>$order))
             ->limit(($rows * ($page - 1)), $rows)
             ->select();
-
         return array(
             'total'=>$this->count(),
             'rows'=>$object ? $object : '',

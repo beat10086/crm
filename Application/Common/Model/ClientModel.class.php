@@ -44,13 +44,11 @@ class ClientModel extends  Model {
             $map["$date"] = $date_map["$date"];
         }
 
-        $object = $this->field('id,company,name,tel,
-                                enter,source,create_time')
+        $object = $this->field('id,company,name,tel,enter,source,create_time')
             ->where($map)
             ->order(array($sort=>$order))
             ->limit(($rows * ($page - 1)), $rows)
             ->select();
-
         return array(
             'total'=>$this->count(),
             'rows'=>$object ? $object : '',
@@ -59,11 +57,11 @@ class ClientModel extends  Model {
    //添加用户信息
     public function register ($company, $name, $tel, $source) {
         $data = array(
-            'company'=>$company,
-            'name'=>$name,
-            'tel'=>$tel,
-            'source'=>$source,
-            'enter'=>session('admin')['name']
+            'company' =>$company,
+            'name'    =>$name,
+            'tel'     =>$tel,
+            'source'  =>$source,
+            'enter'   =>session('admin')['staff_name']
         );
         if ($this->create($data)) {
             $cid = $this->add();
@@ -80,5 +78,22 @@ class ClientModel extends  Model {
     //删除客户信息
     public  function remove ($ids) {
          return $this->delete($ids);
+    }
+    //更新客服信息
+    public function update ($id,$company,$name,$tel,$source) {
+         $map['id']=$id;
+         $data=[
+             'company'=>$company,
+             'name'   =>$name,
+             'tel'    =>$tel,
+             'source' =>$source,
+             'enter'  =>session('admin')['staff_name']
+         ];
+        return $this->where($map)->save($data);
+    }
+    //获取客服详情
+    public function getDetails ($id){
+          $map['id']=$id;
+          return  $this->field('company,name,tel,source,enter,create_time')->where($map)->find();
     }
 }
