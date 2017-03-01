@@ -27,7 +27,7 @@ class DocumentaryController extends  BaseController  {
    public function register (){
         if(IS_AJAX){
              $code=(new DocumentaryModel())->register(I('post.title'), I('post.cid'), I('post.sid'),
-                                                      I('post.company'),I('post.d_name'), I('post.way'),
+                                                      I('post.company'),I('post.staff_name'), I('post.way'),
                                                       I('post.evolve'), I('post.next_contact'), I('post.remark'));
              if($code>0){
                     $this->responseSuccess();
@@ -51,8 +51,8 @@ class DocumentaryController extends  BaseController  {
     //更新跟单
     public  function  update () {
           if(IS_AJAX){
-                $code=(new DocumentaryModel())->update( I('post.id'), I('post.title'), I('post.cid'),
-                                                        I('post.sid'), I('post.company'), I('post.d_name'),
+                $code=(new DocumentaryModel())->update( I('post.id'), I('post.title'), I('post.client_id'),
+                                                        I('post.staff_id'), I('post.client_company'), I('post.staff_name'),
                                                         I('post.way'), I('post.evolve'), I('post.next_contact'),
                                                         I('post.remark'));
                 if($code>0){
@@ -67,9 +67,24 @@ class DocumentaryController extends  BaseController  {
     //删除跟单
     public  function remove () {
         if(IS_AJAX){
-                 (new DocumentaryModel())->remove(I('post.ids'));
+                $code=(new DocumentaryModel())->remove(I('post.ids'));
+                if($code>0){
+                    $this->responseSuccess();
+                }else{
+                    $this->responseError($code);
+                }
              }else{
             $this->error('非法操作！');
         }
+    }
+    //获取详情
+    public  function getDetails () {
+          if(IS_AJAX){
+              $object=(new DocumentaryModel())->getDetails(I('get.id'));
+              $this->assign('object',$object);
+              $this->display('details');
+             }else{
+              $this->error('非法操作！');
+          }
     }
 }

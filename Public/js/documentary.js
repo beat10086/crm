@@ -363,7 +363,7 @@ $(function(){
                             cid : $('input[name="documentary_cid_add"]').val(),
                             sid : $('input[name="documentary_sid_add"]').val(),
                             company : $.trim($('input[name="documentary_company_add"]').val()),
-                            d_name : $('input[name="documentary_name_add"]').val(),
+                            staff_name : $('input[name="documentary_name_add"]').val(),
                             way : $.trim($('input[name="documentary_way_add"]').val()),
                             evolve : $('input[name="documentary_evolve_add"]').val(),
                             next_contact : $('input[name="documentary_next_contact_add"]').val(),
@@ -376,7 +376,7 @@ $(function(){
                         },
                         success : function(data) {
                             $.messager.progress('close');
-                            if (data > 0) {
+                            if (data.code ==200) {
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : '添加跟单成功！'
@@ -421,10 +421,10 @@ $(function(){
                         data : {
                             id : $('input[name="documentary_id_edit"]').val(),
                             title : $.trim($('input[name="documentary_title_edit"]').val()),
-                            cid : $('input[name="documentary_cid_edit"]').val(),
-                            sid : $('input[name="documentary_sid_edit"]').val(),
-                            company : $.trim($('input[name="documentary_company_edit"]').val()),
-                            d_name : $('input[name="documentary_name_edit"]').val(),
+                            client_id : $('input[name="documentary_cid_edit"]').val(),
+                            staff_id : $('input[name="documentary_sid_edit"]').val(),
+                            client_company : $.trim($('input[name="documentary_company_edit"]').val()),
+                            staff_name : $('input[name="documentary_name_edit"]').val(),
                             way : $.trim($('input[name="documentary_way_edit"]').val()),
                             evolve : $('input[name="documentary_evolve_edit"]').val(),
                             next_contact : $('input[name="documentary_next_contact_edit"]').val(),
@@ -437,7 +437,7 @@ $(function(){
                         },
                         success : function(data) {
                             $.messager.progress('close');
-                            if (data > 0) {
+                            if (data.code==200) {
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : '修改跟单成功！'
@@ -464,6 +464,24 @@ $(function(){
 })
 //跟单工具栏
 var documentary_tool = {
+    search : function () {
+        if ($('#documentary-tool').form('validate')) {
+            $('#documentary').datagrid('load', {
+                keywords: $.trim($('input[name="documentary_search_keywords"]').val()),
+                date: $('input[name="documentary_search_date"]').val(),
+                date_from: $('input[name="documentary_search_date_from"]').val(),
+                date_to: $('input[name="documentary_search_date_to"]').val()
+            });
+        } else {
+            $('#documentary-search-date').combobox('showPanel');
+        }
+    },
+    details : function (id) {
+        $('#details-dialog').
+        dialog('open').
+        dialog('setTitle', '跟单信息详情').
+        dialog('refresh', ThinkPHP['MODULE'] + '/Documentary/getDetails/?id=' + id);
+    },
     add : function () {
         $('#documentary-add').dialog('open');
     },
@@ -490,10 +508,10 @@ var documentary_tool = {
                         $('#documentary-edit').form('load', {
                             documentary_id_edit : data.id,
                             documentary_title_edit : data.title,
-                            documentary_company_edit : data.company,
-                            documentary_cid_edit : data.cid,
-                            documentary_sid_edit : data.sid,
-                            documentary_name_edit : data.d_name,
+                            documentary_company_edit : data.client_company,
+                            documentary_cid_edit : data.client_id,
+                            documentary_sid_edit : data.staff_id,
+                            documentary_name_edit : data.staff_name,
                             documentary_way_edit : data.way,
                             documentary_evolve_edit : data.evolve,
                             documentary_next_contact_edit : data.next_contact,
@@ -530,7 +548,7 @@ var documentary_tool = {
                                     $('#documentary').datagrid('reload');
                                     $.messager.show({
                                         title : '操作提醒',
-                                        msg : data + '个跟单被成功删除！'
+                                        msg : rows.length + '个跟单被成功删除！'
                                     });
                                 }
                             }
@@ -543,7 +561,7 @@ var documentary_tool = {
             }
      },
     reload:function(){
-          $("documentary").datagrid('reload');
+          $("#documentary").datagrid('reload');
     },
     redo:function(){
          $('#documentary').datagrid('unselectAll');
@@ -554,10 +572,10 @@ var documentary_tool = {
         $('#documentary-search-date-from').datebox('clear');
         $('#documentary-search-date-to').datebox('clear');
         $('#documentary-search-type').combobox('clear');
-        $('#documentary').datagrid('resetSort', {
+       /* $('#documentary').datagrid('resetSort', {
             sortName : 'create_time',
             sortOrder : 'desc'
-        });
+        });*/
         this.search();
     }
 }
@@ -576,11 +594,16 @@ var  documentary_client_tool={
             });*/
             this.search();
         },
-     select:function(id){
+     select:function(id,company){
          //当新增更单的时候
          if($('#documentary-add').dialog('dialog').css('display')=='block'){
-
+                  $("#documentary-cid-add").val(id);
+                  $("#documentary-company-add").textbox('setValue', company);
+         }else if($('#documentary-edit').dialog('dialog').css('display') == 'block'){
+                  $('#documentary-cid-edit').val(id);
+                  $('#documentary-company-edit').textbox('setValue', company);
          }
+         $('#documentary-client').dialog('close');
     }
 }
 
@@ -598,7 +621,7 @@ var documentary_staff_tool = {
             $('#documentary-sid-add').val(id);
         } else if ($('#documentary-edit').dialog('dialog').css('display') == 'block') {
             $('#documentary-name-edit').textbox('setValue', name);
-            $('#documentary-sid-edit').val(id);
+            $('#documentary_sid_edit').val(id);
         }
         $('#documentary-staff').dialog('close');
         this.reset();

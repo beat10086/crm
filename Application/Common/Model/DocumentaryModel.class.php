@@ -23,9 +23,10 @@ class DocumentaryModel extends  Model {
 
         //如果有关键字，进行组装
         if ($keywords) {
+            $keywords_map['sn'] = array('like', '%'.$keywords.'%');
             $keywords_map['title'] = array('like', '%'.$keywords.'%');
-            $keywords_map['company'] = array('like', '%'.$keywords.'%');
-            $keywords_map['d_name'] = array('like', '%'.$keywords.'%');
+            $keywords_map['client_company'] = array('like', '%'.$keywords.'%');
+            $keywords_map['staff_name'] = array('like', '%'.$keywords.'%');
             $keywords_map['_logic'] = 'OR';
         }
 
@@ -64,19 +65,19 @@ class DocumentaryModel extends  Model {
         );
     }
     //添加跟单
-    public  function register ($title, $cid, $sid, $company, $d_name, $way, $evolve, $next_contact, $remark) {
+    public  function register ($title, $cid, $sid, $company, $staff_name, $way, $evolve, $next_contact, $remark) {
         $data = array(
             'title'=>$title,
-            'cid'=>$cid,
-            'sid'=>$sid,
-            'company'=>$company,
-            'd_name'=>$d_name,
+            'client_id'=>$cid,
+            'staff_id'=>$sid,
+            'client_company'=>$company,
+            'staff_name'=>$staff_name,
             'way'=>$way,
             'evolve'=>$evolve,
             'next_contact'=>$next_contact,
             'remark'=>$remark,
-            'sn'=>get_time_string(),
-            'enter'=>session('admin')['name']
+            'sn'=>get_time_string(),   //生成订单号
+            'enter'=>session('admin')['staff_name']
         );
         if ($this->create($data)) {
             $cid = $this->add();
@@ -88,24 +89,25 @@ class DocumentaryModel extends  Model {
     //获取1条跟单
     public function getDocumentary ($id) {
         $map['id'] = $id;
-        return $this->field('id,title,sid,cid,company,d_name,way,evolve,next_contact,d_date,enter,remark')
+        $object=$this->field('id,title,client_id,client_company,staff_id,staff_name,way,evolve,next_contact,remark')
                     ->where($map)
                     ->find();
+        return $object;
     }
     //更新跟单
-    public  function update ($id, $title, $cid, $sid, $company, $d_name, $way, $evolve, $next_contact, $remark){
+    public  function update ($id, $title, $client_id, $staff_id, $client_company, $staff_name, $way, $evolve, $next_contact, $remark){
         $data = array(
             'id'=>$id,
             'title'=>$title,
-            'cid'=>$cid,
-            'sid'=>$sid,
-            'company'=>$company,
-            'd_name'=>$d_name,
+            'client_id'=>$client_id,
+            'staff_id'=>$staff_id,
+            'client_company'=>$client_company,
+            'staff_name'=>$staff_name,
             'way'=>$way,
             'evolve'=>$evolve,
             'next_contact'=>$next_contact,
             'remark'=>$remark,
-            'enter'=>session('admin')['name']
+            'enter'=>session('admin')['staff_name']
         );
 
         if ($this->create($data)) {
@@ -118,5 +120,12 @@ class DocumentaryModel extends  Model {
     //删除跟单
     public  function  remove ($ids){
           return $this->delete($ids);
+    }
+    //获取跟单详情
+    public  function getDetails ($id) {
+          $map['id']=$id;
+          $object=$this->field('sn,title,client_id,client_company,staff_name,way,evolve,remark,enter,create_time,next_contact')
+               ->where($map)->find();
+          return $object;
     }
 }
