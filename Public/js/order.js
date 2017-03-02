@@ -32,17 +32,22 @@ $(function(){
                 width : 120
             },
             {
-                field : 'company',
+                field : 'client_company',
                 title : '所属公司',
                 width : 100
             },
             {
-                field : 'amount',
-                title : '订单金额',
+                field : 'original',
+                title : '原价',
                 width : 80
             },
             {
-                field : 'd_name',
+                field : 'cost',
+                title : '现价',
+                width : 80
+            },
+            {
+                field : 'staff_name',
                 title : '跟单员',
                 width : 80
             },
@@ -151,12 +156,12 @@ $(function(){
                         width : 150
                     },
                     {
-                        field : 'company',
+                        field : 'client_company',
                         title : '所属公司',
                         width : 80
                     },
                     {
-                        field : 'd_name',
+                        field : 'staff_name',
                         title : '跟单员',
                         width : 60
                     },
@@ -317,7 +322,8 @@ $(function(){
                             type : 'POST',
                             data : {
                                 title : $.trim($('input[name="order_title_add"]').val()),
-                                amount : $.trim($('input[name="order_amount_add"]').val()),
+                                original : $.trim($('input[name="order_original_price_add"]').val()),
+                                cost:      $.trim($('input[name="order-add-cost"]').val()),
                                 documentary_id : $.trim($('input[name="order_documentary_id_add"]').val()),
                                 details : $.trim($('textarea[name="order_details_add"]').val()),
                                 contract : $('textarea[name="order_contract_add"]').val(),
@@ -330,7 +336,7 @@ $(function(){
                             },
                             success : function(data) {
                                 $.messager.progress('close');
-                                if (data > 0) {
+                                if (data.code==200) {
                                     $.messager.show({
                                         title : '操作提醒',
                                         msg : '添加订单成功！'
@@ -360,7 +366,29 @@ $(function(){
             order_product_tool.ids = [];
         }
     });
-
+    //新增和修改订单金额
+    $('#order-add-cost, #order-add-cost').textbox({
+        width : 240,
+        height : 32,
+        required : true,
+        validType : 'nan',
+        missingMessage : '请输入订单金额',
+        invalidMessage : '金额必须是数值'
+    });
+    //加载新增编辑器
+    window.editor = KindEditor.create('#order-contract-add', {
+        width : '94%',
+        height : '200px',
+        resizeType : 0,
+        items : [
+            'source', '|',
+            'formatblock', 'fontname', 'fontsize','|',
+            'forecolor', 'hilitecolor', 'bold','italic', 'underline', 'link', 'removeformat', '|',
+            'justifyleft', 'justifycenter', 'justifyright', '|', 'insertorderedlist', 'insertunorderedlist','|',
+            'emoticons', 'image','baidumap','|',
+            'fullscreen'
+        ]
+    });
 })
 //订单工具栏
 var order_tool ={
@@ -522,6 +550,13 @@ var order_documentary_tool={
             sortOrder : 'desc'
         });
         this.search();
+    },
+    select:function(id,title){
+        if($('#order-documentary').dialog('dialog').css('display')=='block'){
+              $("#order-documentary-id-add").val(id);
+              $("#order-documentary-add").textbox('setValue',title);
+        }
+        $('#order-documentary').dialog('close');
     }
 }
 //订单产品工具栏
@@ -550,6 +585,7 @@ var order_product_tool={
                    sell_price : sell_price,
                    number : number
                });
+               //这个很重要,为什么要100,先转化为整数，防止，计算小时，不精确的问题
                this.original_price = ((this.original_price * 100) + (number * sell_price * 100)) / 100;
                $('#order-original-price-add').val(this.original_price.toFixed(2));
                $('.original_price').text('￥' + this.original_price.toFixed(2));
@@ -560,10 +596,10 @@ var order_product_tool={
     },
     reset:function(){
         $('#order-product-search-keywords').textbox('clear');
-        $('#order-product-table').datagrid('resetSort', {
+       /* $('#order-product-table').datagrid('resetSort', {
             sortName : 'create_time',
             sortOrder : 'desc'
-        });
+        });*/
         this.search();
     }
 }

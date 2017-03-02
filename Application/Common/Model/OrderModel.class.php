@@ -14,20 +14,9 @@ class OrderModel extends  Model  {
         //产品长度不合法
         //array('product', '2,20', '产品长度不合法', self::EXISTS_VALIDATE, 'length', self::MODEL_INSERT),
     );
-
     //客户表自动完成
     protected $_auto = array(
         array('create_time', 'get_time', self::MODEL_INSERT, 'function'),
-    );
-
-    //关联模型
-    protected $_link = array(
-        //关联订单附表
-        'Extend'=>array(
-            'mapping_type'=>self::HAS_ONE,
-            'class_name'=>'OrderExtend',
-            'foreign_key'=>'oid'
-        )
     );
    //获取订单列表
    public  function  getList ($page, $rows, $order, $sort, $keywords, $date, $date_from, $date_to, $neg=false) {
@@ -69,12 +58,13 @@ class OrderModel extends  Model  {
        $object = $this->field(' crm_order.id,
                                 crm_order.sn,
                                 crm_order.title,
-                                crm_order.amount,
+                                crm_order.original,
+                                crm_order.cost,
                                 crm_order.enter,
                                 crm_order.pay_state,
                                 crm_order.create_time,
-                                crm_documentary.d_name,
-                                crm_documentary.company')
+                                crm_documentary.staff_name,
+                                crm_documentary.client_company')
            ->join('crm_documentary ON crm_order.documentary_id=crm_documentary.id', 'LEFT')
            ->where($map)
            ->order(array($sort=>$order))
@@ -87,38 +77,43 @@ class OrderModel extends  Model  {
        );
    }
    //添加订单
-    public function register ($title, $amount, $documentary_id, $details, $contract, $product_outlib){
-        $sn = get_time_string();
-        $data = array(
-            'title'=>$title,
-            'amount'=>$amount,
-            'documentary_id'=>$documentary_id,
-            'sn'=>$sn,
-            'pay_state'=>'未付款',
-            'enter'=>session('admin')['name'],
-            'Extend'=>array(
-                'details'=>$details,
-                'contract'=>$contract
-            )
-        );
-       if($this->create($data)){
-           $data['create_time'] = get_time();
-           $id = $this->relation('Extend')->add($data);
+    public function register ($title, $original,$cost,$documentary_id, $details, $contract, $product_outlib){
+       //先要生成订单数据
+       $addData=array(
+           'title'           =>$title,
+           'sn'              =>get_time_string(),
+           'original'        =>$original,
+           'cost'            =>$cost,
+           'documentary_id'  =>$documentary_id,
+           'pay_state'=>'未付款',
+           'enter'=>session('admin')['staff_name'],
+       );
+
+       if($this->create($addData)){
+           $addData['create_time'] = get_time();
+           $id = $this->add($addData);
            if($id){
+               //添加
+               $extend_data=array(
+                      'order_id'  =>$id,
+                      'details'   =>$details,
+                      'contract'  =>$contract
+               );
+               M('orderExtend')->add($extend_data);
                //订单产品
                $outlib = $product_outlib['rows'];
                foreach ($outlib as $key=>$value) {
-                   //出库
+                   //出库(商品的出库操作)
                    $outlib_add = array(
-                       'product_id'=>$value['id'],
-                       'number'=>$value['number'],
-                       'order_sn'=>$sn,
-                       'state'=>'未处理',
-                       'keyboarder'=>session('admin')['name'],
-                       'create_time'=>get_time()
+                       'product_id'    =>$value['id'],
+                       'number'        =>$value['number'],
+                       'order_sn'      =>get_time_string(),
+                       'state'         =>'未处理',
+                       'enter'         =>session('admin')['staff_name'],
+                       'create_time'   =>get_time()
                    );
                    M('Outlib')->add($outlib_add);
-                   //减库存
+                   //减库存(这个非常重要，如果不处理，会出现严重的问题)
                    $product_map['id'] = $value['id'];
                    $product_update = array(
                        'inventory'=>array('exp','inventory-'.$value['number']),
