@@ -113,6 +113,14 @@ $(function(){
         missingMessage : '请点击放大镜图标选择跟单',
         invalidMessage : '跟单记录不得为空'
     });
+    //选择时间触发验证
+    $('#order-search-date-to,#order-search-date-from').datebox({
+        onSelect : function () {
+            if ($('#order-search-date').combobox('enableValidation').combobox('isValid') == false) {
+                $('#order-search-date').combobox('showPanel');
+            }
+        }
+    });
     //弹出选择跟单记录
     $('#order-documentary').dialog({
         width: 550,
@@ -298,6 +306,23 @@ $(function(){
             $('#order-product').dialog('open');
         }
     });
+    //时间搜索
+    $('#order-search-date').combobox({
+        width : 90,
+        data : [{
+            id : 'create_time',
+            text : '创建时间'
+        }],
+        editable : false,
+        valueField : 'id',
+        textField : 'text',
+        required : true,
+        missingMessage : '选择时间类型',
+        panelHeight : 'auto',
+        tipPosition : 'left',
+        novalidate : true
+    });
+
     //添加订单
     $('#order-add').dialog({
         width : 780,
@@ -392,7 +417,19 @@ $(function(){
 })
 //订单工具栏
 var order_tool ={
-     add:function(){
+    search : function () {
+        if ($('#order-tool').form('validate')) {
+            $('#order').datagrid('load', {
+                keywords: $.trim($('input[name="order-search-keywords"]').val()),
+                date: $('input[name="order-search-date"]').val(),
+                date_from: $('input[name="order-search-date-from"]').val(),
+                date_to: $('input[name="order-search-date-to"]').val()
+            });
+        } else {
+            $('#client-search-date').combobox('showPanel');
+        }
+    },
+    add:function(){
          $('#order-add').dialog('open');
          //订单产品列表
          $('#order-product-list').datagrid({
@@ -523,16 +560,20 @@ var order_tool ={
             $('#order').datagrid('unselectAll');
     },
     reset:function(){
-            $('#client-search-keywords').textbox('clear');
-            $('#client-search-date').combobox('clear').combobox('disableValidation');
-            $('#client-search-date-from').datebox('clear');
-            $('#client-search-date-to').datebox('clear');
-            $('#client-search-type').combobox('clear');
-            $('#client').datagrid('resetSort', {
+            $('#order-search-keywords').textbox('clear');
+            $('#order-search-date').combobox('clear').combobox('disableValidation');
+            $('#order-search-date-from').datebox('clear');
+            $('#order-search-date-to').datebox('clear');
+            $('#order-search-type').combobox('clear');
+            /*$('#client').datagrid('resetSort', {
                 sortName : 'create_time',
                 sortOrder : 'desc'
-            });
+            });*/
             this.search();
+    },
+    details:function(id){
+        $('#details-dialog').dialog('open').dialog('setTitle', '跟单信息详情')
+                            .dialog('refresh', ThinkPHP['MODULE'] + '/Order/getDetails/?id=' + id);
     }
 }
 //更单工具栏

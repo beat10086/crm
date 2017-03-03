@@ -60,4 +60,14 @@ class  OrderController extends   BaseController  {
            $this->error('非法操作!');
        }
     }
+    //查看订单
+    public function getDetails (){
+          if(IS_AJAX){
+                $object=(new OrderModel())->getDetails(I('get.id'));
+                $this->assign('object',$object);
+                $this->display('details');
+               }else{
+              $this->error('非法操作!');
+          }
+    }
 }

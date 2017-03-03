@@ -26,18 +26,18 @@ class OrderModel extends  Model  {
 
        //如果有关键字，进行组装
        if ($keywords) {
-           $keywords_map['sn'] = array('like', '%'.$keywords.'%');
-           $keywords_map['title'] = array('like', '%'.$keywords.'%');
+           $keywords_map['crm_order.sn'] = array('like', '%'.$keywords.'%');
+           $keywords_map['crm_order.title'] = array('like', '%'.$keywords.'%');
            $keywords_map['_logic'] = 'OR';
        }
 
 
        if ($date_from && $date_to) {
-           $map["$date"] = array(array('egt', date($date_from)), array('elt', date($date_to)));
+           $map["crm_order.$date"] = array(array('egt', date($date_from)), array('elt', date($date_to)));
        } else if ($date_from) {
-           $map["$date"] = array('egt', date($date_from));
+           $map["crm_order.$date"] = array('egt', date($date_from));
        } else if ($date_to) {
-           $map["$date"] = array('elt', date($date_to));
+           $map["crm_order.$date"] = array('elt', date($date_to));
        }
 
        //把关键字SQL组入$map
@@ -70,9 +70,8 @@ class OrderModel extends  Model  {
            ->order(array($sort=>$order))
            ->limit(($rows * ($page - 1)), $rows)
            ->select();
-
        return array(
-           'total'=>$this->count(),
+           'total'=>$this->where($map)->count(),
            'rows'=>$object ? $object : '',
        );
    }
@@ -146,8 +145,33 @@ class OrderModel extends  Model  {
         $object['Extend']['details'] = htmlspecialchars_decode($object['Extend']['details']);
         return $object;
     }
-    //删除订单
-    public  function remove ($ids){
-        return $this->relation('Extend')->delete($ids);
+    //获取订单
+    public  function getDetails ($id) {
+           $map['crm_order.id']=$id;
+           $object=$this->field('crm_order.sn as order_sn,crm_order.title,crm_documentary.client_company,
+                                 crm_documentary.staff_name,crm_order.original,crm_order.cost,
+                                 crm_order.pay_state,crm_order.enter,crm_order.create_time,
+                                 crm_order_extend.details,crm_order_extend.contract')
+               ->join('crm_documentary on crm_documentary.id = crm_order.documentary_id','LEFT')
+               ->join('crm_order_extend on crm_order_extend.order_id = crm_order.id','LEFT')
+               ->where($map)
+               ->find();
+            $object['contract']=htmlspecialchars_decode($object['contract']);
+            //出库的产品(PS:一个订单可能会有多个商品)
+           if($object) {
+               $outlib = D('Outlib');
+               $outlibMap['order_sn'] = $object['order_sn'];
+               $outlib = $outlib->field('crm_outlib.number,
+                                         crm_outlib.state,
+                                         crm_outlib.dispose_time,
+                                         crm_product.sn,
+                                         crm_product.name,
+                                         crm_product.sell_price')
+                   ->join('crm_product on crm_product.id = crm_outlib.product_id', 'LEFT')
+                   ->where($outlibMap)
+                   ->select();
+                $object['outlib'] = $outlib;
+            }
+            return  $object;
     }
 }
