@@ -22,7 +22,7 @@ $(function(){
                 checkbox : true
             },
             {
-                field : 'sn',
+                field : 'order_sn',
                 title : '付款编号',
                 width : 100
             },
@@ -137,7 +137,7 @@ $(function(){
                         width : 150
                     },
                     {
-                        field : 'amount',
+                        field : 'cost',
                         title : '订单金额',
                         width : 80
                     },
@@ -146,7 +146,7 @@ $(function(){
                         title : '选择订单',
                         width : 60,
                         formatter : function (value, row) {
-                            return '<a href="javascript:void(0)" class="select-button" style="height: 18px;margin-left:2px;" onclick="receipt_order_tool.select(\'' + row.id + '\', \'' + row.title + '\', \'' + row.amount + '\');">选择</a>';
+                            return '<a href="javascript:void(0)" class="select-button" style="height: 18px;margin-left:2px;" onclick="receipt_order_tool.select(\'' + row.id + '\', \'' + row.title + '\', \'' + row.cost + '\');">选择</a>';
                         }
                     },
                     {
@@ -230,7 +230,7 @@ $(function(){
                         },
                         success : function(data) {
                             $.messager.progress('close');
-                            if (data > 0) {
+                            if (data.code==200) {
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : '添加收款记录成功！'

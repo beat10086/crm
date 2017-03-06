@@ -17,7 +17,7 @@ class ReceiptModel extends  Model  {
 
         //如果有关键字，进行组装
         if ($keywords) {
-            $keywords_map['sn'] = array('like', '%'.$keywords.'%');
+            $keywords_map['order_sn'] = array('like', '%'.$keywords.'%');
             $keywords_map['_logic'] = 'OR';
         }
 
@@ -40,7 +40,7 @@ class ReceiptModel extends  Model  {
             $map["$date"] = $date_map["$date"];
         }
 
-        $object = $this->field('id,sn,order_title,way,remark,enter,create_time,order_amount')
+        $object = $this->field('id,order_sn,order_title,way,remark,enter,create_time,order_amount')
             ->where($map)
             ->order(array($sort=>$order))
             ->limit(($rows * ($page - 1)), $rows)
@@ -54,13 +54,13 @@ class ReceiptModel extends  Model  {
     //添加订单信息
     public function register ($order_id, $order_title, $order_amount, $way, $remark) {
           $data = array(
-            'order_id'=>$order_id,
-            'order_title'=>$order_title,
+            'order_id'    =>$order_id,
+            'order_title' =>$order_title,
             'order_amount'=>$order_amount,
-            'way'=>$way,
-            'remark'=>$remark,
-            'sn'=>get_time_string(),
-            'enter'=>session('admin')['name']
+            'way'         =>$way,
+            'remark'      =>$remark,
+            'order_sn'    =>get_time_string(),
+            'enter'       =>session('admin')['staff_name']
          );
          if($this->create($data)){
              $data['create_time'] = get_time();
@@ -74,7 +74,7 @@ class ReceiptModel extends  Model  {
                  return $id;
                 }else {
                  return 0;
-             }
+              }
             }else{
             return $this->getError();
          }

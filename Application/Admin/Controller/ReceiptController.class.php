@@ -10,12 +10,8 @@ use Common\Controller\BaseController;
 use Common\Model\ReceiptModel;
 
 class ReceiptController extends  BaseController  {
-  //加载付款页面
-  public  function  index () {
-       $this->display();
-  }
 
-  //加载收款列表
+    //加载收款列表
   public  function getList () {
     if(IS_AJAX){
           $receiptData= (new ReceiptModel())->getList(I('post.page'), I('post.rows'), I('post.order'),
