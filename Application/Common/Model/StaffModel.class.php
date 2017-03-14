@@ -245,12 +245,40 @@ class StaffModel extends  RelationModel {
           }
           return $count>0?$count:0;
     }
+
+      //根据ID获取一条记录
+      public function getOne($id){
+            $map['crm_staff.id'] = $id;
+            $object = $this->field('crm_staff.id,
+                                crm_staff.user_id,
+                                crm_staff.number,
+                                crm_staff.post,
+                                crm_staff.name,
+                                crm_staff.gender,
+                                crm_staff.id_card,
+                                crm_staff.tel,
+                                crm_staff.type,
+                                crm_staff.nation,
+                                crm_staff.marital_status,
+                                crm_staff.entry_status,
+                                crm_staff.entry_date,
+                                crm_staff.dimission_date,
+                                crm_staff.politics_status,
+                                crm_staff.education,
+                                crm_staff.create_time,
+                                crm_staff_extend.intro,
+                                crm_staff_extend.details')
+                ->join('crm_staff_extend ON crm_staff.id=crm_staff_extend.staff_id', 'LEFT')
+                ->where($map)
+                ->find();
+            $object['details'] = htmlspecialchars_decode($object['details']);
+            return $object;
+      }
       //获取单个档案详情(这里需要管理，两张表)
       public function getDetails($id) {
-            $map['id'] = $id;
-            $object=$this->field('crm_user.')
-                         ->where($map)
-                         ->find();
+            $object = $this->getOne($id);
+            $map['id'] = $object['user_id'];
+            $object['user'] = M('User')->field('accounts, state')->where($map)->find();
             return $object;
     }
       //获取未关联档案列表
