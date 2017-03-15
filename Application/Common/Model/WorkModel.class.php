@@ -76,7 +76,7 @@ class WorkModel extends  Model {
             ->select();
 
         return array(
-            'total'=>$this->count(),
+            'total'=>$this->where($map)->count(),
             'rows'=>$object ? $object : '',
         );
     }
@@ -144,7 +144,7 @@ class WorkModel extends  Model {
     //获取工作阶段
     public  function  getStage ($id) {
         $map['work_id'] = $id;
-        return M('workExtend')->field('stage,create_time')->where($map)->select();
+        return M('workStage')->field('title,create_time')->where($map)->select();
     }
     //作废工作计划
     public function cancel ($ids) {

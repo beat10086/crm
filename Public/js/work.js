@@ -157,7 +157,7 @@ $(function(){
                         },
                         success : function(data) {
                             $.messager.progress('close');
-                            if (data > 0) {
+                            if (data.code ==200) {
                                 $.messager.show({
                                     title : '操作提醒',
                                     msg : '添加工作计划成功！'
@@ -310,7 +310,7 @@ var work_tool = {
                    border : true,
                    columns : [[
                        {
-                           field : 'stage',
+                           field : 'title',
                            title : '完成阶段',
                            width : 100,
                            editor : {
@@ -415,3 +415,83 @@ var work_tool = {
          $('#work').datagrid('unselectAll');
     }
 }
+
+
+//查询字段
+//状态搜索
+$("#work-search-state").combobox({
+    width : 70,
+    prompt : '状态',
+    data : [{
+        id : '进行中',
+        text : '进行中'
+    }, {
+        id : '已完成',
+        text : '已完成'
+    }, {
+        id : '作废',
+        text : '作废'
+    }],
+    editable : false,
+    valueField : 'id',
+    textField : 'text',
+    panelHeight : 'auto'
+});
+
+
+//类型搜索
+$("#work-search-type").combobox({
+    width : 70,
+    prompt : '类型',
+    data : [{
+        id : '业务',
+        text : '业务'
+    }, {
+        id : '内勤',
+        text : '内勤'
+    }],
+    editable : false,
+    valueField : 'id',
+    textField : 'text',
+    panelHeight : 'auto'
+});
+
+
+//时间类型旋转
+$("#work-search-date-type").combobox({
+    width : 100,
+    editable : false,
+    prompt : '时间类型',
+    data : [{
+        id : 'create_time',
+        text : '创建时间'
+    }],
+    valueField : 'id',
+    textField : 'text',
+    required : true,
+    novalidate : true,
+    panelHeight : 'auto',
+    tipPosition : 'left',
+    missingMessage : '请选择时间类型'
+});
+
+//查询时间对象
+workDate = {
+    width : 100,
+    editable : false,
+    onSelect : function ()
+    {
+        if (workSearchDateType.combobox('enableValidation').combobox('isValid') == false)
+        {
+            workSearchDateType.combobox('showPanel');
+        }
+    }
+};
+
+//起始时间
+workDate.prompt = '起始时间';
+$("#work-search-date-from").datebox(workDate);
+
+//结束时间
+workDate.prompt = '结束时间';
+$("#work-search-date-to").datebox(workDate);
