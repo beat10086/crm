@@ -3,17 +3,13 @@
 <form id="receipt-tool" style="padding:5px;">
     <div style="margin-bottom:5px;">
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add-new" onclick="receipt_tool.add();">新增</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit-new" onclick="receipt_tool.edit();">修改</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-delete-new" onclick="receipt_tool.remove();">删除</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="receipt_tool.reload();">刷新表</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="receipt_tool.redo();">取消选定</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="receipt_tool.reset();">重置查询</a>
     </div>
-
     <div style="padding:0 0 0 7px;color:#333;">
         <label for="receipt-search-keywords">关键字：</label>
         <input type="text" id="receipt-search-keywords" class="easyui-textbox" name="receipt_search_keywords" prompt="付款编号|订单标题" style="width:143px;">
-        <input type="text" id="receipt-search-date" prompt="查询时间" name="receipt_search_date">
+        <input type="text" id="receipt-search-date-type" prompt="查询时间" name="receipt_search_date">
         <input type="text" id="receipt-search-date-from" prompt="起始时间" name="receipt_search_date_from" editable="false"  style="width:110px;">
         <label for="receipt-search-date-to">-</label>
         <input type="text" id="receipt-search-date-to" prompt="结束时间" name="receipt_search_date_to" editable="false"  style="width:110px;">

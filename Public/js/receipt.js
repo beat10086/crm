@@ -1,4 +1,8 @@
 $(function(){
+    receiptSearchKeywords         =   $('#receipt-search-keywords'),
+    receiptSearchDateType         =   $('#receipt-search-date-type'),
+    receiptSearchDateFrom         =   $('#receipt-search-date-from'),
+    receiptSearchDateTo           =   $('#receipt-search-date-to')
     //收款列表
     $('#receipt').datagrid({
         url : ThinkPHP['MODULE'] + '/Receipt/getList',
@@ -63,7 +67,7 @@ $(function(){
                 width: 40,
                 fixed : true,
                 formatter : function (value,row) {
-                    return '<a href="javascript:void(0)" class="client-details" style="height: 18px;margin-left:2px;" onclick="client_tool.details(' + row.id + ');"></a>';
+                    return '<a href="javascript:void(0)" class="client-details" style="height: 18px;margin-left:2px;" onclick="receipt_tool.details(' + row.id + ');"></a>';
                 }
             }
         ]],
@@ -254,15 +258,76 @@ $(function(){
             $('#receipt-add').form('reset');
         }
     });
+    //时间类型旋转
+
+    receiptSearchDateType.combobox({
+        width : 100,
+        editable : false,
+        prompt : '时间类型',
+        data : [{
+            id : 'create_time',
+            text : '创建时间'
+        }],
+        valueField : 'id',
+        textField : 'text',
+        required : true,
+        novalidate : true,
+        panelHeight : 'auto',
+        tipPosition : 'left',
+        missingMessage : '请选择时间类型'
+    });
+
+   //查询时间对象
+    receiptDate = {
+        width : 100,
+        editable : false,
+        onSelect : function ()
+        {
+            if (receiptSearchDateType.combobox('enableValidation').combobox('isValid') == false)
+            {
+                receiptSearchDateType.combobox('showPanel');
+            }
+        }
+    };
+    //起始时间
+    receiptDate.prompt = '起始时间';
+    receiptSearchDateFrom.datebox(receiptDate);
+    //结束时间
+    receiptDate.prompt = '结束时间';
+    receiptSearchDateTo.datebox(receiptDate);
+
+
 })
 //收款工具栏
 var receipt_tool={
-      add:function(){
+    details:function(id){
+        $('#details-dialog').dialog('open').dialog('setTitle', '收款信息详情')
+            .dialog('refresh', ThinkPHP['MODULE'] + '/Receipt/getDetails/?id=' + id);
+    },
+    search : function () {
+        if ($("#receipt-tool").form('validate'))
+        {
+            $('#receipt').datagrid('load', {
+                keywords : receiptSearchKeywords.textbox('getValue'),
+                dateType : receiptSearchDateType.combobox('getValue'),
+                dateFrom : receiptSearchDateFrom.datebox('getValue'),
+                dateTo :   receiptSearchDateTo.datebox('getValue')
+            });
+        }
+    },
+    add:function(){
           $('#receipt-add').dialog('open');
       },
-     edit:function(){
-
-     }
+    reload:function(){
+          $("#receipt").datagrid('reload');
+    },
+    reset : function (){
+        receiptSearchKeywords.textbox('clear');
+        receiptSearchDateType.combobox('clear').combobox('disableValidation');
+        receiptSearchDateFrom.datebox('clear');
+        receiptSearchDateTo.datebox('clear');
+        this.search();
+    }
 }
 //关联订单工具栏
 var receipt_order_tool={

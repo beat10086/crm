@@ -112,8 +112,9 @@ procure.datagrid({
 });
 //工具条操作
 var procureOpt = {
-    details:function(){
-
+    details:function(id){
+        $('#details-dialog').dialog('open').dialog('setTitle', '产品采购信息详情')
+            .dialog('refresh', ThinkPHP['MODULE'] + '/Inlib/getDetails/?id=' + id);
     },
     search : function (){
         if (procureTool.form('validate')){
@@ -125,6 +126,16 @@ var procureOpt = {
                 procure : true
             });
         }
+    },
+    reload:function(){
+        procure.datagrid('reload');
+    },
+    reset:function(){
+        procureSearchKeywords.textbox('clear');
+        procureSearchDateType.combobox('clear').combobox('disableValidation');
+        procureSearchDateFrom.datebox('clear');
+        procureSearchDateTo.datebox('clear');
+        this.search();
     }
 }
 /*查询字段区域*/

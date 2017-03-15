@@ -78,5 +78,12 @@ class ReceiptModel extends  Model  {
             }else{
             return $this->getError();
          }
+     }
+     //获取收款详情
+    public function getDetails ($id) {
+        $map['id']=$id;
+        return   $this->field('id,order_title,order_sn,order_amount,enter,remark,create_time,way')
+                      ->where($map)
+                      ->find();
     }
 }
