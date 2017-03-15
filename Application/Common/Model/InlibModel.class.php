@@ -16,7 +16,7 @@ class InlibModel  extends  Model  {
         array('product', '2,20', '产品长度不合法', self::EXISTS_VALIDATE, 'length', self::MODEL_INSERT),
     );
     //获取入库产品列表
-    public function  getList($page, $rows, $order, $sort, $keywords, $date, $date_from, $date_to) {
+    public function  getList($page, $rows, $order, $sort, $keywords, $date, $date_from, $date_to,$procure=null) {
         $map = array();
         $keywords_map = array();
         $date_map = array();
@@ -31,11 +31,11 @@ class InlibModel  extends  Model  {
 
 
         if ($date_from && $date_to) {
-            $map["$date"] = array(array('egt', date($date_from)), array('elt', date($date_to)));
+            $map["crm_inlib.$date"] = array(array('egt', date($date_from)), array('elt', date($date_to)));
         } else if ($date_from) {
-            $map["$date"] = array('egt', date($date_from));
+            $map["crm_inlib.$date"] = array('egt', date($date_from));
         } else if ($date_to) {
-            $map["$date"] = array('elt', date($date_to));
+            $map["crm_inlib.$date"] = array('elt', date($date_to));
         }
 
         //把关键字SQL组入$map
@@ -45,12 +45,15 @@ class InlibModel  extends  Model  {
 
         //把创建时间SQL组入$map
         if (!empty($date_map)) {
-            $map["$date"] = $date_map["$date"];
+            $map["crm_inlib.$date"] = $date_map["$date"];
         }
-
+        if($procure){
+            $map["mode"]="采购";
+        }
         $object = $this->field('crm_inlib.id,crm_inlib.number,crm_inlib.staff_name,crm_inlib.mode,
                                 crm_inlib.mode_explain,crm_inlib.enter,crm_inlib.create_time,crm_product.sn,
-                                crm_product.name,crm_product.unit,crm_product.pro_price,crm_product.sell_price')
+                                crm_product.type,crm_product.name,crm_product.unit,crm_product.pro_price,
+                                crm_product.sell_price')
             ->join('crm_product on crm_inlib.product_id=crm_product.id','LEFT')
             ->where($map)
             ->order(array($sort=>$order))

@@ -81,7 +81,9 @@ class UserController  extends  BaseController
     //获取用户详情
     public  function getDetails () {
         if(IS_AJAX){
-            (new UserModel())->getDetails(I('get.id'));
+            $object=(new UserModel())->getDetails(I('get.id'));
+            $this->assign('object',$object);
+            $this->display('details');
            }else{
             $this->eror('非法操作!');
         }

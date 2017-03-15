@@ -254,4 +254,11 @@ class UserModel extends  RelationModel   {
          );
         return $this->save($data);
     }
+    //获取用户信息
+    public function getDetails ($id) {
+           $map['id']=$id;
+           $object=  $this->field('accounts,email,staff_name,last_login_time,
+                        last_login_ip,login_count,state,create_time')->where($map)->find();
+          return $object;
+    }
 }
