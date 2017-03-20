@@ -362,15 +362,15 @@ var  client_tool={
                $("#client").datagrid('unselectAll');
        },
         reset : function () {
-            $('#client-search-keywords').textbox('clear');
+            $('#work-search-keywords').textbox('clear');
             $('#client-search-date').combobox('clear').combobox('disableValidation');
             $('#client-search-date-from').datebox('clear');
             $('#client-search-date-to').datebox('clear');
             $('#client-search-type').combobox('clear');
             /*$('#client').datagrid('resetSort', {
-                sortName : 'create_time',
-                sortOrder : 'desc'
-            });*/
+             sortName : 'create_time',
+             sortOrder : 'desc'
+             });*/
             this.search();
         },
        details:function(id){

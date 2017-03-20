@@ -90,4 +90,14 @@ class WorkController extends  BaseController  {
                $this->error('非法操作!');
            }
     }
+    //获取工作计划详情
+    public function getDetails () {
+        if(IS_AJAX){
+             $object=(new WorkModel())->getDetails(I('get.id'));
+             $this->assign('object',$object);
+             $this->display('details');
+           }else{
+            $this->error('非法操作!');
+        }
+    }
 }

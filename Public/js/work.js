@@ -72,7 +72,7 @@ $(function(){
                 width: 40,
                 fixed : true,
                 formatter : function (value,row) {
-                    return '<a href="javascript:void(0)" class="work-details" style="height: 18px;margin-left:2px;" onclick="client_tool.details(' + row.id + ');"></a>';
+                    return '<a href="javascript:void(0)" class="work-details" style="height: 18px;margin-left:2px;" onclick="work_tool.details(' + row.id + ');"></a>';
                 }
             }
         ]],
@@ -354,7 +354,7 @@ var work_tool = {
                            type : 'POST',
                            data : {
                                work_id : $('#work-id-edit').val(),
-                               stage : row.stage
+                               stage : row.title
                            },
                            success : function(data) {
                                if (data) {
@@ -397,7 +397,7 @@ var work_tool = {
                                   $('#work').datagrid('reload');
                                   $.messager.show({
                                       title : '操作提醒',
-                                      msg : data + '个工作计划被成功作废！'
+                                      msg : rows.length + '个工作计划被成功作废！'
                                   });
                               }
                           }
@@ -413,6 +413,33 @@ var work_tool = {
     },
     redo:function(){
          $('#work').datagrid('unselectAll');
+    },
+    search : function ()
+    {
+        if ($("#work-tool").form('validate'))
+        {
+            $("#work").datagrid('load', {
+                keywords : $("#work-search-keywords").textbox('getValue'),
+                date     : $("#work-search-date-type").combobox('getValue'),
+                date_from : $("#work-search-date-from").datebox('getValue'),
+                date_to   : $("#work-search-date-to").datebox('getValue'),
+                type     : $("#work-search-type").combobox('getValue'),
+                state    : $("#work-search-state").combobox('getValue')
+            });
+        }
+    },
+    reset:function(){
+        $("#work-search-keywords").textbox('clear');
+        $("#work-search-date-type").combobox('clear').combobox('disableValidation');
+        $("#work-search-date-from").datebox('clear');
+        $("#work-search-date-to").datebox('clear');
+        $("#work-search-type").combobox('clear');
+        $("#work-search-state").combobox('clear');
+        this.search();
+    },
+    details:function(id){
+        $('#details-dialog').dialog('open').dialog('setTitle', '工作计划详情')
+            .dialog('refresh', ThinkPHP['MODULE'] + '/Work/getDetails/?id=' + id);
     }
 }
 
@@ -481,9 +508,9 @@ workDate = {
     editable : false,
     onSelect : function ()
     {
-        if (workSearchDateType.combobox('enableValidation').combobox('isValid') == false)
+        if ($("#work-search-date-type").combobox('enableValidation').combobox('isValid') == false)
         {
-            workSearchDateType.combobox('showPanel');
+            $("#work-search-date-type").combobox('showPanel');
         }
     }
 };

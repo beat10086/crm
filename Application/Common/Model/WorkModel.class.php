@@ -93,7 +93,7 @@ class WorkModel extends  Model {
             'staff_name'        =>  session('admin')['staff_name'],
             'allo_id'           =>  session('admin')['id'],
             'allo_name'         =>  session('admin')['staff_name'],
-            'create_time'=>get_time()
+            'create_time'       =>  get_time()
         );
         //如果是分配者，那就写入分配这的ID和名称
         if($staff_id != 0){
@@ -104,10 +104,10 @@ class WorkModel extends  Model {
               $id = $this->add();
               if ($id) {
                     //同时写入到附表中的完成进度
-                    M('workExtend')->add(array(
-                        'work_id'=>$id,
-                        'stage'=>'创建工作任务',
-                        'create_time'=>get_time()
+                    M('workStage')->add(array(
+                        'work_id'     =>$id,
+                        'title'       =>'创建工作任务',
+                        'create_time' =>get_time()
                     ));
                     return $id;
                 } else {
@@ -124,9 +124,9 @@ class WorkModel extends  Model {
     }
     //添加工作阶段
     public  function addStage($work_id, $state) {
-        return M('workExtend')->add(array(
-            'work_id'=>$work_id,
-            'stage'=>$state,
+        return M('workStage')->add(array(
+            'work_id'    =>$work_id,
+            'title'      =>$state,
             'create_time'=>get_time()
         ));
     }
@@ -149,5 +149,10 @@ class WorkModel extends  Model {
     //作废工作计划
     public function cancel ($ids) {
         return $this->save(array('id'=>array('in', $ids), 'state'=>'作废'));
+    }
+    //获取工作单详情
+    public function getDetails ($id){
+          $map['id']=$id;
+          return $this->where($map)->find();
     }
 }
