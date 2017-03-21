@@ -4,16 +4,14 @@
 <!--工具条-->
 <form id="allo-tool" style="padding: 5px;">
     <div class="tool-opt">
-        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="alloOpt.add()">新增</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="alloOpt.edit()">更新阶段</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-exclamation" onclick="alloOpt.cancel()">作废</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="alloOpt.reload()">刷新表</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="alloOpt.redo()">取消选定</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="alloOpt.reset()">重置查询</a>
     </div>
     <div class="tool-search">
         <label for="allo-search-keywords">关键字：</label>
-        <input type="text" id="allo-search-keywords">
+        <input type="text" id="allo-search-keywords"  class="easyui-textbox"   prompt="工作名称">
         <input type="text" id="allo-search-state">
         <input type="text" id="allo-search-type">
         <input type="text" id="allo-search-date-type">

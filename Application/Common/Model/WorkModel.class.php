@@ -13,7 +13,7 @@ class WorkModel extends  Model {
 
     //获取工作列表
     public function getList($page, $rows, $order, $sort, $keywords, $date, $date_from, $date_to, $state,
-                            $type,$state,$allo = false) {
+                            $type,$allo = false) {
         $map = array();
         $keywords_map = array();
         $date_map = array();
@@ -43,9 +43,10 @@ class WorkModel extends  Model {
             $map["$date"] = $date_map["$date"];
         }
         if($allo){
-            $map['allo_id'] = 1;
+            $map['staff_id'] =session('admin')['staff_id'];
            }else{
-            $map['staff_id'] = 1;
+            $map['allo_id']  = session('admin')['staff_id'];
+
         }
         //状态
         switch ($state) {
@@ -74,7 +75,6 @@ class WorkModel extends  Model {
             ->order(array($sort=>$order))
             ->limit(($rows * ($page - 1)), $rows)
             ->select();
-
         return array(
             'total'=>$this->where($map)->count(),
             'rows'=>$object ? $object : '',

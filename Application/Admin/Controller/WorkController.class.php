@@ -20,7 +20,7 @@ class WorkController extends  BaseController  {
          if(IS_AJAX){
                $workData=(new WorkModel())->getList(I('post.page'), I('post.rows'), I('post.order'), I('post.sort'),
                                                     I('post.keywords'), I('post.date'), I('post.date_from'),
-                                                    I('post.date_to'), I('post.state'), I('post.type'),I('post.state'));
+                                                    I('post.date_to'), I('post.state'), I('post.type'));
                $this->ajaxReturn($workData);
             }else{
               $this->error('非法操作!');

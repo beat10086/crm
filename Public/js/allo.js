@@ -8,12 +8,6 @@
         alloAddEndDate             =    $('#allo-add-end-date'),
         alloEdit                   =    $('#allo-edit'),
         alloEditId                 =    $('#allo-edit-id'),
-        alloSearchKeywords         =    $('#allo-search-keywords'),
-        alloSearchDateType         =    $('#allo-search-date-type'),
-        alloSearchDateFrom         =    $('#allo-search-date-from'),
-        alloSearchDateTo           =    $('#allo-search-date-to'),
-        alloSearchType             =    $('#allo-search-type'),
-        alloSearchState            =    $('#allo-search-state'),
         alloStaff                  =    $('#allo-staff'),
         alloTool                   =    $('#allo-tool'),
         alloOpt;
@@ -94,7 +88,7 @@
                 width: 40,
                 fixed : true,
                 formatter : function (value,row) {
-                    return '<a href="javascript:void(0)" class="allo-details" style="height: 18px;margin-left:2px;" onclick="client_tool.details(' + row.id + ');"></a>';
+                    return '<a href="javascript:void(0)" class="allo-details" style="height: 18px;margin-left:2px;" onclick="alloOpt.details(' + row.id + ');"></a>';
                 }
             }
         ]],
@@ -171,10 +165,32 @@
             alloAdd.form('reset');
         }
     });
+    //编辑工作阶段
+    $('#allo-edit').dialog({
+        width : 780,
+        height : 500,
+        title : '更新工作阶段',
+        iconCls : 'icon-edit-new',
+        modal : true,
+        closed : true,
+        maximizable : true,
+        buttons : [{
+            text : '关闭',
+            size : 'large',
+            iconCls : 'icon-cross',
+            handler : function () {
+                $('#Allo-edit').dialog('close');
+            }
+        }],
+        onClose : function () {
+            $('#allo-stage-save-add').hide();
+            $('#allo-stage-cancel-add').hide();
+            $('#allo-stage-button-add').show();
+            $('#allo-stage-finish-add').show();
+            $('#allo-edit').form('reset');
+        }
+    });
 alloOpt = {
-    add:function(){
-        alloAdd.dialog('open');
-    },
     edit:function(){
         var rows = allo.datagrid('getSelections');
         if (rows.length != 1) {
@@ -184,7 +200,7 @@ alloOpt = {
             alloEdit.dialog('open');
             //Ajax获取一条数据
             $.ajax({
-                url : ThinkPHP['MODULE'] + '/Work/getOne',
+                url : ThinkPHP['MODULE'] + '/Allo/getOne',
                 type : 'POST',
                 data : {
                     id : rows[0].id
@@ -215,7 +231,7 @@ alloOpt = {
             });
             //显示工作阶段列表
             $('#allo-stage-list').datagrid({
-                url : ThinkPHP['MODULE'] + '/Work/getStage',
+                url : ThinkPHP['MODULE'] + '/Allo/getStage',
                 queryParams : {
                     id : rows[0].id
                 },
@@ -266,11 +282,11 @@ alloOpt = {
                 ,
                 onAfterEdit : function (index, row) {
                     $.ajax({
-                        url : ThinkPHP['MODULE'] + '/Work/addStage',
+                        url : ThinkPHP['MODULE'] + '/Allo/addStage',
                         type : 'POST',
                         data : {
-                            allo_id : alloEditId.val(),
-                            title : row.title
+                            Allo_id : alloEditId.val(),
+                            stage   : row.title
                         },
                         success : function(data) {
                             if (data) {
@@ -285,6 +301,40 @@ alloOpt = {
                 }
             });
         }
+    },
+    reload:function(){
+        $('#allo').datagrid('reload');
+    },
+    redo:function(){
+        $('#allo').datagrid('unselectAll');
+    },
+    reset:function(){
+        $("#allo-search-keywords").textbox('clear');
+        $("#allo-search-date-type").combobox('clear').combobox('disableValidation');
+        $("#allo-search-date-from").datebox('clear');
+        $("#allo-search-date-to").datebox('clear');
+        $("#allo-search-type").combobox('clear');
+        $("#allo-search-state").combobox('clear');
+        this.search();
+    },
+    search : function ()
+    {
+        if ($("#allo-tool").form('validate'))
+        {
+            $("#allo").datagrid('load', {
+                keywords : $("#allo-search-keywords").textbox('getValue'),
+                date     : $("#allo-search-date-type").combobox('getValue'),
+                date_from : $("#allo-search-date-from").datebox('getValue'),
+                date_to   : $("#allo-search-date-to").datebox('getValue'),
+                type     : $("#allo-search-type").combobox('getValue'),
+                state    : $("#allo-search-state").combobox('getValue'),
+                allo : true
+            });
+        }
+    },
+    details:function(id){
+        $('#details-dialog').dialog('open').dialog('setTitle', '工作计划详情')
+            .dialog('refresh', ThinkPHP['MODULE'] + '/Allo/getDetails/?id=' + id);
     }
 }
     /*新增字段*/
@@ -394,10 +444,10 @@ alloAddTitle.textbox({
         iconCls : 'icon-accept',
         onClick : function () {
             $.ajax({
-                url : ThinkPHP['MODULE'] + '/Work/finish',
+                url : ThinkPHP['MODULE'] + '/Allo/finish',
                 type : 'POST',
                 data : {
-                    allo_id : alloEditId.val()
+                    Allo_id : alloEditId.val()
                 },
                 success : function(data) {
                     if (data) {
@@ -514,3 +564,80 @@ alloAddTitle.textbox({
             });
         }
     };
+    //状态搜索
+    $("#allo-search-state").combobox({
+        width : 70,
+        prompt : '状态',
+        data : [{
+            id : '进行中',
+            text : '进行中'
+        }, {
+            id : '已完成',
+            text : '已完成'
+        }, {
+            id : '作废',
+            text : '作废'
+        }],
+        editable : false,
+        valueField : 'id',
+        textField : 'text',
+        panelHeight : 'auto'
+    });
+
+
+    //类型搜索
+    $("#allo-search-type").combobox({
+        width : 70,
+        prompt : '类型',
+        data : [{
+            id : '业务',
+            text : '业务'
+        }, {
+            id : '内勤',
+            text : '内勤'
+        }],
+        editable : false,
+        valueField : 'id',
+        textField : 'text',
+        panelHeight : 'auto'
+    });
+
+
+    //时间类型旋转
+    $("#allo-search-date-type").combobox({
+        width : 100,
+        editable : false,
+        prompt : '时间类型',
+        data : [{
+            id : 'create_time',
+            text : '创建时间'
+        }],
+        valueField : 'id',
+        textField : 'text',
+        required : true,
+        novalidate : true,
+        panelHeight : 'auto',
+        tipPosition : 'left',
+        missingMessage : '请选择时间类型'
+    });
+
+    //查询时间对象
+    alloDate = {
+        width : 100,
+        editable : false,
+        onSelect : function ()
+        {
+            if ($("#allo-search-date-type").combobox('enableValidation').combobox('isValid') == false)
+            {
+                $("#allo-search-date-type").combobox('showPanel');
+            }
+        }
+    };
+
+    //起始时间
+    alloDate.prompt = '起始时间';
+    $("#allo-search-date-from").datebox(alloDate);
+
+    //结束时间
+    alloDate.prompt = '结束时间';
+    $("#allo-search-date-to").datebox(alloDate);

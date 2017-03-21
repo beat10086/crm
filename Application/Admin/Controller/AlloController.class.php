@@ -19,10 +19,10 @@ class AlloController  extends   BaseController  {
     public function getList(){
         if (IS_AJAX)
         {
-            $Work = D('Work');
-            $this->ajaxReturn($Work->getList(I('post.page'), I('post.rows'), I('post.sort'), I('post.order'),
-                                             I('post.keywords'), I('post.dateType'), I('post.dateFrom'),
-                                             I('post.dateTo'), I('post.type'), I('post.state'), I('post.allo')));
+
+            $this->ajaxReturn((new WorkModel())->getList(I('post.page'), I('post.rows'),I('post.order'), I('post.sort'),
+                                             I('post.keywords'), I('post.date'), I('post.date_from'),
+                                             I('post.date_to'), I('post.state'), I('post.type'), I('post.allo')));
         } else {
             $this->error('非法操作！');
         }
@@ -40,5 +40,15 @@ class AlloController  extends   BaseController  {
               }else{
                $this->error('非法操作!');
           }
+    }
+    //获取工作计划详情
+    public function getDetails () {
+        if(IS_AJAX){
+            $object=(new WorkModel())->getDetails(I('get.id'));
+            $this->assign('object',$object);
+            $this->display('details');
+        }else{
+            $this->error('非法操作!');
+        }
     }
 }
