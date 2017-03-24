@@ -158,6 +158,12 @@ informOpt = {
             });
         }
     },
+    reload:function(){
+        inform.datagrid('reload');
+    },
+    redo:function(){
+        inform.datagrid('unselectAll');
+    },
     reset : function ()
     {
         informSearchKeywords.textbox('clear');

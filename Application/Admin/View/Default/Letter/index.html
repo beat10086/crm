@@ -5,7 +5,6 @@
 <form id="letter-tool" style="padding: 5px;">
     <div class="tool-opt">
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-add" onclick="letterOpt.add()">新增</a>
-        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-edit" onclick="letterOpt.edit()">编辑</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-remove" onclick="letterOpt.remove()">删除</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="letterOpt.reload()">刷新表</a>
         <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="letterOpt.redo()">取消选定</a>
@@ -22,5 +21,67 @@
     </div>
 </form>
 
+<!--新增私信-->
+<form id="letter-add">
+    <input name="letter-sid-add" type="text" id="letter-sid-add">
+    <table class="form-table" style="max-width: 780px;">
+        <tbody>
+        <tr>
+            <td class="label">
+                <label for="letter-add-title">私信标题：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="letter-add-title">
+            </td>
+            <td class="label">
+
+            </td>
+            <td class="input">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="letter-name-add">收件人：</label>
+            </td>
+            <td class="input">
+                <input type="text" id="letter-name-add" name="letter_name_add" editable="false">
+            </td>
+            <td class="label">
+
+            </td>
+            <td class="input">
+
+            </td>
+        </tr>
+        <tr>
+            <td class="label">
+                <label for="letter-add-details">私信详情：</label>
+            </td>
+            <td class="input" colspan="3">
+                <textarea id="letter-add-details" class="textarea"></textarea>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+</form>
+
+<!--添加员工 信息-->
+<div id="documentary-staff">
+    <table id="documentary-search-staff"></table>
+</div>
+
+
+<!--添加员工 工具栏-->
+<form id="documentary-staff-tool" style="padding:5px;">
+    <div style="padding:0 0 0 7px;color:#333;">
+        <label for="documentary-staff-search-keywords">关键字：</label>
+        <input type="text" id="documentary-staff-search-keywords" class="easyui-textbox" name="documentary_staff_search_keywords" prompt="员工姓名或编号" style="width:120px;padding: 0 5px;">
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="documentary-staff-search-button" iconCls="icon-search" onclick="documentary_staff_tool.search();" style="margin-top:-1px;">查询</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" id="documentary-staff-search-reset" plain="true" style="float:right;" iconCls="icon-undo" onclick="documentary_staff_tool.reset();" style="margin-top:-1px;">重置查询</a>
+    </div>
+</form>
 <!--JS-->
+<script type="text/javascript" src="__EDITOR__/kindeditor-min.js"></script>
+<script type="text/javascript" src="__EDITOR__/lang/zh_CN.js"></script>
 <script type="text/javascript" src="__JS__/letter.js"></script>

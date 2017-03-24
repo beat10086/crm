@@ -43,9 +43,9 @@ class WorkModel extends  Model {
             $map["$date"] = $date_map["$date"];
         }
         if($allo){
-            $map['staff_id'] =session('admin')['staff_id'];
+              $map['allo_id']  = session('admin')['staff_id'];
            }else{
-            $map['allo_id']  = session('admin')['staff_id'];
+              $map['staff_id'] =session('admin')['staff_id'];
 
         }
         //状态

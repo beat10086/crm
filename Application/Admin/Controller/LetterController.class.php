@@ -7,9 +7,9 @@
  */
 namespace  Admin\Controller;
 use Common\Model\LetterModel;
-use Think\Controller;
+use Common\Controller\BaseController;
 
-class LetterController extends  Controller  {
+class LetterController extends baseController  {
    //显示私信页面
    public  function  Index(){
          $this->display();
@@ -26,5 +26,27 @@ class LetterController extends  Controller  {
             $this->error('非法操作！');
         }
     }
-
+    //添加私信
+    public function register () {
+         $code=(new LetterModel())->register(I('post.title'),I('post.staff_id'),
+                                             I('post.staff_name'),I('post.details'));
+          if($code>0){
+              $this->responseSuccess();
+            }else{
+              $this->responseError($code);
+          }
+    }
+    //删除私信
+    public  function  remove () {
+        if(IS_AJAX){
+                $code=(new LetterModel())->remove(I('post.ids'));
+                if($code>0){
+                    $this->responseSuccess();
+                }else{
+                    $this->responseError($code);
+                }
+              }ELSE{
+               $this->error('非法操作！');
+           }
+    }
 }
