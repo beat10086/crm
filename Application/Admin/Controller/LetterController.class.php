@@ -49,4 +49,28 @@ class LetterController extends baseController  {
                $this->error('非法操作！');
            }
     }
+    //私信详情
+    public  function getDetails () {
+            if(IS_AJAX){
+                  $object=(new LetterModel())->getDetails(I('get.id'));
+                  $this->assign('object',$object);
+                  $this->display('details');
+               }else{
+                $this->error('非法操作！');
+            }
+    }
+
+    //设置可读
+    public function read () {
+        if(IS_AJAX){
+            $code=(new LetterModel())->read(I('post.id'));
+            if($code>0){
+                 $this->responseSuccess();
+               }else{
+                 $this->responseError($code);
+            }
+          }else{
+            $this->error('非法操作！');
+        }
+    }
 }

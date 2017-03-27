@@ -14,6 +14,7 @@ class LetterModel extends  Model  {
         $map = $keywords_map =  array();
         if($keywords){
             $keywords_map['send_name'] = array('like', '%'.$keywords.'%');
+            $keywords_map['title'] = array('like', '%'.$keywords.'%');
             $keywords_map['_logic'] = 'OR';
         }
         //将复合SQL组入$map
@@ -31,7 +32,7 @@ class LetterModel extends  Model  {
         }
         //只显示收件人是登录用户的列表
         $map['staff_id'] = session('admin')['staff_id'];
-        $object = $this ->field('id,message,staff_name,send_name,isread,create_time')
+        $object = $this ->field('id,message,staff_name,send_name,isread,create_time,title')
             ->where($map)
             ->order(array($sort=>$order))
             ->limit(($rows * ($page - 1)), $rows)
@@ -69,4 +70,15 @@ class LetterModel extends  Model  {
         if(!$isRead)  return -2;
         return $this->delete($ids);
      }
+    //获取详情
+    public  function getDetails ($id){
+           $map['id']=$id;
+           return    $this->field('title,message,staff_name,send_name,create_time')->where($map)->find();
+    }
+    //设置可读
+    public function read ($id) {
+        $map['id']=$id;
+        $data['isread'] = '已读';
+         return   $this->where($map)->save($data);
+    }
 }

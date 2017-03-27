@@ -35,6 +35,11 @@ var letter                       =   $('#letter'),
                 width : 80
             },
             {
+                field : 'title',
+                title : '标题',
+                width : 100
+            },
+            {
                 field : 'message',
                 title : '私信内容',
                 width : 120
@@ -62,7 +67,7 @@ var letter                       =   $('#letter'),
                 fixed : true,
                 formatter : function (value,row)
                 {
-                    return '<a href="javascript:void(0)" class="letter-details" style="height: 18px;margin-left:2px;" onclick="productOpt.details(' + row.id + ');"></a>';
+                    return '<a href="javascript:void(0)" class="letter-details" style="height: 18px;margin-left:2px;" onclick="letterOpt.details(' + row.id +',\''+row.isread+'\');"></a>';
                 }
             }
         ]],
@@ -260,6 +265,62 @@ letterOpt = {
     add : function () {
         letterAdd.dialog('open');
     },
+    reload:function(){
+        letter.datagrid('reload');
+    },
+    redo:function(){
+        letter.datagrid('unselectAll');
+    },
+    search:function(){
+        if (letterTool.form('validate')){
+            letter.datagrid('load', {
+                keywords : letterSearchKeywords.textbox('getValue'),
+                dateType : letterSearchDateType.combobox('getValue'),
+                dateFrom : letterSearchDateFrom.datebox('getValue'),
+                dateTo : letterSearchDateTo.datebox('getValue')
+            });
+        }
+    },
+    reset : function ()
+    {
+        letterSearchKeywords.textbox('clear');
+        letterSearchDateType.combobox('clear').combobox('disableValidation');
+        letterSearchDateFrom.datebox('clear');
+        letterSearchDateTo.datebox('clear');
+        this.search();
+        letter.datagrid('sort', {
+            sortName : 'create_time',
+            sortOrder : 'DESC'
+        });
+    },
+    details:function(id,isread){
+        details.dialog('open').dialog('setTitle', '私信阅读')
+                              .dialog('refresh', ThinkPHP['MODULE'] + '/Letter/getDetails/?id=' + id);
+        if(isread=='未读'){
+            //设置已读
+            $.ajax({
+                url: ThinkPHP['MODULE'] + '/Letter/read',
+                type: 'POST',
+                data: {
+                    id: id
+                },
+                beforeSend: function () {
+                    $.messager.progress({
+                        text: '正在处理中...'
+                    })
+                },
+                success: function (data) {
+                    $.messager.progress('close');
+                    if (data.code==200) {
+                        letter.datagrid('reload');
+                    } else {
+                        $.messager.alert('操作警告', '没有获取到相应数据！', 'warning');
+                    }
+                }
+            });
+        }
+
+    },
     remove:function(){
         var rows =letter.datagrid('getSelections');
         if(rows.length>0){
@@ -332,6 +393,48 @@ var documentary_staff_tool = {
         });*/
     }
 };
+
+letterSearchKeywords.textbox({
+    width : 150,
+    prompt : '发件人或标题'
+});
+//时间类型旋转
+letterSearchDateType.combobox({
+    width : 100,
+    editable : false,
+    prompt : '时间类型',
+    data : [{
+        id : 'create_time',
+        text : '创建时间'
+    }],
+    valueField : 'id',
+    textField : 'text',
+    required : true,
+    novalidate : true,
+    panelHeight : 'auto',
+    tipPosition : 'left',
+    missingMessage : '请选择时间类型'
+});
+//查询时间对象
+letterDate = {
+    width : 100,
+    editable : false,
+    onSelect : function ()
+    {
+        if (letterSearchDateType.combobox('enableValidation').combobox('isValid') == false)
+        {
+            letterSearchDateType.combobox('showPanel');
+        }
+    }
+};
+
+//起始时间
+letterDate.prompt = '起始时间';
+letterSearchDateFrom.datebox(letterDate);
+
+//结束时间
+letterDate.prompt = '结束时间';
+letterSearchDateTo.datebox(letterDate);
 //加载新增编辑器
 LETTER_ADD = KindEditor.create('#letter-add-details', {
     width : '94%',
