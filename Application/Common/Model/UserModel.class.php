@@ -96,7 +96,7 @@ class UserModel extends  RelationModel   {
                }
         }
        return [
-            'total'=>$this->count(),
+            'total'=>$this->where($map)->count(),
             'rows' =>$object?$object:''
       ];
   }
@@ -232,10 +232,10 @@ class UserModel extends  RelationModel   {
                   $this->save($update);
                   //写入日志
                   $param = array(
-                     'user'=>$object['accounts'].'('.$object['staff_name'].')',
-                     'type'=>'登录系统',
-                     'module'=>'人事管理 >> 登录帐号',
-                     'ip'=>get_client_ip()
+                     'user'     =>$object['accounts'].'('.$object['staff_name'].')',
+                     'type_name'=>'登录操作',
+                     'module'   =>'人事管理 >> 登录帐号',
+                     'ip'       =>get_client_ip()
                  );
                  tag('log', $param);
                  return $object['id'];

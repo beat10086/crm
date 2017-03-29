@@ -6,11 +6,11 @@
  * Time: 15:45
  */
 namespace  Admin\Controller;
-use Common\Controller\BaseController;
 use Common\Model\NavModel;
+use Think\Controller;
 
 
-class IndexController extends  BaseController {
+class IndexController extends Controller {
       //获取分类
       public  function   getNav  () {
          if(IS_AJAX){

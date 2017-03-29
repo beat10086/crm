@@ -13,6 +13,6 @@ use Think\Behavior;
 class LogBehavior extends  Behavior {
      public  function  run (&$param) {
          $Log = new  LogModel();
-         $Log->register($param['user'], $param['type'], $param['module'], $param['ip']);
+         $Log->register($param['user'], $param['type_name'], $param['module'], $param['ip']);
      }
 }

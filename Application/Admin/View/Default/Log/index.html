@@ -1,0 +1,25 @@
+<!--数据列表-->
+<table id="log"></table>
+
+
+<!--工具条-->
+<form id="log-tool" style="padding: 5px;">
+    <div class="tool-opt">
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-reload" onclick="logOpt.reload()">刷新表</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-redo" onclick="logOpt.redo()">取消选定</a>
+        <a href="javascript:void(0)" class="easyui-linkbutton" plain="true" iconCls="icon-undo" onclick="logOpt.reset()">重置查询</a>
+    </div>
+    <div class="tool-search">
+        <label for="log-search-type">选择类型：</label>
+        <input type="text" id="log-search-type">
+        <input type="text" id="log-search-date-type">
+        <input type="text" id="log-search-date-from">
+        <label for="log-search-date-to">-</label>
+        <input type="text" id="log-search-date-to">
+        <a href="javascript:void(0)" class="easyui-linkbutton" iconCls="icon-search" onclick="logOpt.search()">查询</a>
+    </div>
+</form>
+
+
+<!--JS-->
+<script type="text/javascript" src="__JS__/log.js"></script>
