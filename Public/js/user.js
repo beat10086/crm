@@ -348,12 +348,13 @@ $(function(){
         width : 240,
         height : 32,
         validType : 'email',
+        required : true,
         missingMessage : '请输入电子邮件',
         invalidMessage : '电子邮件格式不合法'
     })
     //关联档案
     $('#user-staff-add,#user-staff-edit').combogrid({
-            width : 120,
+            width : 100,
             height : 32,
             url : ThinkPHP['MODULE'] + '/Staff/getNotRelationList',
             panelWidth: 450,

@@ -263,15 +263,6 @@ $(function(){
             window.editor.html('');
         }
     });
-    //职位搜索
-    //$('#staff-search-post').combobox({
-    //    width : 70,
-    //    url : ThinkPHP['MODULE'] + '/Post/getListAll',
-    //    editable : false,
-    //    valueField : 'id',
-    //    textField : 'name',
-    //    panelHeight : 'auto'
-    //});
     //姓名
     $("#staff-name-add,#staff-name-edit").textbox({
         width : 240,
@@ -624,6 +615,15 @@ $(function(){
         valueField : 'id',
         textField : 'text'
     });
+    //职位搜索
+    $('#staff-search-post').combobox({
+        width : 70,
+        url : ThinkPHP['MODULE'] + '/Post/getListAll',
+        editable : false,
+        valueField : 'id',
+        textField : 'name',
+        panelHeight : 'auto'
+    });
     //加载新增编辑器
     window.editor = KindEditor.create('#staff-details-add', {
         width : '94%',
@@ -660,7 +660,7 @@ var staff_tool = {
             date_from: $('input[name="staff_search_date_from"]').val(),
             date_to: $('input[name="staff_search_date_to"]').val(),
             gender: $('input[name="staff_search_gender"]').val(),
-            pid: $('input[name="staff_search_post"]').val(),
+            pid: $('#staff-search-post').combobox('getText'),
             entry_status: $('input[name="staff_search_entry_status"]').val(),
             marital_status: $('input[name="staff_search_marital_status"]').val(),
             education: $('input[name="staff_search_education"]').val(),
@@ -800,11 +800,12 @@ var staff_tool = {
             $('#staff-search-type').combobox('clear');
             $('#staff-search-id-card').textbox('clear');
             $('#staff-search-nation').textbox('clear');
+            this.search();
             $('#staff').datagrid('resetSort', {
                 sortName : 'create_time',
                 sortOrder : 'desc'
             });
-            this.search();
+
     }
 }
 

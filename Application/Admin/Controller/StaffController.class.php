@@ -17,7 +17,7 @@ class StaffController extends  BaseController {
            $staffData=(new StaffModel())->getList(
                I('post.page'), I('post.rows'), I('post.order'), I('post.sort'),
                I('post.keywords'), I('post.date'), I('post.date_from'), I('post.date_to'),
-               I('post.gender'), I('post.post'), I('post.entry_status'), I('post.marital_status'),
+               I('post.gender'), I('post.pid'), I('post.entry_status'), I('post.marital_status'),
                I('post.education'), I('post.type'), I('post.id_card'), I('post.nation'), I('post.uid'));
                $this->ajaxReturn($staffData);
         } else {
