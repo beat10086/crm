@@ -1,0 +1,9 @@
+.idea/*
+.idea/crm.iml
+.idea/encodings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/workspace.xml
+Application/Runtime/Cache/Admin/*
+Application/Runtime/Cache/Admin/fe220fa55e0e64d94a217ebc7be2d0f4.php
+Application/Runtime/Logs/
