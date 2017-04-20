@@ -327,6 +327,18 @@ var receipt_tool={
         receiptSearchDateFrom.datebox('clear');
         receiptSearchDateTo.datebox('clear');
         this.search();
+    },
+    exportExcel:function(){
+        if ($("#receipt-tool").form('validate'))
+        {
+            var keywords=receiptSearchKeywords.textbox('getValue');
+            var dateType=receiptSearchDateType.combobox('getValue');
+            var dateFrom=receiptSearchDateFrom.datebox('getValue');
+            var dateTo=receiptSearchDateTo.datebox('getValue');
+            var url='http://localhost/root/crm/Admin/Receipt/exportExcel?keywords='+keywords+'&dateType='+dateType+'&dateFrom='+dateFrom+'&dateTo='+dateTo;
+            window.open(url);
+        }
+
     }
 }
 //关联订单工具栏

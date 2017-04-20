@@ -86,4 +86,33 @@ class ReceiptModel extends  Model  {
                       ->where($map)
                       ->find();
     }
+    public  function exportExcel ($keywords,$dateType,$dateFrom,$dateTo) {
+        $map = array();
+        $keywords_map = array();
+        $date_map = array();
+        if($keywords){
+            $keywords_map['order_sn'] = array('like', '%'.$keywords.'%');
+            $keywords_map['_logic']   ='OR';
+        }
+        if ($dateFrom && $dateTo) {
+              $date_map["$dateType"] = array(array('egt', date(dateFrom)), array('elt', date($dateTo)));
+           } else if ($dateFrom) {
+              $date_map["$dateType"] = array('egt', date($dateFrom));
+          } else if ($dateTo) {
+              $date_map["$dateType"] = array('elt', date($dateTo));
+        }
+        //把关键字SQL组入$map
+        if (!empty($keywords_map)) {
+            $map['_complex'] = $keywords_map;
+        }
+        //把创建时间SQL组入$map
+        if (!empty($date_map)) {
+            $map["$dateType"] = $date_map["$dateType"];
+        }
+        $object = $this->field('id,order_sn,order_title,way,remark,enter,create_time,order_amount')
+            ->where($map)
+            ->order('create_time desc')
+            ->select();
+         return $object;
+    }
 }
