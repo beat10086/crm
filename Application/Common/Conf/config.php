@@ -8,7 +8,7 @@ return array(
     'DB_TYPE'=>'mysqli',
     'DB_HOST'=>'localhost',
     'DB_USER'=>'root',
-    'DB_PWD'=>'root',
+    'DB_PWD'=>'',    //Mac 有默认密码为root
     'DB_NAME'=>'crm',
     'DB_PORT'=>'3306',
     'DB_PREFIX'=>'crm_',
