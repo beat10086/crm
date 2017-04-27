@@ -33,7 +33,7 @@ class  PublicController extends \Think\Controller{
           }
 
       }
-    public  function  responseSuccess ($data) {
+    public  function  responseSuccess ($data=null) {
         $res['code']=$this->code;
         $res['message']=$this->message;
         $res['data']=$data;
